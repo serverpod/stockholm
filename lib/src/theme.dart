@@ -11,35 +11,11 @@ class StockholmThemeData {
       // primarySwatch: Colors.blue,
       visualDensity: VisualDensity.compact,
       backgroundColor: Colors.blueGrey[50],
-      // popupMenuTheme: PopupMenuThemeData(
-      //   textStyle: TextStyle(
-      //     fontSize: 20.0,
-      //   ),
-      // ),
-      // textTheme: TextTheme(
-      //   bodyText1: TextStyle(fontSize: 12.0),
-      //   bodyText2: TextStyle(fontSize: 12.0),
-      //   caption: TextStyle(fontSize: 11.0),
-      //   button: TextStyle(fontSize: 14.0),
-      // ),
+      primaryColor: Colors.blue[500],
+      popupMenuTheme: theme.popupMenuTheme.copyWith(
+        textStyle: theme.textTheme.bodyText1,
+      ),
     );
-
-    // return ThemeData.light().copyWith(
-    //   // primarySwatch: Colors.blue,
-    //   visualDensity: VisualDensity.compact,
-    //   backgroundColor: Colors.blueGrey[50],
-    //   // popupMenuTheme: PopupMenuThemeData(
-    //   //   textStyle: TextStyle(
-    //   //     fontSize: 20.0,
-    //   //   ),
-    //   // ),
-    //   textTheme: TextTheme(
-    //     bodyText1: TextStyle(fontSize: 12.0),
-    //     bodyText2: TextStyle(fontSize: 12.0),
-    //     caption: TextStyle(fontSize: 11.0),
-    //     button: TextStyle(fontSize: 14.0),
-    //   ),
-    // );
   }
 
   static ThemeData dark() {
@@ -80,9 +56,6 @@ class StockholmThemeData {
         bodyText2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0),
         caption: theme.textTheme.caption!.copyWith(fontSize: 11.0),
         button: theme.textTheme.button!.copyWith(fontSize: 14.0),
-      ),
-      popupMenuTheme: theme.popupMenuTheme.copyWith(
-        textStyle: theme.textTheme.bodyText1,
       ),
       splashColor: Colors.transparent,
     );
