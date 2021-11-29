@@ -68,6 +68,7 @@ class StockholmThemeData {
         ),
       ),
       cardColor: Colors.grey[900],
+      dividerColor: Colors.white24,
     );
   }
 
