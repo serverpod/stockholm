@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'shadows.dart';
 
-class FancyCheckbox extends StatefulWidget {
+class StockholmCheckbox extends StatefulWidget {
   bool value;
   final ValueChanged<bool>? onChanged;
   final String? label;
   final size;
   final double cornerRadius;
 
-  FancyCheckbox({
+  StockholmCheckbox({
     required this.value,
     this.onChanged,
     this.label,
@@ -17,10 +17,10 @@ class FancyCheckbox extends StatefulWidget {
   });
 
   @override
-  _FancyCheckboxState createState() => _FancyCheckboxState();
+  _StockholmCheckboxState createState() => _StockholmCheckboxState();
 }
 
-class _FancyCheckboxState extends State<FancyCheckbox> {
+class _StockholmCheckboxState extends State<StockholmCheckbox> {
   bool _pressed = false;
 
   @override
@@ -82,6 +82,7 @@ class _FancyCheckboxState extends State<FancyCheckbox> {
       return visual;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         widget.onChanged!(!widget.value);
       },
