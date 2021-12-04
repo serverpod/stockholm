@@ -12,8 +12,19 @@ class StockholmThemeData {
       visualDensity: VisualDensity.compact,
       backgroundColor: Colors.blueGrey[50],
       primaryColor: Colors.blue[500],
+      highlightColor: Colors.black26,
+      disabledColor: Colors.black26,
       popupMenuTheme: theme.popupMenuTheme.copyWith(
-        textStyle: theme.textTheme.bodyText1,
+        textStyle: theme.textTheme.bodyText2,
+      ),
+      dialogTheme: theme.dialogTheme.copyWith(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        )
+      ),
+      textTheme: theme.textTheme.copyWith(
+        caption: theme.textTheme.caption!.copyWith(color: Colors.black38),
       ),
     );
   }
@@ -26,25 +37,19 @@ class StockholmThemeData {
     return theme.copyWith(
       primaryColor: Colors.blue[700],
       popupMenuTheme: theme.popupMenuTheme.copyWith(
-        textStyle: theme.textTheme.bodyText1,
+        textStyle: theme.textTheme.bodyText2,
       ),
-      splashColor: Colors.transparent,
+      backgroundColor: Colors.blueGrey[900],
       canvasColor: Colors.black,
       hoverColor: Colors.white12,
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          primary: Colors.white,
-          textStyle: theme.textTheme.bodyText1!.copyWith(fontSize: 12.0),
-          backgroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-            side: BorderSide(color: theme.dividerColor, width: 1),
-          ),
-          splashFactory: NoSplash.splashFactory,
-        ),
-      ),
       cardColor: Colors.grey[900],
       dividerColor: Colors.white24,
+      dialogTheme: theme.dialogTheme.copyWith(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+      ),
     );
   }
 
@@ -52,9 +57,11 @@ class StockholmThemeData {
     return theme.copyWith(
       visualDensity: VisualDensity.compact,
       textTheme: theme.textTheme.copyWith(
-        bodyText1: theme.textTheme.bodyText1!.copyWith(fontSize: 12.0),
+        bodyText1: theme.textTheme.bodyText1!.copyWith(fontSize: 13.0),
         bodyText2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0),
-        caption: theme.textTheme.caption!.copyWith(fontSize: 11.0),
+        subtitle1: theme.textTheme.bodyText1!.copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
+        subtitle2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
+        caption: theme.textTheme.caption!.copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
         button: theme.textTheme.button!.copyWith(fontSize: 14.0),
       ),
       splashColor: Colors.transparent,

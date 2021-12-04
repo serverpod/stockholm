@@ -7,6 +7,7 @@ class StockholmCheckbox extends StatefulWidget {
   final String? label;
   final size;
   final double cornerRadius;
+  final bool enabled;
 
   StockholmCheckbox({
     required this.value,
@@ -14,6 +15,7 @@ class StockholmCheckbox extends StatefulWidget {
     this.label,
     this.size = 16.0,
     this.cornerRadius = 4.0,
+    this.enabled = true,
   });
 
   @override
@@ -25,11 +27,20 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
 
   @override
   Widget build(BuildContext context) {
+    var enabled = widget.onChanged != null && widget.enabled;
+
     Widget visual;
     if (widget.value) {
-      var color = Theme.of(context).indicatorColor;
-      if (_pressed)
-        color = Color.lerp(color, Colors.black, 0.2)!;
+      Color color;
+
+      if (enabled) {
+        color = Theme.of(context).indicatorColor;
+        if (_pressed)
+          color = Color.lerp(color, Colors.black, 0.2)!;
+      }
+      else {
+        color = Theme.of(context).disabledColor;
+      }
 
       visual = Container(
         width: widget.size,
@@ -37,7 +48,7 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius)),
           color: color,
-          boxShadow: stockholmBoxShadow(context),
+          boxShadow: enabled ? stockholmBoxShadow(context) : null,
         ),
         child: Icon(
           Icons.check,
@@ -64,6 +75,11 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
     }
 
     if (widget.label != null) {
+      var textStyle = Theme.of(context).textTheme.bodyText2!;
+      if (!enabled) {
+        textStyle = textStyle.copyWith(color: Theme.of(context).textTheme.caption!.color);
+      }
+
       visual = Row(
         children: [
           visual,
@@ -71,14 +87,14 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
             padding: EdgeInsets.only(left: 8.0),
             child: Text(
               widget.label!,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: textStyle,
             ),
           ),
         ],
       );
     }
 
-    if (widget.onChanged == null)
+    if (!enabled)
       return visual;
 
     return GestureDetector(

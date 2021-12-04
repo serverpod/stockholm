@@ -5,6 +5,7 @@ class StockholmButton extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
   final bool large;
+  final bool important;
 
   const StockholmButton({
     Key? key,
@@ -12,14 +13,17 @@ class StockholmButton extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 4,),
     this.large = false,
+    this.important = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
+    final theme = Theme.of(context);
+    final textColor = important ? theme.buttonTheme.colorScheme!.onPrimary : theme.buttonTheme.colorScheme!.onSurface;
 
     return MaterialButton(
       // textTheme: textTheme,
+      color: important ? theme.colorScheme.primary : theme.buttonTheme.colorScheme!.surface,
       hoverColor: Theme.of(context).hoverColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -29,7 +33,7 @@ class StockholmButton extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: DefaultTextStyle(
-          style: large ? Theme.of(context).textTheme.button! : Theme.of(context).textTheme.bodyText1!,
+          style: large ? theme.textTheme.button!.copyWith(color: textColor) : theme.textTheme.bodyText2!.copyWith(color: textColor),
           child: child,
         ),
       ),
