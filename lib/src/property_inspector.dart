@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stockholm/src/checkbox.dart';
+import 'package:stockholm/src/text_field.dart';
 
 class StockholmPropertyInspector extends StatelessWidget {
   final StockholmPIHeader? header;
   final List<Widget> properties;
+  final double descriptionWidth;
+  final EdgeInsets propertyPadding;
 
-  static const defaultPropertyHeight = 24.0;
-  static const defaultPadding = EdgeInsets.symmetric(horizontal: 8.0);
+  static const defaultPropertyHeight = 32.0;
+  static const defaultPropertyPadding = EdgeInsets.symmetric(horizontal: 8.0);
   static const defaultDescriptionWidth = 80.0;
+
 
   StockholmPropertyInspector({
     this.header,
     required this.properties,
+    this.descriptionWidth = defaultDescriptionWidth,
+    this.propertyPadding = defaultPropertyPadding,
   });
 
   @override
@@ -28,6 +35,10 @@ class StockholmPropertyInspector extends StatelessWidget {
       ],
     );
   }
+
+  static StockholmPropertyInspector? of(BuildContext context) {
+    return context.findAncestorWidgetOfExactType<StockholmPropertyInspector>();
+  }
 }
 
 class StockholmPIHeader extends StatelessWidget {
@@ -39,8 +50,9 @@ class StockholmPIHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var padding = StockholmPropertyInspector.of(context)?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
     return Container(
-      padding: StockholmPropertyInspector.defaultPadding,
+      padding: padding,
       height: StockholmPropertyInspector.defaultPropertyHeight,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
@@ -65,24 +77,31 @@ class StockholmPIHeader extends StatelessWidget {
 class StockholmPIOneLineProp extends StatelessWidget {
   final String name;
   final Widget value;
+  final TextAlign nameAlignment;
 
-  StockholmPIOneLineProp({
+  const StockholmPIOneLineProp({
     required this.name,
     required this.value,
-  });
+    this.nameAlignment = TextAlign.end,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var inspector = StockholmPropertyInspector.of(context);
+    var descriptionWidth = inspector?.descriptionWidth ?? StockholmPropertyInspector.defaultDescriptionWidth;
+    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+
     return Container(
-      padding: StockholmPropertyInspector.defaultPadding,
+      padding: padding,
       height: StockholmPropertyInspector.defaultPropertyHeight,
       child: Row(
         children: [
           SizedBox(
-            width: StockholmPropertyInspector.defaultDescriptionWidth,
+            width: descriptionWidth,
             child: Text(
               name,
-              textAlign: TextAlign.end,
+              textAlign: nameAlignment,
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
@@ -109,8 +128,11 @@ class StockholmPILargeProp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var inspector = StockholmPropertyInspector.of(context);
+    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+
     return Container(
-      padding: StockholmPropertyInspector.defaultPadding,
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -215,16 +237,84 @@ class StockholmPICheckboxProp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: StockholmCheckbox(
-        value: value,
-        onChanged: onChanged,
-        label: name,
+    var inspector = StockholmPropertyInspector.of(context);
+    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+
+    return SizedBox(
+      height: StockholmPropertyInspector.defaultPropertyHeight,
+      child: Padding(
+        padding: padding,
+        child: StockholmCheckbox(
+          value: value,
+          onChanged: onChanged,
+          label: name,
+        ),
       ),
     );
   }
 }
+
+class StockholmPIEditableIntProp extends StatefulWidget {
+  final String name;
+  final int value;
+  final ValueChanged<int>? onChanged;
+  final TextAlign nameAlignment;
+
+  const StockholmPIEditableIntProp({
+    required this.name,
+    required this.value,
+    required this.onChanged,
+    this.nameAlignment = TextAlign.end,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => StockholmPIEditableIntPropState();
+}
+
+class StockholmPIEditableIntPropState extends State<StockholmPIEditableIntProp> {
+  late TextEditingController _controller;
+
+  late int _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.value;
+    _controller = TextEditingController(text: '${widget.value}');
+    _controller.addListener(() {
+      var newValue = int.tryParse(_controller.text);
+      if (newValue != null && newValue != _value) {
+        _value = newValue;
+        if (widget.onChanged != null)
+          widget.onChanged!(_value);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StockholmPIOneLineProp(
+      nameAlignment: widget.nameAlignment,
+      name: widget.name,
+      value: StockholmTextField(
+        controller: _controller,
+        keyboardType: TextInputType.numberWithOptions(),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        textAlign: TextAlign.end,
+      ),
+    );
+  }
+}
+
 
 
 class StockholmPIDivider extends StatelessWidget {
