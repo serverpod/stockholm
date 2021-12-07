@@ -5,6 +5,6 @@ class StockholmActivityIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoActivityIndicator();
+    return const CupertinoActivityIndicator();
   }
 }

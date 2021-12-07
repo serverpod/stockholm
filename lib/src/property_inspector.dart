@@ -13,13 +13,13 @@ class StockholmPropertyInspector extends StatelessWidget {
   static const defaultPropertyPadding = EdgeInsets.symmetric(horizontal: 8.0);
   static const defaultDescriptionWidth = 80.0;
 
-
-  StockholmPropertyInspector({
+  const StockholmPropertyInspector({
     this.header,
     required this.properties,
     this.descriptionWidth = defaultDescriptionWidth,
     this.propertyPadding = defaultPropertyPadding,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +44,15 @@ class StockholmPropertyInspector extends StatelessWidget {
 class StockholmPIHeader extends StatelessWidget {
   final Widget child;
 
-  StockholmPIHeader({
+  const StockholmPIHeader({
     required this.child,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var padding = StockholmPropertyInspector.of(context)?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+    var padding = StockholmPropertyInspector.of(context)?.propertyPadding ??
+        StockholmPropertyInspector.defaultPropertyPadding;
     return Container(
       padding: padding,
       height: StockholmPropertyInspector.defaultPropertyHeight,
@@ -89,8 +91,10 @@ class StockholmPIOneLineProp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var inspector = StockholmPropertyInspector.of(context);
-    var descriptionWidth = inspector?.descriptionWidth ?? StockholmPropertyInspector.defaultDescriptionWidth;
-    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+    var descriptionWidth = inspector?.descriptionWidth ??
+        StockholmPropertyInspector.defaultDescriptionWidth;
+    var padding = inspector?.propertyPadding ??
+        StockholmPropertyInspector.defaultPropertyPadding;
 
     return Container(
       padding: padding,
@@ -107,7 +111,7 @@ class StockholmPIOneLineProp extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0),
+              padding: const EdgeInsets.only(left: 16.0),
               child: value,
             ),
           ),
@@ -121,15 +125,17 @@ class StockholmPILargeProp extends StatelessWidget {
   final String name;
   final Widget value;
 
-  StockholmPILargeProp({
+  const StockholmPILargeProp({
     required this.name,
     required this.value,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var inspector = StockholmPropertyInspector.of(context);
-    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+    var padding = inspector?.propertyPadding ??
+        StockholmPropertyInspector.defaultPropertyPadding;
 
     return Container(
       padding: padding,
@@ -149,7 +155,7 @@ class StockholmPILargeProp extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 8.0),
             child: value,
           ),
         ],
@@ -158,15 +164,15 @@ class StockholmPILargeProp extends StatelessWidget {
   }
 }
 
-
 class StockholmPITextProp extends StatelessWidget {
   final String name;
   final String value;
 
-  StockholmPITextProp({
+  const StockholmPITextProp({
     required this.name,
     required this.value,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,26 +189,26 @@ class StockholmPIListProp extends StatelessWidget {
   final List<String>? list;
   final double height;
 
-  StockholmPIListProp({
+  const StockholmPIListProp({
     required this.name,
     required this.fallbackText,
     this.list,
     this.height = 200.0,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget contents;
-    if (list == null || list?.length == 0) {
+    if (list == null || list!.isEmpty) {
       contents = Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
           fallbackText,
           style: Theme.of(context).textTheme.caption,
         ),
       );
-    }
-    else {
+    } else {
       contents = Container();
     }
 
@@ -212,7 +218,7 @@ class StockholmPIListProp extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
           border: Border.all(width: 0.5, color: Theme.of(context).dividerColor),
         ),
         child: contents,
@@ -221,13 +227,13 @@ class StockholmPIListProp extends StatelessWidget {
   }
 }
 
-class StockholmPICheckboxProp extends StatelessWidget{
+class StockholmPICheckboxProp extends StatelessWidget {
   final String name;
   final bool value;
   final ValueChanged<bool>? onChanged;
   final bool enabled;
 
-  StockholmPICheckboxProp({
+  const StockholmPICheckboxProp({
     required this.name,
     required this.value,
     required this.onChanged,
@@ -238,7 +244,8 @@ class StockholmPICheckboxProp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var inspector = StockholmPropertyInspector.of(context);
-    var padding = inspector?.propertyPadding ?? StockholmPropertyInspector.defaultPropertyPadding;
+    var padding = inspector?.propertyPadding ??
+        StockholmPropertyInspector.defaultPropertyPadding;
 
     return SizedBox(
       height: StockholmPropertyInspector.defaultPropertyHeight,
@@ -272,7 +279,8 @@ class StockholmPIEditableIntProp extends StatefulWidget {
   State<StatefulWidget> createState() => StockholmPIEditableIntPropState();
 }
 
-class StockholmPIEditableIntPropState extends State<StockholmPIEditableIntProp> {
+class StockholmPIEditableIntPropState
+    extends State<StockholmPIEditableIntProp> {
   late TextEditingController _controller;
 
   late int _value;
@@ -286,8 +294,7 @@ class StockholmPIEditableIntPropState extends State<StockholmPIEditableIntProp> 
       var newValue = int.tryParse(_controller.text);
       if (newValue != null && newValue != _value) {
         _value = newValue;
-        if (widget.onChanged != null)
-          widget.onChanged!(_value);
+        if (widget.onChanged != null) widget.onChanged!(_value);
       }
     });
   }
@@ -305,7 +312,7 @@ class StockholmPIEditableIntPropState extends State<StockholmPIEditableIntProp> 
       name: widget.name,
       value: StockholmTextField(
         controller: _controller,
-        keyboardType: TextInputType.numberWithOptions(),
+        keyboardType: const TextInputType.numberWithOptions(),
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],
@@ -315,15 +322,14 @@ class StockholmPIEditableIntPropState extends State<StockholmPIEditableIntProp> 
   }
 }
 
-
-
 class StockholmPIDivider extends StatelessWidget {
+  const StockholmPIDivider({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Divider(
+    return const Divider(
       height: 4.0,
       thickness: 0.5,
     );
   }
 }
-

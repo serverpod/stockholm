@@ -16,19 +16,25 @@ class StockholmDropdownButton<T> extends StatefulWidget {
     this.value,
     this.offset,
     this.isExpanded = false,
-    this.icon = const Icon(Icons.expand_more, size: 16,),
+    this.icon = const Icon(
+      Icons.expand_more,
+      size: 16,
+    ),
     Key? key,
   }) : super(key: key);
 
   @override
-  _StockholmDropdownButtonState<T> createState() => _StockholmDropdownButtonState<T>();
+  _StockholmDropdownButtonState<T> createState() =>
+      _StockholmDropdownButtonState<T>();
 }
 
-class _StockholmDropdownButtonState<T> extends State<StockholmDropdownButton<T>> {
+class _StockholmDropdownButtonState<T>
+    extends State<StockholmDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
     // DropdownMenuItem<T>? selectedItem;
-    var selectedItem = widget.items.firstWhere((element) => element.value == widget.value);
+    var selectedItem =
+        widget.items.firstWhere((element) => element.value == widget.value);
 
     var child = selectedItem.child;
     if (widget.isExpanded) {
@@ -47,8 +53,7 @@ class _StockholmDropdownButtonState<T> extends State<StockholmDropdownButton<T>>
               child: item.child,
               value: item.value,
               onTap: () {
-                if (widget.onChanged != null)
-                  widget.onChanged!(item.value);
+                if (widget.onChanged != null) widget.onChanged!(item.value);
               },
             ),
           );
@@ -57,14 +62,20 @@ class _StockholmDropdownButtonState<T> extends State<StockholmDropdownButton<T>>
       },
       child: IgnorePointer(
         child: StockholmButton(
-          padding: EdgeInsets.only(left: 12, right: widget.icon == null ? 12 : 8, top: 4, bottom: 4,),
+          padding: EdgeInsets.only(
+            left: 12,
+            right: widget.icon == null ? 12 : 8,
+            top: 4,
+            bottom: 4,
+          ),
           child: Row(
             children: [
               child,
-              if (widget.icon != null) Padding(
-                padding: EdgeInsets.only(left: 4),
-                child: widget.icon,
-              ),
+              if (widget.icon != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: widget.icon,
+                ),
             ],
           ),
           onPressed: () {},

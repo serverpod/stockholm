@@ -18,11 +18,10 @@ class StockholmThemeData {
         textStyle: theme.textTheme.bodyText2,
       ),
       dialogTheme: theme.dialogTheme.copyWith(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        )
-      ),
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          )),
       textTheme: theme.textTheme.copyWith(
         caption: theme.textTheme.caption!.copyWith(color: Colors.black38),
       ),
@@ -46,7 +45,7 @@ class StockholmThemeData {
       dividerColor: Colors.white24,
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: Colors.black,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
       ),
@@ -59,9 +58,12 @@ class StockholmThemeData {
       textTheme: theme.textTheme.copyWith(
         bodyText1: theme.textTheme.bodyText1!.copyWith(fontSize: 13.0),
         bodyText2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0),
-        subtitle1: theme.textTheme.bodyText1!.copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
-        subtitle2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
-        caption: theme.textTheme.caption!.copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
+        subtitle1: theme.textTheme.bodyText1!
+            .copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
+        subtitle2: theme.textTheme.bodyText2!
+            .copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
+        caption: theme.textTheme.caption!
+            .copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
         button: theme.textTheme.button!.copyWith(fontSize: 14.0),
       ),
       splashColor: Colors.transparent,

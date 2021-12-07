@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+
 import 'shadows.dart';
 
 class StockholmCheckbox extends StatefulWidget {
-  bool value;
+  final bool value;
   final ValueChanged<bool>? onChanged;
   final String? label;
-  final size;
+  final double size;
   final double cornerRadius;
   final bool enabled;
 
-  StockholmCheckbox({
+  const StockholmCheckbox({
     required this.value,
     this.onChanged,
     this.label,
     this.size = 16.0,
     this.cornerRadius = 4.0,
     this.enabled = true,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _StockholmCheckboxState createState() => _StockholmCheckboxState();
@@ -35,10 +37,8 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
 
       if (enabled) {
         color = Theme.of(context).indicatorColor;
-        if (_pressed)
-          color = Color.lerp(color, Colors.black, 0.2)!;
-      }
-      else {
+        if (_pressed) color = Color.lerp(color, Colors.black, 0.2)!;
+      } else {
         color = Theme.of(context).disabledColor;
       }
 
@@ -56,11 +56,9 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
           color: Theme.of(context).cardColor,
         ),
       );
-    }
-    else {
+    } else {
       var color = Theme.of(context).cardColor;
-      if (_pressed)
-        color = Color.lerp(color, Colors.black, 0.2)!;
+      if (_pressed) color = Color.lerp(color, Colors.black, 0.2)!;
 
       visual = Container(
         width: widget.size,
@@ -77,14 +75,15 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
     if (widget.label != null) {
       var textStyle = Theme.of(context).textTheme.bodyText2!;
       if (!enabled) {
-        textStyle = textStyle.copyWith(color: Theme.of(context).textTheme.caption!.color);
+        textStyle = textStyle.copyWith(
+            color: Theme.of(context).textTheme.caption!.color);
       }
 
       visual = Row(
         children: [
           visual,
           Padding(
-            padding: EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(left: 8.0),
             child: Text(
               widget.label!,
               style: textStyle,
@@ -94,8 +93,7 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
       );
     }
 
-    if (!enabled)
-      return visual;
+    if (!enabled) return visual;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

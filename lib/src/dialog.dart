@@ -22,8 +22,11 @@ class StockholmDialog extends StatelessWidget {
     if (actionButtons != null) {
       var first = true;
       for (var button in actionButtons!) {
-        if (!first)
-          actionButtonWidgets.add(SizedBox(width: 8,));
+        if (!first) {
+          actionButtonWidgets.add(const SizedBox(
+            width: 8,
+          ));
+        }
         actionButtonWidgets.add(button);
         first = false;
       }
@@ -39,7 +42,8 @@ class StockholmDialog extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(12)),
               ),
               height: 28,
               child: Center(
@@ -54,16 +58,20 @@ class StockholmDialog extends StatelessWidget {
               height: 1,
             ),
             contents,
-            if (actionButtons != null) Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10,),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: actionButtonWidgets,
+            if (actionButtons != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: actionButtonWidgets,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

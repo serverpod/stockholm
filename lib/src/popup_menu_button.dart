@@ -66,7 +66,10 @@ class StockholmPopupMenuButton<T> extends StatelessWidget {
     this.onCanceled,
     this.tooltip,
     this.elevation,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2,),
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 8.0,
+      vertical: 2,
+    ),
     this.child,
     this.icon,
     this.iconSize,
@@ -75,12 +78,9 @@ class StockholmPopupMenuButton<T> extends StatelessWidget {
     // this.shape,
     this.color,
     this.enableFeedback,
-  }) : assert(itemBuilder != null),
-        assert(offset != null),
-        assert(enabled != null),
-        assert(
-        !(child != null && icon != null),
-        'You can only pass [child] or [icon], not both.',
+  })  : assert(
+          !(child != null && icon != null),
+          'You can only pass [child] or [icon], not both.',
         ),
         super(key: key);
 
@@ -203,7 +203,10 @@ class _StockholmPopupMenuButton<T> extends StatefulWidget {
     this.onCanceled,
     this.tooltip,
     this.elevation,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2,),
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 8.0,
+      vertical: 2,
+    ),
     this.child,
     this.icon,
     this.iconSize,
@@ -213,12 +216,9 @@ class _StockholmPopupMenuButton<T> extends StatefulWidget {
     // this.shape,
     this.color,
     this.enableFeedback,
-  }) : assert(itemBuilder != null),
-        assert(offset != null),
-        assert(enabled != null),
-        assert(
-        !(child != null && icon != null),
-        'You can only pass [child] or [icon], not both.',
+  })  : assert(
+          !(child != null && icon != null),
+          'You can only pass [child] or [icon], not both.',
         ),
         super(key: key);
 
@@ -317,14 +317,16 @@ class _StockholmPopupMenuButton<T> extends StatefulWidget {
   final double? iconSize;
 
   @override
-  _StockholmPopupMenuButtonState<T> createState() => _StockholmPopupMenuButtonState<T>();
+  _StockholmPopupMenuButtonState<T> createState() =>
+      _StockholmPopupMenuButtonState<T>();
 }
 
 /// The [State] for a [_StockholmPopupMenuButton].
 ///
 /// See [showButtonMenu] for a way to programmatically open the popup menu
 /// of your button state.
-class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<T>> {
+class _StockholmPopupMenuButtonState<T>
+    extends State<_StockholmPopupMenuButton<T>> {
   /// A method to show a popup menu with the items supplied to
   /// [_StockholmPopupMenuButton.itemBuilder] at the position of your [_StockholmPopupMenuButton].
   ///
@@ -336,11 +338,14 @@ class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<
   void showButtonMenu() {
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
     final RenderBox button = context.findRenderObject()! as RenderBox;
-    final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
+    final RenderBox overlay =
+        Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(widget.offset, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero) + widget.offset, ancestor: overlay),
+        button.localToGlobal(
+            button.size.bottomRight(Offset.zero) + widget.offset,
+            ancestor: overlay),
       ),
       Offset.zero & overlay.size,
     );
@@ -354,14 +359,12 @@ class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<
         initialValue: widget.initialValue,
         position: position,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           side: BorderSide(color: Theme.of(context).dividerColor),
         ),
         color: widget.color ?? popupMenuTheme.color,
-      )
-          .then<void>((T? newValue) {
-        if (!mounted)
-          return null;
+      ).then<void>((T? newValue) {
+        if (!mounted) return null;
         if (newValue == null) {
           widget.onCanceled?.call();
           return null;
@@ -372,7 +375,8 @@ class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<
   }
 
   bool get _canRequestFocus {
-    final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ?? NavigationMode.traditional;
+    final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ??
+        NavigationMode.traditional;
     switch (mode) {
       case NavigationMode.traditional:
         return widget.enabled;
@@ -383,21 +387,21 @@ class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<
 
   @override
   Widget build(BuildContext context) {
-    final bool enableFeedback = widget.enableFeedback
-        ?? PopupMenuTheme.of(context).enableFeedback
-        ?? true;
+    final bool enableFeedback = widget.enableFeedback ??
+        PopupMenuTheme.of(context).enableFeedback ??
+        true;
 
     assert(debugCheckHasMaterialLocalizations(context));
 
     Widget button;
-    if (widget.child != null)
+    if (widget.child != null) {
       button = InkWell(
         onTap: widget.enabled ? showButtonMenu : null,
         canRequestFocus: _canRequestFocus,
         enableFeedback: enableFeedback,
         child: widget.child,
       );
-    else
+    } else {
       button = IconButton(
         icon: widget.icon ?? Icon(Icons.adaptive.more),
         padding: widget.padding,
@@ -407,6 +411,7 @@ class _StockholmPopupMenuButtonState<T> extends State<_StockholmPopupMenuButton<
         enableFeedback: enableFeedback,
         // hoverColor: Theme.of(context).hoverColor,
       );
+    }
 
     return Theme(
       data: Theme.of(context).copyWith(hoverColor: widget.originalHoverColor),
@@ -477,9 +482,7 @@ class StockholmPopupMenuItem<T> extends PopupMenuEntry<T> {
     this.textStyle,
     this.mouseCursor,
     required this.child,
-  }) : assert(enabled != null),
-        assert(height != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The value that will be returned by [showMenu] if this entry is selected.
   final T? value;
@@ -537,7 +540,8 @@ class StockholmPopupMenuItem<T> extends PopupMenuEntry<T> {
   bool represents(T? value) => value == this.value;
 
   @override
-  StockholmPopupMenuItemState<T, StockholmPopupMenuItem<T>> createState() => StockholmPopupMenuItemState<T, StockholmPopupMenuItem<T>>();
+  StockholmPopupMenuItemState<T, StockholmPopupMenuItem<T>> createState() =>
+      StockholmPopupMenuItemState<T, StockholmPopupMenuItem<T>>();
 }
 
 /// The [State] for [PopupMenuItem] subclasses.
@@ -556,7 +560,8 @@ class StockholmPopupMenuItem<T> extends PopupMenuEntry<T> {
 /// the [Widget] that is using this [State]. It must be a subclass of
 /// [PopupMenuItem]. The first, `T`, must match the type argument of that widget
 /// class, and is the type of values returned from this menu.
-class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>> extends State<W> {
+class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>>
+    extends State<W> {
   /// The menu item contents.
   ///
   /// Used by the [build] method.
@@ -583,10 +588,11 @@ class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>> extend
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
-    TextStyle style = widget.textStyle ?? popupMenuTheme.textStyle ?? theme.textTheme.subtitle1!;
+    TextStyle style = widget.textStyle ??
+        popupMenuTheme.textStyle ??
+        theme.textTheme.subtitle1!;
 
-    if (!widget.enabled)
-      style = style.copyWith(color: theme.disabledColor);
+    if (!widget.enabled) style = style.copyWith(color: theme.disabledColor);
 
     Widget item = AnimatedDefaultTextStyle(
       style: style,
@@ -594,7 +600,8 @@ class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>> extend
       child: Container(
         alignment: AlignmentDirectional.centerStart,
         constraints: BoxConstraints(minHeight: widget.height),
-        padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: _kMenuHorizontalPadding),
+        padding: widget.padding ??
+            const EdgeInsets.symmetric(horizontal: _kMenuHorizontalPadding),
         child: buildChild(),
       ),
     );
@@ -606,7 +613,8 @@ class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>> extend
         child: item,
       );
     }
-    final MouseCursor effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor>(
+    final MouseCursor effectiveMouseCursor =
+        MaterialStateProperty.resolveAs<MouseCursor>(
       widget.mouseCursor ?? MaterialStateMouseCursor.clickable,
       <MaterialState>{
         if (!widget.enabled) MaterialState.disabled,
@@ -627,4 +635,3 @@ class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>> extend
     );
   }
 }
-

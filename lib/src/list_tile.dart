@@ -17,13 +17,15 @@ class StockholmListTile extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          decoration: selected ? BoxDecoration(
-            color: Theme.of(context).highlightColor,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-          ) : null,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: selected
+              ? BoxDecoration(
+                  color: Theme.of(context).highlightColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                )
+              : null,
           child: child,
         ),
       ),
@@ -42,7 +44,7 @@ class StockholmListTileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: DefaultTextStyle(
         style: Theme.of(context).textTheme.caption!,
         child: child,
