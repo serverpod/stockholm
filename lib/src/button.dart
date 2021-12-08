@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class StockholmButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget child;
   final EdgeInsets padding;
   final bool large;
   final bool important;
+  final bool enabled;
 
   const StockholmButton({
     Key? key,
@@ -17,14 +18,23 @@ class StockholmButton extends StatelessWidget {
     ),
     this.large = false,
     this.important = false,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textColor = important
-        ? theme.buttonTheme.colorScheme!.onPrimary
-        : theme.buttonTheme.colorScheme!.onSurface;
+
+    Color textColor;
+    if (enabled && onPressed != null) {
+      if (important) {
+        textColor = theme.buttonTheme.colorScheme!.onPrimary;
+      } else {
+        textColor = theme.buttonTheme.colorScheme!.onSurface;
+      }
+    } else {
+      textColor = theme.disabledColor;
+    }
 
     return MaterialButton(
       // textTheme: textTheme,
@@ -36,7 +46,7 @@ class StockholmButton extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(6)),
         side: BorderSide(color: Theme.of(context).dividerColor, width: 1),
       ),
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       child: Padding(
         padding: padding,
         child: DefaultTextStyle(
