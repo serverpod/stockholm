@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockholm/src/button.dart';
 
 class StockholmDialog extends StatelessWidget {
   final Widget title;
@@ -77,4 +78,72 @@ class StockholmDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+class StockholmConfirmationDialog extends StatelessWidget {
+  final ValueChanged<bool> onSelection;
+  final Widget title;
+  final Widget primaryOptionTitle;
+  final Widget secondaryOptionTitle;
+  final Widget contents;
+
+  const StockholmConfirmationDialog({
+    required this.onSelection,
+    required this.title,
+    required this.primaryOptionTitle,
+    required this.secondaryOptionTitle,
+    required this.contents,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StockholmDialog(
+      width: 300,
+      title: title,
+      contents: Padding(
+        padding: EdgeInsets.all(16),
+        child: contents,
+      ),
+      actionButtons: [
+        StockholmButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onSelection(false);
+          },
+          child: secondaryOptionTitle,
+        ),
+        StockholmButton(
+          important: true,
+          onPressed: () {
+            Navigator.of(context).pop();
+            onSelection(true);
+          },
+          child: primaryOptionTitle,
+        ),
+      ],
+    );
+  }
+}
+
+void showStockholmConfirmationDialog({
+  required BuildContext context,
+  required ValueChanged<bool> onSelection,
+  required Widget title,
+  required Widget contents,
+  Widget primaryOptionTitle = const Text('OK'),
+  Widget secondaryOptionTitle = const Text('Cancel'),
+}) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return StockholmConfirmationDialog(
+        onSelection: onSelection,
+        title: title,
+        contents: contents,
+        primaryOptionTitle: primaryOptionTitle,
+        secondaryOptionTitle: secondaryOptionTitle,
+      );
+    },
+  );
 }

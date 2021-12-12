@@ -55,7 +55,7 @@ class StockholmPIHeader extends StatelessWidget {
         StockholmPropertyInspector.defaultPropertyPadding;
     return Container(
       padding: padding,
-      height: StockholmPropertyInspector.defaultPropertyHeight,
+      height: 24, // StockholmPropertyInspector.defaultPropertyHeight,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
         border: Border(
@@ -66,7 +66,7 @@ class StockholmPIHeader extends StatelessWidget {
         ),
       ),
       child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyText1!,
+        style: Theme.of(context).textTheme.subtitle2!,
         child: Align(
           alignment: Alignment.centerLeft,
           child: child,
@@ -186,7 +186,7 @@ class StockholmPITextProp extends StatelessWidget {
 class StockholmPIListProp extends StatelessWidget {
   final String name;
   final String fallbackText;
-  final List<String>? list;
+  final List<Widget>? list;
   final double height;
 
   const StockholmPIListProp({
@@ -205,11 +205,17 @@ class StockholmPIListProp extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Text(
           fallbackText,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context)
+              .textTheme
+              .caption!
+              .copyWith(fontWeight: FontWeight.normal),
         ),
       );
     } else {
-      contents = Container();
+      contents = ListView.builder(
+        itemCount: list!.length,
+        itemBuilder: (context, idx) => list![idx],
+      );
     }
 
     return StockholmPILargeProp(
