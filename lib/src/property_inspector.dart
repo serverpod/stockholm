@@ -61,7 +61,7 @@ class StockholmPIHeader extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 1.0,
+            width: 0.5,
           ),
         ),
       ),
