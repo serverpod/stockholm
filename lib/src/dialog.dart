@@ -102,7 +102,7 @@ class StockholmConfirmationDialog extends StatelessWidget {
       width: 300,
       title: title,
       contents: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: contents,
       ),
       actionButtons: [

@@ -73,3 +73,8 @@ build/
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+example/android
+example/ios
+example/macos
+example/web
+example/windows
