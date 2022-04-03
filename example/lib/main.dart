@@ -1,6 +1,7 @@
 import 'package:example/src/buttons.dart';
 import 'package:example/src/tables.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:stockholm/stockholm.dart';
 
 enum _DemoPage {
@@ -55,11 +56,9 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
         children: [
           StockholmSideBar(
             children: [
-              const SizedBox(
-                height: 8,
-              ),
               const StockholmListTileHeader(child: Text('Controls')),
               StockholmListTile(
+                leading: const Icon(Ionicons.toggle_outline),
                 child: const Text('Buttons'),
                 selected: _selectedPage == _DemoPage.buttons,
                 onPressed: () {
@@ -68,7 +67,9 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                   });
                 },
               ),
+              const StockholmListTileHeader(child: Text('Layouts')),
               StockholmListTile(
+                leading: const Icon(Ionicons.browsers_outline),
                 child: const Text('Tables'),
                 selected: _selectedPage == _DemoPage.tables,
                 onPressed: () {

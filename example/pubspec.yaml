@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  ionicons: ^0.1.2
   stockholm:
     path: ..
 

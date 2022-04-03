@@ -27,6 +27,7 @@ class StockholmSideBar extends StatelessWidget {
         ),
       ),
       child: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         children: children,
       ),
     );

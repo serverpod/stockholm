@@ -10,4 +10,5 @@ export 'src/progress_dart.yaml.dart';
 export 'src/property_inspector.dart';
 export 'src/shadows.dart';
 export 'src/side_bar.dart';
+export 'src/table.dart';
 export 'src/theme.dart';

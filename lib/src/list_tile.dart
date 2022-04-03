@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class StockholmListTile extends StatefulWidget {
   final Widget child;
+  final Widget? leading;
   final bool selected;
   final VoidCallback? onPressed;
   final VoidCallback? onDelete;
 
   const StockholmListTile({
     required this.child,
+    this.leading,
     this.selected = false,
     this.onPressed,
     this.onDelete,
@@ -24,6 +26,25 @@ class _StockholmListTileState extends State<StockholmListTile> {
   @override
   Widget build(BuildContext context) {
     var content = widget.child;
+    if (widget.leading != null) {
+      content = Row(
+        children: [
+          Container(
+            height: 16,
+            padding: const EdgeInsets.only(right: 8),
+            child: IconTheme(
+              data: IconThemeData(
+                size: 16,
+                color: Theme.of(context).primaryColor,
+              ),
+              child: widget.leading!,
+            ),
+          ),
+          Expanded(child: content),
+        ],
+      );
+    }
+
     if (widget.onDelete != null) {
       content = Row(
         children: [
