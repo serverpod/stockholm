@@ -1,4 +1,5 @@
 import 'package:example/src/buttons.dart';
+import 'package:example/src/menus.dart';
 import 'package:example/src/tables.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -6,6 +7,7 @@ import 'package:stockholm/stockholm.dart';
 
 enum _DemoPage {
   buttons,
+  menus,
   tables,
 }
 
@@ -49,6 +51,9 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
       case _DemoPage.tables:
         page = const StockholmTableDemoPage();
         break;
+      case _DemoPage.menus:
+        page = const StockholmMenuDemoPage();
+        break;
     }
 
     return Scaffold(
@@ -64,6 +69,16 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                 onPressed: () {
                   setState(() {
                     _selectedPage = _DemoPage.buttons;
+                  });
+                },
+              ),
+              StockholmListTile(
+                leading: const Icon(Ionicons.reader_outline),
+                child: const Text('Menus'),
+                selected: _selectedPage == _DemoPage.menus,
+                onPressed: () {
+                  setState(() {
+                    _selectedPage = _DemoPage.menus;
                   });
                 },
               ),
