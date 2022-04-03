@@ -8,7 +8,7 @@ class StockholmTableDemoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StockholmTable(
       headerBuilder: (context) {
-        return [
+        return const [
           StockholmTableHeaderCell(child: Text('0')),
           StockholmTableHeaderCell(child: Text('1')),
           StockholmTableHeaderCell(child: Text('2')),

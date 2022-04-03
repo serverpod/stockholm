@@ -43,11 +43,13 @@ class _StockholmTableState extends State<StockholmTable> {
   final ScrollController _verticalController = ScrollController();
 
   int? _selectedRow;
+  late final double _totalColumnWidths;
 
   @override
   void initState() {
     super.initState();
     _selectedRow = widget.selectedRow;
+    _totalColumnWidths = widget.columnWidths.fold(0, (prev, e) => prev + e);
   }
 
   @override
@@ -62,69 +64,113 @@ class _StockholmTableState extends State<StockholmTable> {
     var altBgColor =
         widget.altBackgroundColor ?? Theme.of(context).selectedRowColor;
 
-    return Scrollbar(
-      controller: _horizontalController,
-      scrollbarOrientation: ScrollbarOrientation.bottom,
-      child: SingleChildScrollView(
+    return LayoutBuilder(builder: (context, constraints) {
+      double _totalColumnSpace =
+          constraints.maxWidth - _horizontalRowPadding * 2;
+      bool hasHorizontalOverflow = _totalColumnWidths > _totalColumnSpace;
+
+      List<double> calcWidths;
+      double calcTotalWidth;
+
+      if (hasHorizontalOverflow) {
+        calcWidths = widget.columnWidths;
+        calcTotalWidth = _totalColumnWidths;
+      } else {
+        calcWidths = widget.columnWidths
+            .map(
+              (e) => (e * _totalColumnSpace / _totalColumnWidths)
+                  .floor()
+                  .toDouble(),
+            )
+            .toList();
+        calcTotalWidth = _totalColumnSpace;
+      }
+
+      return Scrollbar(
         controller: _horizontalController,
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: _cellWidth * widget.columnCount + _horizontalRowPadding * 2,
-          child: Column(
-            children: [
-              _TableHeader(
-                decoration: widget.headerDecoration,
-                cells: widget.headerBuilder(context),
-              ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    scrollbars: false,
-                  ),
-                  child: ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 6),
-                    itemCount: widget.rowCount,
-                    controller: _verticalController,
-                    itemBuilder: (context, row) {
-                      return _TableRow(
-                        cells: widget.rowBuilder(context, row, false),
-                        selected: _selectedRow == row,
-                        backgroundColor: row % 2 == 1 ? altBgColor : null,
-                        onPressed: () {
-                          if (widget.selectableRows) {
-                            setState(() {
-                              _selectedRow = row;
-                            });
-                            if (widget.onSelectedRow != null) {
-                              widget.onSelectedRow!(row);
+        scrollbarOrientation: ScrollbarOrientation.bottom,
+        child: SingleChildScrollView(
+          controller: _horizontalController,
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: calcTotalWidth + _horizontalRowPadding * 2,
+            child: Column(
+              children: [
+                _TableHeader(
+                  widths: calcWidths,
+                  decoration: widget.headerDecoration,
+                  cells: widget.headerBuilder(context),
+                ),
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: ScrollConfiguration.of(context).copyWith(
+                      scrollbars: false,
+                    ),
+                    child: ListView.builder(
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      itemCount: widget.rowCount,
+                      controller: _verticalController,
+                      itemBuilder: (context, row) {
+                        return _TableRow(
+                          cells: widget.rowBuilder(context, row, false),
+                          widths: calcWidths,
+                          selected: _selectedRow == row,
+                          backgroundColor: row % 2 == 1 ? altBgColor : null,
+                          hasHorizontalOverflow: hasHorizontalOverflow,
+                          onPressed: () {
+                            if (widget.selectableRows) {
+                              setState(() {
+                                _selectedRow = row;
+                              });
+                              if (widget.onSelectedRow != null) {
+                                widget.onSelectedRow!(row);
+                              }
                             }
-                          }
-                        },
-                      );
-                    },
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class _TableHeader extends StatelessWidget {
   const _TableHeader({
     required this.cells,
+    required this.widths,
     required this.decoration,
     Key? key,
   }) : super(key: key);
 
   final List<Widget> cells;
+  final List<double> widths;
   final BoxDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
+    var cellWidgets = <Widget>[];
+    int i = 0;
+    for (var cell in cells) {
+      cellWidgets.add(
+        SizedBox(
+          width: widths[i],
+          height: _headerHeight,
+          child: DefaultTextStyle(
+            style: Theme.of(context).textTheme.subtitle2!,
+            child: cell,
+          ),
+        ),
+      );
+      i += 1;
+    }
+
     return Container(
       decoration: decoration ??
           BoxDecoration(
@@ -136,16 +182,7 @@ class _TableHeader extends StatelessWidget {
           ),
       padding: const EdgeInsets.symmetric(horizontal: _horizontalRowPadding),
       child: Row(
-        children: cells
-            .map((e) => SizedBox(
-                  width: _cellWidth,
-                  height: _headerHeight,
-                  child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.subtitle2!,
-                    child: e,
-                  ),
-                ))
-            .toList(),
+        children: cellWidgets,
       ),
     );
   }
@@ -156,6 +193,8 @@ class _TableRow extends StatelessWidget {
     required this.cells,
     required this.onPressed,
     required this.selected,
+    required this.hasHorizontalOverflow,
+    required this.widths,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -163,34 +202,47 @@ class _TableRow extends StatelessWidget {
   final List<Widget> cells;
   final VoidCallback onPressed;
   final bool selected;
+  final bool hasHorizontalOverflow;
   final Color? backgroundColor;
+  final List<double> widths;
 
   @override
   Widget build(BuildContext context) {
+    var cellWidgets = <Widget>[];
+    int i = 0;
+    for (var cell in cells) {
+      cellWidgets.add(
+        SizedBox(
+          width: widths[i],
+          height: _cellHeight,
+          child: DefaultTextStyle(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  color: selected ? Colors.white : null,
+                ),
+            child: cell,
+          ),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: onPressed,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: _horizontalRowPadding),
+        margin: EdgeInsets.symmetric(
+          horizontal: hasHorizontalOverflow ? 0.0 : _horizontalRowPadding,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: hasHorizontalOverflow ? _horizontalRowPadding : 0.0,
+        ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          borderRadius: hasHorizontalOverflow
+              ? null
+              : const BorderRadius.all(Radius.circular(4)),
           color: selected ? Theme.of(context).primaryColor : backgroundColor,
         ),
         child: Row(
-          children: cells
-              .map(
-                (e) => SizedBox(
-                  width: _cellWidth,
-                  height: _cellHeight,
-                  child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          color: selected ? Colors.white : null,
-                        ),
-                    child: e,
-                  ),
-                ),
-              )
-              .toList(),
+          children: cellWidgets,
         ),
       ),
     );
@@ -200,14 +252,20 @@ class _TableRow extends StatelessWidget {
 class StockholmTableCell extends StatelessWidget {
   const StockholmTableCell({
     required this.child,
+    this.alignment = Alignment.centerLeft,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
     Key? key,
   }) : super(key: key);
 
   final Widget child;
+  final Alignment alignment;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: alignment,
+      padding: padding,
       child: child,
     );
   }
@@ -216,14 +274,20 @@ class StockholmTableCell extends StatelessWidget {
 class StockholmTableHeaderCell extends StatelessWidget {
   const StockholmTableHeaderCell({
     required this.child,
+    this.alignment = Alignment.centerLeft,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
     Key? key,
   }) : super(key: key);
 
   final Widget child;
+  final Alignment alignment;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: alignment,
+      padding: padding,
       child: child,
     );
   }
