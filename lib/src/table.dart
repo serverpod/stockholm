@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-const _cellHeight = 24.0;
-const _cellWidth = 90.0;
 const _headerHeight = 24.0;
 const _horizontalRowPadding = 8.0;
 
@@ -18,6 +16,7 @@ class StockholmTable extends StatefulWidget {
     this.selectedRow,
     this.selectableRows = true,
     this.onSelectedRow,
+    this.cellHeight = 24.0,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +32,7 @@ class StockholmTable extends StatefulWidget {
   final int? selectedRow;
   final bool selectableRows;
   final ValueChanged<int?>? onSelectedRow;
+  final double cellHeight;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -104,16 +104,21 @@ class _StockholmTableState extends State<StockholmTable> {
                 Expanded(
                   child: ScrollConfiguration(
                     behavior: ScrollConfiguration.of(context).copyWith(
-                      scrollbars: false,
+                      scrollbars: !hasHorizontalOverflow,
                     ),
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(vertical: 6),
                       itemCount: widget.rowCount,
                       controller: _verticalController,
+                      prototypeItem: SizedBox(
+                        width: calcTotalWidth + _horizontalRowPadding * 2,
+                        height: widget.cellHeight,
+                      ),
                       itemBuilder: (context, row) {
                         return _TableRow(
                           cells: widget.rowBuilder(context, row, false),
                           widths: calcWidths,
+                          height: widget.cellHeight,
                           selected: _selectedRow == row,
                           backgroundColor: row % 2 == 1 ? altBgColor : null,
                           hasHorizontalOverflow: hasHorizontalOverflow,
@@ -195,6 +200,7 @@ class _TableRow extends StatelessWidget {
     required this.selected,
     required this.hasHorizontalOverflow,
     required this.widths,
+    required this.height,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -205,6 +211,7 @@ class _TableRow extends StatelessWidget {
   final bool hasHorizontalOverflow;
   final Color? backgroundColor;
   final List<double> widths;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +221,7 @@ class _TableRow extends StatelessWidget {
       cellWidgets.add(
         SizedBox(
           width: widths[i],
-          height: _cellHeight,
+          height: height,
           child: DefaultTextStyle(
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: selected ? Colors.white : null,
