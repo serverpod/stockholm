@@ -3,8 +3,8 @@ import 'package:stockholm/src/button.dart';
 import 'package:stockholm/src/menu.dart';
 import 'package:stockholm/src/menu_items.dart';
 
-class StockholmDropdownButton2<T> extends StatefulWidget {
-  const StockholmDropdownButton2({
+class StockholmDropdownButton<T> extends StatefulWidget {
+  const StockholmDropdownButton({
     required this.items,
     required this.onChanged,
     required this.value,
@@ -23,12 +23,12 @@ class StockholmDropdownButton2<T> extends StatefulWidget {
   final double? width;
 
   @override
-  _StockholmDropdownButton2State createState() =>
-      _StockholmDropdownButton2State<T>();
+  _StockholmDropdownButtonState createState() =>
+      _StockholmDropdownButtonState<T>();
 }
 
-class _StockholmDropdownButton2State<T>
-    extends State<StockholmDropdownButton2<T>> {
+class _StockholmDropdownButtonState<T>
+    extends State<StockholmDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
     var items = widget.items

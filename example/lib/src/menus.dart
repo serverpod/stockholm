@@ -34,7 +34,7 @@ class __DropdownButtonsDemoState extends State<_DropdownButtonsDemo> {
         children: [
           Container(
             // width: 200,
-            child: StockholmDropdownButton2<int>(
+            child: StockholmDropdownButton<int>(
               width: 150,
               items: const [
                 StockholmDropdownItem<int>(value: 0, child: Text('Item 0')),
