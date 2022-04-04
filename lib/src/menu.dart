@@ -24,7 +24,7 @@ class _TestButtonState extends State<TestButton> {
   }
 
   void showTestMenu() {
-    var bounds = getGlobalBoundsForCurrentWidget(context);
+    var bounds = getGlobalBoundsForContext(context);
     var anchorPoint = Offset(bounds.left, bounds.top);
 
     var menu = StockholmMenu(
@@ -57,7 +57,7 @@ class _TestButtonState extends State<TestButton> {
   }
 }
 
-Rect getGlobalBoundsForCurrentWidget(BuildContext context) {
+Rect getGlobalBoundsForContext(BuildContext context) {
   var renderBox = context.findRenderObject() as RenderBox;
   var overlay =
       Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;

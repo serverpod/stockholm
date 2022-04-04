@@ -8,8 +8,7 @@ class StockholmMenuDemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const StockholmDemoPage(children: [
-      _PopupButtonsDemo(),
-      _TestButtonDemo(),
+      _PopupMenuDemo(),
       _DropdownButtonsDemo(),
     ]);
   }
@@ -57,42 +56,56 @@ class __DropdownButtonsDemoState extends State<_DropdownButtonsDemo> {
   }
 }
 
-class _PopupButtonsDemo extends StatelessWidget {
-  const _PopupButtonsDemo({Key? key}) : super(key: key);
+class _PopupMenuDemo extends StatelessWidget {
+  const _PopupMenuDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DemoSection(
-      title: 'Popup menu buttons',
+      title: 'Popup menu',
       child: Row(
         children: [
-          StockholmPopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text('Item 1'),
-              ),
-              PopupMenuItem(
-                child: Text('Item 2'),
-              ),
-              PopupMenuItem(
-                child: Text('Item 3'),
-              ),
-            ],
-          ),
+          // We need to use a builder to get a new context with the correct
+          // bounds for the button. This makes sure we place the menu in the
+          // correct spot.
+          Builder(builder: (context) {
+            return StockholmButton(
+              onPressed: () {
+                var bounds = getGlobalBoundsForContext(context);
+                showStockholmMenu(
+                  context: context,
+                  preferredAnchorPoint: Offset(bounds.left, bounds.bottom + 4),
+                  menu: StockholmMenu(items: [
+                    StockholmMenuItem(
+                      onSelected: () {
+                        print('Selected item 1');
+                      },
+                      child: const Text('Item 1'),
+                    ),
+                    const StockholmMenuItem(
+                      child: Text('Item 2 (Disabled)'),
+                    ),
+                    StockholmMenuItem(
+                      onSelected: () {
+                        print('Selected item 3');
+                      },
+                      child: const Text('Item 3'),
+                    ),
+                    const StockholmMenuItemDivider(),
+                    StockholmMenuItem(
+                      onSelected: () {
+                        print('Selected item 4');
+                      },
+                      child: const Text('Item 4 - Last Item Is Much Longer'),
+                    ),
+                  ]),
+                );
+              },
+              child: Text('Open Popup Menu'),
+            );
+          }),
         ],
       ),
-    );
-  }
-}
-
-class _TestButtonDemo extends StatelessWidget {
-  const _TestButtonDemo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DemoSection(
-      title: 'Test  button',
-      child: TestButton(),
     );
   }
 }

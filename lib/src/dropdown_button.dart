@@ -67,7 +67,7 @@ class _StockholmDropdownButtonState<T>
           bottom: 4,
         ),
         onPressed: () {
-          var bounds = getGlobalBoundsForCurrentWidget(context);
+          var bounds = getGlobalBoundsForContext(context);
           showStockholmMenu(
             context: context,
             preferredAnchorPoint: Offset(
