@@ -9,10 +9,12 @@ const _menuPadding = 4.0;
 class StockholmMenu extends StatelessWidget {
   const StockholmMenu({
     required this.items,
+    this.width,
     Key? key,
   }) : super(key: key);
 
   final List<StockholmMenuEntity> items;
+  final double? width;
 
   double get height =>
       items.fold(_menuPadding * 2, (prev, e) => prev + e.height);
@@ -79,6 +81,9 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
   Widget build(BuildContext context) {
     bool enabled = widget.onSelected != null;
 
+    var menu = context.findAncestorWidgetOfExactType<StockholmMenu>();
+    var menuWidth = menu?.width;
+
     TextStyle textStyle;
     if (enabled) {
       textStyle = Theme.of(context).textTheme.bodyText2!.copyWith(
@@ -112,6 +117,7 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          width: menuWidth,
           height: widget.height,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
