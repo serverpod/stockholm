@@ -7,15 +7,16 @@ class StockholmThemeData {
     theme = _applySharedChanges(theme);
 
     return theme.copyWith(
-      primaryColorBrightness: Brightness.light,
+      // primaryColorBrightness: Brightness.light,
       // primarySwatch: Colors.blue,
       visualDensity: VisualDensity.compact,
       backgroundColor: Colors.blueGrey[50],
-      primaryColor: Colors.blue[500],
+      primaryColor: Colors.blue[600],
       highlightColor: Colors.black26,
       disabledColor: Colors.black26,
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyText2,
+        color: Colors.grey.shade100,
       ),
       dialogTheme: theme.dialogTheme.copyWith(
           backgroundColor: Colors.white,
@@ -38,11 +39,13 @@ class StockholmThemeData {
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyText2,
       ),
-      backgroundColor: Colors.blueGrey[900],
+      scaffoldBackgroundColor: Colors.grey[900],
+      backgroundColor: Colors.grey[800],
       canvasColor: Colors.black,
       hoverColor: Colors.white12,
       cardColor: Colors.grey[900],
       dividerColor: Colors.white24,
+      selectedRowColor: Colors.white12,
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: Colors.black,
         shape: const RoundedRectangleBorder(

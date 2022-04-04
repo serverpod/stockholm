@@ -5,6 +5,8 @@ export 'src/checkbox.dart';
 export 'src/dialog.dart';
 export 'src/dropdown_button.dart';
 export 'src/list_tile.dart';
+export 'src/menu.dart';
+export 'src/menu_items.dart';
 export 'src/popup_menu_button.dart';
 export 'src/progress_dart.yaml.dart';
 export 'src/property_inspector.dart';

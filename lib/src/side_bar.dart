@@ -6,6 +6,7 @@ class StockholmSideBar extends StatelessWidget {
     this.width = 240,
     this.backgroundColor,
     this.dividerColor,
+    this.footer,
     Key? key,
   }) : super(key: key);
 
@@ -13,6 +14,7 @@ class StockholmSideBar extends StatelessWidget {
   final Color? backgroundColor;
   final Color? dividerColor;
   final List<Widget> children;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,17 @@ class StockholmSideBar extends StatelessWidget {
           ),
         ),
       ),
-      child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        children: children,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              children: children,
+            ),
+          ),
+          if (footer != null) footer!,
+        ],
       ),
     );
   }
