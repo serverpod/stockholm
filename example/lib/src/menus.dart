@@ -10,6 +10,7 @@ class StockholmMenuDemoPage extends StatelessWidget {
     return const StockholmDemoPage(children: [
       _PopupMenuDemo(),
       _DropdownButtonsDemo(),
+      _ContextMenuDemo(),
     ]);
   }
 }
@@ -101,6 +102,57 @@ class _PopupMenuDemo extends StatelessWidget {
               child: const Text('Open Popup Menu'),
             );
           }),
+        ],
+      ),
+    );
+  }
+}
+
+class _ContextMenuDemo extends StatelessWidget {
+  const _ContextMenuDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Context menu',
+      child: Row(
+        children: [
+          StockholmContextMenu(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              width: 200,
+              height: 150,
+              child: Center(
+                child: StockholmButton(
+                  child: Text('Right click me'),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            menu: StockholmMenu(items: [
+              StockholmMenuItem(
+                onSelected: () {
+                  print('Cut');
+                },
+                child: const Text('Cut'),
+              ),
+              StockholmMenuItem(
+                onSelected: () {
+                  print('Copy');
+                },
+                child: const Text('Copy'),
+              ),
+              StockholmMenuItem(
+                onSelected: () {
+                  print('Paste');
+                },
+                child: const Text('Paste'),
+              ),
+            ]),
+          ),
         ],
       ),
     );

@@ -2,6 +2,7 @@ library stockholm;
 
 export 'src/button.dart';
 export 'src/checkbox.dart';
+export 'src/context_menu.dart';
 export 'src/dialog.dart';
 export 'src/dropdown_button.dart';
 export 'src/list_tile.dart';
