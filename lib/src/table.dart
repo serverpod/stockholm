@@ -230,6 +230,7 @@ class _TableRow extends StatelessWidget {
           ),
         ),
       );
+      i += 1;
     }
 
     return GestureDetector(
