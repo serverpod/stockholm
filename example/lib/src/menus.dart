@@ -31,24 +31,21 @@ class __DropdownButtonsDemoState extends State<_DropdownButtonsDemo> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            // width: 200,
-            child: StockholmDropdownButton<int>(
-              width: 150,
-              items: const [
-                StockholmDropdownItem<int>(value: 0, child: Text('Item 0')),
-                StockholmDropdownItem<int>(value: 1, child: Text('Item 1')),
-                StockholmDropdownItem<int>(value: 2, child: Text('Item 2')),
-                StockholmDropdownItem<int>(value: 3, child: Text('Item 3')),
-                StockholmDropdownItem<int>(value: 4, child: Text('Item 4')),
-              ],
-              value: _selectedValue,
-              onChanged: (value) {
-                setState(() {
-                  _selectedValue = value;
-                });
-              },
-            ),
+          StockholmDropdownButton<int>(
+            width: 150,
+            items: const [
+              StockholmDropdownItem<int>(value: 0, child: Text('Item 0')),
+              StockholmDropdownItem<int>(value: 1, child: Text('Item 1')),
+              StockholmDropdownItem<int>(value: 2, child: Text('Item 2')),
+              StockholmDropdownItem<int>(value: 3, child: Text('Item 3')),
+              StockholmDropdownItem<int>(value: 4, child: Text('Item 4')),
+            ],
+            value: _selectedValue,
+            onChanged: (value) {
+              setState(() {
+                _selectedValue = value;
+              });
+            },
           ),
         ],
       ),
@@ -101,7 +98,7 @@ class _PopupMenuDemo extends StatelessWidget {
                   ]),
                 );
               },
-              child: Text('Open Popup Menu'),
+              child: const Text('Open Popup Menu'),
             );
           }),
         ],

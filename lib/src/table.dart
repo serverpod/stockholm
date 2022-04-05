@@ -107,7 +107,7 @@ class _StockholmTableState extends State<StockholmTable> {
                       scrollbars: !hasHorizontalOverflow,
                     ),
                     child: ListView.builder(
-                      padding: EdgeInsets.symmetric(vertical: 6),
+                      padding: const EdgeInsets.symmetric(vertical: 6),
                       itemCount: widget.rowCount,
                       controller: _verticalController,
                       prototypeItem: SizedBox(

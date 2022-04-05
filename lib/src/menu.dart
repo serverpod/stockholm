@@ -1,61 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stockholm/src/button.dart';
 import 'package:stockholm/src/menu_items.dart';
 
 const _minMenuEdgePadding = 8.0;
-
-class TestButton extends StatefulWidget {
-  const TestButton({Key? key}) : super(key: key);
-
-  @override
-  _TestButtonState createState() => _TestButtonState();
-}
-
-class _TestButtonState extends State<TestButton> {
-  @override
-  Widget build(BuildContext context) {
-    return StockholmButton(
-      onPressed: () {
-        showTestMenu();
-      },
-      child: const Text('Test'),
-    );
-  }
-
-  void showTestMenu() {
-    var bounds = getGlobalBoundsForContext(context);
-    var anchorPoint = Offset(bounds.left, bounds.top);
-
-    var menu = StockholmMenu(
-      items: [
-        StockholmMenuItem(
-          child: const Text('Item 1'),
-          onSelected: () {
-            print('Selected item 1');
-          },
-        ),
-        const StockholmMenuItem(
-          child: Text('Item 2 which is longer and disabled super duper long'),
-        ),
-        const StockholmMenuItemDivider(),
-        StockholmMenuItem(
-          child: const Text('Item 3'),
-          onSelected: () {
-            print('Selected item 3');
-          },
-        ),
-      ],
-    );
-
-    showStockholmMenu(
-      context: context,
-      // alignment: Alignment.bottomRight,
-      preferredAnchorPoint: anchorPoint,
-      menu: menu,
-    );
-  }
-}
 
 Rect getGlobalBoundsForContext(BuildContext context) {
   var renderBox = context.findRenderObject() as RenderBox;
@@ -198,9 +144,6 @@ class _PopupMenuRouteLayout extends SingleChildLayoutDelegate {
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
-    print('childSize: $childSize');
-    print('size: $size');
-
     // Take alignment into account.
     var x = preferredAnchorPoint.dx - (alignment.x + 1) / 2 * childSize.width;
     var y = preferredAnchorPoint.dy - (alignment.y + 1) / 2 * childSize.height;
@@ -218,54 +161,7 @@ class _PopupMenuRouteLayout extends SingleChildLayoutDelegate {
     if (y > size.height - _minMenuEdgePadding - childSize.height) {
       y = size.height - _minMenuEdgePadding - childSize.height;
     }
-    // size: The size of the overlay.
-    // childSize: The size of the menu, when fully open, as determined by
-    // getConstraintsForChild.
 
-    // final double buttonHeight = size.height - position.top - position.bottom;
-    // // Find the ideal vertical position.
-    // double y = position.top;
-    // if (selectedItemIndex != null && itemSizes != null) {
-    //   double selectedItemOffset = _kMenuVerticalPadding;
-    //   for (int index = 0; index < selectedItemIndex!; index += 1)
-    //     selectedItemOffset += itemSizes[index]!.height;
-    //   selectedItemOffset += itemSizes[selectedItemIndex!]!.height / 2;
-    //   y = y + buttonHeight / 2.0 - selectedItemOffset;
-    // }
-    //
-    // // Find the ideal horizontal position.
-    // double x;
-    // if (position.left > position.right) {
-    //   // Menu button is closer to the right edge, so grow to the left, aligned to the right edge.
-    //   x = size.width - position.right - childSize.width;
-    // } else if (position.left < position.right) {
-    //   // Menu button is closer to the left edge, so grow to the right, aligned to the left edge.
-    //   x = position.left;
-    // } else {
-    //   // Menu button is equidistant from both edges, so grow in reading direction.
-    //   assert(textDirection != null);
-    //   switch (textDirection) {
-    //     case TextDirection.rtl:
-    //       x = size.width - position.right - childSize.width;
-    //       break;
-    //     case TextDirection.ltr:
-    //       x = position.left;
-    //       break;
-    //   }
-    // }
-    //
-    // // Avoid going outside an area defined as the rectangle 8.0 pixels from the
-    // // edge of the screen in every direction.
-    // if (x < _kMenuScreenPadding + padding.left)
-    //   x = _kMenuScreenPadding + padding.left;
-    // else if (x + childSize.width > size.width - _kMenuScreenPadding - padding.right)
-    //   x = size.width - childSize.width - _kMenuScreenPadding - padding.right  ;
-    // if (y < _kMenuScreenPadding + padding.top)
-    //   y = _kMenuScreenPadding + padding.top;
-    // else if (y + childSize.height > size.height - _kMenuScreenPadding - padding.bottom)
-    //   y = size.height - padding.bottom - _kMenuScreenPadding - childSize.height ;
-    //
-    // return Offset(x, y);
     return Offset(x, y);
   }
 
