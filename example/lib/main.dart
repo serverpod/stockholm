@@ -1,6 +1,8 @@
 import 'package:example/src/buttons.dart';
+import 'package:example/src/dialogs.dart';
 import 'package:example/src/menus.dart';
 import 'package:example/src/tables.dart';
+import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:stockholm/stockholm.dart';
@@ -9,6 +11,8 @@ enum _DemoPage {
   buttons,
   menus,
   tables,
+  dialogs,
+  toolbar,
 }
 
 void main() {
@@ -54,6 +58,12 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
       case _DemoPage.menus:
         page = const StockholmMenuDemoPage();
         break;
+      case _DemoPage.dialogs:
+        page = const StockholmDialogDemoPage();
+        break;
+      case _DemoPage.toolbar:
+        page = const StockholmToolbarDemoPage();
+        break;
     }
 
     return Scaffold(
@@ -90,6 +100,26 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                 onPressed: () {
                   setState(() {
                     _selectedPage = _DemoPage.tables;
+                  });
+                },
+              ),
+              StockholmListTile(
+                leading: const Icon(Ionicons.chatbubble_outline),
+                child: const Text('Dialogs'),
+                selected: _selectedPage == _DemoPage.dialogs,
+                onPressed: () {
+                  setState(() {
+                    _selectedPage = _DemoPage.dialogs;
+                  });
+                },
+              ),
+              StockholmListTile(
+                leading: const Icon(Ionicons.build_outline),
+                child: const Text('Toolbars'),
+                selected: _selectedPage == _DemoPage.toolbar,
+                onPressed: () {
+                  setState(() {
+                    _selectedPage = _DemoPage.toolbar;
                   });
                 },
               ),
