@@ -166,7 +166,6 @@ class _TableHeader extends StatelessWidget {
       cellWidgets.add(
         SizedBox(
           width: widths[i],
-          height: _headerHeight,
           child: DefaultTextStyle(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -183,10 +182,11 @@ class _TableHeader extends StatelessWidget {
           BoxDecoration(
             border: Border(
               bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1.0),
             ),
             color: Theme.of(context).backgroundColor,
           ),
+      height: _headerHeight,
       padding: const EdgeInsets.symmetric(horizontal: _horizontalRowPadding),
       child: Row(
         children: cellWidgets,

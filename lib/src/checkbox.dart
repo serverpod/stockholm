@@ -66,7 +66,7 @@ class _StockholmCheckboxState extends State<StockholmCheckbox> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius)),
           color: color,
-          border: Border.all(color: Theme.of(context).dividerColor, width: 0.5),
+          border: Border.all(color: Theme.of(context).dividerColor, width: 1.0),
           boxShadow: stockholmBoxShadow(context),
         ),
       );

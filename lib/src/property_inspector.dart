@@ -61,7 +61,7 @@ class StockholmPIHeader extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: 0.5,
+            width: 1.0,
           ),
         ),
       ),
@@ -225,7 +225,7 @@ class StockholmPIListProp extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-          border: Border.all(width: 0.5, color: Theme.of(context).dividerColor),
+          border: Border.all(width: 1.0, color: Theme.of(context).dividerColor),
         ),
         child: contents,
       ),
