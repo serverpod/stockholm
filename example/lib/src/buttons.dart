@@ -11,6 +11,9 @@ class StockholmButtonDemoPage extends StatelessWidget {
       _NormalButtonsDemo(),
       _LargeButtonsDemo(),
       _CheckboxDemo(),
+      _CheckboxDisabledDemo(),
+      _RadioButtonDemo(),
+      _RadioButtonsDisabledDemo(),
     ]);
   }
 }
@@ -102,7 +105,7 @@ class _CheckboxDemoState extends State<_CheckboxDemo> {
   @override
   Widget build(BuildContext context) {
     return DemoSection(
-      title: 'Check boxes',
+      title: 'Checkboxes',
       child: Row(
         children: [
           StockholmCheckbox(
@@ -126,19 +129,131 @@ class _CheckboxDemoState extends State<_CheckboxDemo> {
               });
             },
           ),
-          const SizedBox(
-            width: 16,
-          ),
-          const StockholmCheckbox(
+        ],
+      ),
+    );
+  }
+}
+
+class _CheckboxDisabledDemo extends StatelessWidget {
+  const _CheckboxDisabledDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Disabled checkboxes',
+      child: Row(
+        children: const [
+          StockholmCheckbox(
             value: false,
             label: 'Disabled unchecked',
           ),
+          SizedBox(
+            width: 16,
+          ),
+          StockholmCheckbox(
+            value: true,
+            label: 'Disabled checked',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+enum UIStyle {
+  cupertino,
+  mountainView,
+  stockholm,
+}
+
+class _RadioButtonDemo extends StatefulWidget {
+  const _RadioButtonDemo({Key? key}) : super(key: key);
+
+  @override
+  _RadioButtonDemoState createState() => _RadioButtonDemoState();
+}
+
+class _RadioButtonDemoState extends State<_RadioButtonDemo> {
+  UIStyle _uiStyle = UIStyle.stockholm;
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Radio buttons',
+      child: Row(
+        children: [
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.cupertino,
+            groupValue: _uiStyle,
+            label: 'Cupertino',
+            onChanged: (value) {
+              setState(() {
+                _uiStyle = value;
+              });
+            },
+          ),
           const SizedBox(
             width: 16,
           ),
-          const StockholmCheckbox(
-            value: true,
-            label: 'Disabled checked',
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.mountainView,
+            groupValue: _uiStyle,
+            label: 'Mountain View',
+            onChanged: (value) {
+              setState(() {
+                _uiStyle = value;
+              });
+            },
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.stockholm,
+            groupValue: _uiStyle,
+            label: 'Stockholm',
+            onChanged: (value) {
+              setState(() {
+                _uiStyle = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RadioButtonsDisabledDemo extends StatelessWidget {
+  const _RadioButtonsDisabledDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Disabled radio buttons',
+      child: Row(
+        children: const [
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.cupertino,
+            groupValue: UIStyle.stockholm,
+            label: 'Cupertino',
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.mountainView,
+            groupValue: UIStyle.stockholm,
+            label: 'Mountain View',
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          StockholmRadioButton<UIStyle>(
+            value: UIStyle.stockholm,
+            groupValue: UIStyle.stockholm,
+            label: 'Stockholm',
           ),
         ],
       ),
