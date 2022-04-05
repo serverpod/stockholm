@@ -168,6 +168,8 @@ class _TableHeader extends StatelessWidget {
           width: widths[i],
           height: _headerHeight,
           child: DefaultTextStyle(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.subtitle2!,
             child: cell,
           ),
@@ -223,6 +225,8 @@ class _TableRow extends StatelessWidget {
           width: widths[i],
           height: height,
           child: DefaultTextStyle(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: selected ? Colors.white : null,
                 ),

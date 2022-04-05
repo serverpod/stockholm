@@ -83,6 +83,7 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
 
     var menu = context.findAncestorWidgetOfExactType<StockholmMenu>();
     var menuWidth = menu?.width;
+    if (menuWidth != null) menuWidth += _menuPadding * 2;
 
     TextStyle textStyle;
     if (enabled) {
@@ -126,11 +127,13 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
                 : null,
           ),
           child: DefaultTextStyle(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: textStyle,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                widget.child,
+                Expanded(child: widget.child),
               ],
             ),
           ),
