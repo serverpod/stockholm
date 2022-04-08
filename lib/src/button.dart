@@ -14,7 +14,6 @@ class StockholmButton extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 12,
-      vertical: 4,
     ),
     this.large = false,
     this.important = false,
@@ -47,7 +46,9 @@ class StockholmButton extends StatelessWidget {
         side: BorderSide(color: Theme.of(context).dividerColor, width: 1),
       ),
       onPressed: enabled ? onPressed : null,
-      child: Padding(
+      child: Container(
+        alignment: Alignment.center,
+        height: large ? 32 : 24,
         padding: padding,
         child: DefaultTextStyle(
           style: large

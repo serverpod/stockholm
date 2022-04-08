@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 class StockholmDemoPage extends StatelessWidget {
   const StockholmDemoPage({
     required this.children,
+    this.padding = const EdgeInsets.only(left: 16, right: 16, top: 8),
     Key? key,
   }) : super(key: key);
 
   final List<Widget> children;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+      padding: padding,
       children: children,
     );
   }

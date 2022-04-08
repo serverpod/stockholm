@@ -125,11 +125,15 @@ class _ContextMenuDemo extends StatelessWidget {
               ),
               width: 200,
               height: 150,
-              child: Center(
-                child: StockholmButton(
-                  child: Text('Right click me'),
-                  onPressed: () {},
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  StockholmButton(
+                    child: Text('Right click me'),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
             menu: StockholmMenu(items: [
