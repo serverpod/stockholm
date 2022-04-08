@@ -23,6 +23,15 @@ abstract class StockholmColors {
   Color get yellow;
   Color get green;
   Color get gray;
+
+  Color get blueContrast;
+  Color get purpleContrast;
+  Color get pinkContrast;
+  Color get redContrast;
+  Color get orangeContrast;
+  Color get yellowContrast;
+  Color get greenContrast;
+  Color get grayContrast;
 }
 
 class StockholmLightColors extends StockholmColors {
@@ -42,6 +51,22 @@ class StockholmLightColors extends StockholmColors {
   final green = const Color.fromRGBO(120, 184, 86, 1.0);
   @override
   final gray = const Color.fromRGBO(152, 152, 152, 1.0);
+  @override
+  get blueContrast => blue.darken();
+  @override
+  get purpleContrast => purple.darken();
+  @override
+  get pinkContrast => pink.darken();
+  @override
+  get redContrast => red.darken();
+  @override
+  get orangeContrast => orange.darken();
+  @override
+  get yellowContrast => yellow.darken(0.2);
+  @override
+  get greenContrast => green.darken();
+  @override
+  get grayContrast => gray.darken();
 }
 
 class StockholmDarkColors extends StockholmColors {
@@ -61,4 +86,41 @@ class StockholmDarkColors extends StockholmColors {
   final green = const Color.fromRGBO(120, 184, 86, 1.0);
   @override
   final gray = const Color.fromRGBO(140, 140, 140, 1.0);
+  @override
+  get blueContrast => blue.lighten();
+  @override
+  get purpleContrast => purple.lighten();
+  @override
+  get pinkContrast => pink.lighten();
+  @override
+  get redContrast => red.lighten();
+  @override
+  get orangeContrast => orange.lighten();
+  @override
+  get yellowContrast => yellow.lighten();
+  @override
+  get greenContrast => green.lighten();
+  @override
+  get grayContrast => gray.lighten();
+}
+
+extension ColorExt on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
+  }
+
+  Color lighten([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+    return hslLight.toColor();
+  }
 }

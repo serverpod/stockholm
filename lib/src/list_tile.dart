@@ -35,7 +35,7 @@ class _StockholmListTileState extends State<StockholmListTile> {
             child: IconTheme(
               data: IconThemeData(
                 size: 16,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: widget.leading!,
             ),
