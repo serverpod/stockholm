@@ -45,7 +45,7 @@ class _ToolbarDemoState extends State<_ToolbarDemo> {
           icon: Ionicons.extension_puzzle_outline,
           onPressed: () {},
         ),
-        StockholmToolbarDivider(),
+        const StockholmToolbarDivider(),
         StockholmToolbarButton(
           icon: Ionicons.alarm_outline,
           selected: _settingsToggled,
@@ -56,7 +56,7 @@ class _ToolbarDemoState extends State<_ToolbarDemo> {
           },
           label: 'Toggle me',
         ),
-        Spacer(),
+        const Spacer(),
         StockholmToolbarButton(
           icon: Ionicons.stop_outline,
           color: colors.red.contrast,

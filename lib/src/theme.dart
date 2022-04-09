@@ -69,7 +69,7 @@ class StockholmThemeData {
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
           side: BorderSide(color: Colors.grey[700]!, width: 1.0),
         ),
       ),

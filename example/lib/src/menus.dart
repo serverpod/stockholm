@@ -76,7 +76,7 @@ class _PopupMenuDemo extends StatelessWidget {
                   menu: StockholmMenu(items: [
                     StockholmMenuItem(
                       onSelected: () {
-                        print('Selected item 1');
+                        // Selected item 1
                       },
                       child: const Text('Item 1'),
                     ),
@@ -85,14 +85,14 @@ class _PopupMenuDemo extends StatelessWidget {
                     ),
                     StockholmMenuItem(
                       onSelected: () {
-                        print('Selected item 3');
+                        // Selected item 3
                       },
                       child: const Text('Item 3'),
                     ),
                     const StockholmMenuItemDivider(),
                     StockholmMenuItem(
                       onSelected: () {
-                        print('Selected item 4');
+                        // Selected item 4
                       },
                       child: const Text('Item 4 - Last Item Is Much Longer'),
                     ),
@@ -119,7 +119,7 @@ class _ContextMenuDemo extends StatelessWidget {
         children: [
           StockholmContextMenu(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black26,
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
@@ -130,7 +130,7 @@ class _ContextMenuDemo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   StockholmButton(
-                    child: Text('Right click me'),
+                    child: const Text('Right click me'),
                     onPressed: () {},
                   ),
                 ],
@@ -139,19 +139,19 @@ class _ContextMenuDemo extends StatelessWidget {
             menu: StockholmMenu(items: [
               StockholmMenuItem(
                 onSelected: () {
-                  print('Cut');
+                  // Cut
                 },
                 child: const Text('Cut'),
               ),
               StockholmMenuItem(
                 onSelected: () {
-                  print('Copy');
+                  // Copy
                 },
                 child: const Text('Copy'),
               ),
               StockholmMenuItem(
                 onSelected: () {
-                  print('Paste');
+                  // Paste
                 },
                 child: const Text('Paste'),
               ),

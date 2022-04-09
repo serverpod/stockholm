@@ -243,7 +243,7 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
               ),
             ],
             footer: Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

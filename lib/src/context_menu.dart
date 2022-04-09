@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stockholm/src/menu.dart';
 import 'package:stockholm/stockholm.dart';
 
 class StockholmContextMenu extends StatelessWidget {

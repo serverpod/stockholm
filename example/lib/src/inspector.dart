@@ -7,7 +7,7 @@ class StockholmPropertyInspectorDemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const [
         Spacer(),
         MyPropertyInspector(),
       ],
@@ -25,7 +25,6 @@ class MyPropertyInspector extends StatefulWidget {
 class _MyPropertyInspectorState extends State<MyPropertyInspector> {
   bool _checkboxValue = true;
   int _intValue = 100;
-  String _stringValue = 'Hello';
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _MyPropertyInspectorState extends State<MyPropertyInspector> {
         ),
       ),
       child: StockholmPropertyInspector(
-        header: StockholmPIHeader(
+        header: const StockholmPIHeader(
           child: Text('Property inspector'),
         ),
         properties: [
@@ -50,7 +49,7 @@ class _MyPropertyInspectorState extends State<MyPropertyInspector> {
               });
             },
           ),
-          StockholmPIDivider(),
+          const StockholmPIDivider(),
           StockholmPIEditableIntProp(
             name: 'Integer value',
             value: _intValue,
@@ -60,15 +59,15 @@ class _MyPropertyInspectorState extends State<MyPropertyInspector> {
               });
             },
           ),
-          StockholmPITextProp(
+          const StockholmPITextProp(
             name: 'Text',
             value: 'Hello',
           ),
-          StockholmPIListProp(
+          const StockholmPIListProp(
             name: 'List',
             fallbackText: 'My list is empty',
           ),
-          StockholmPIListProp(
+          const StockholmPIListProp(
             name: 'List',
             fallbackText: 'My list is empty',
             list: [

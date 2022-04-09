@@ -25,7 +25,7 @@ class _DialogDemo extends StatelessWidget {
         children: [
           StockholmDialog(
             width: 280,
-            title: Text('Dialog Title'),
+            title: const Text('Dialog Title'),
             contents: const SizedBox(
               height: 100,
               child: Center(

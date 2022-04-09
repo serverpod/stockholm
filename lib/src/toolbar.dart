@@ -45,7 +45,7 @@ class StockholmToolbarButton extends StatelessWidget {
   final EdgeInsets padding;
   final double height;
 
-  StockholmToolbarButton({
+  const StockholmToolbarButton({
     required this.icon,
     required this.onPressed,
     this.label,
@@ -55,7 +55,8 @@ class StockholmToolbarButton extends StatelessWidget {
     this.iconSize = 16.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
     this.height = 32.0,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,7 @@ class StockholmToolbarButton extends StatelessWidget {
         children: [
           button,
           Padding(
-            padding: EdgeInsets.only(left: 6.0),
+            padding: const EdgeInsets.only(left: 6.0),
             child: Text(
               label!,
               style: Theme.of(context).textTheme.bodyText2,
@@ -95,7 +96,7 @@ class StockholmToolbarButton extends StatelessWidget {
       color: selected ? Theme.of(context).highlightColor : null,
       minWidth: minWidth,
       hoverColor: Theme.of(context).hoverColor,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(6)),
       ),
       child: Container(
@@ -109,9 +110,11 @@ class StockholmToolbarButton extends StatelessWidget {
 }
 
 class StockholmToolbarDivider extends StatelessWidget {
+  const StockholmToolbarDivider({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       height: 20.0,
       child: VerticalDivider(
         width: 8.0,
