@@ -1,6 +1,6 @@
 name: stockholm
-description: A collection of desktop-first widgets and themes designed to feel more native on Mac and Windows.
-version: 0.0.2
+description: A collection of desktop-first widgets and themes designed to look and feel great on Mac and Windows.
+version: 0.0.3
 homepage: https://github.com/serverpod/stockholm
 
 environment:
