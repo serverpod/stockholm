@@ -14,13 +14,13 @@ class StockholmThemeData {
       // primarySwatch: Colors.blue,
       visualDensity: VisualDensity.compact,
       backgroundColor: Colors.blueGrey[50],
-      primaryColor: colors.blue,
-      indicatorColor: colors.blue,
+      primaryColor: accentColor,
+      indicatorColor: accentColor,
       highlightColor: Colors.black26,
       disabledColor: Colors.black26,
       colorScheme: theme.colorScheme.copyWith(
-        primary: colors.blue,
-        secondary: colors.blue.contrast,
+        primary: accentColor,
+        secondary: accentColor.contrast,
       ),
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyText2,
@@ -49,16 +49,16 @@ class StockholmThemeData {
     theme = _applySharedChanges(theme);
 
     return theme.copyWith(
-      primaryColor: colors.blue,
+      primaryColor: accentColor,
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyText2,
         color: Colors.grey.shade900,
       ),
       colorScheme: theme.colorScheme.copyWith(
-        primary: colors.blue,
-        secondary: colors.blue.contrast,
+        primary: accentColor,
+        secondary: accentColor.contrast,
       ),
-      indicatorColor: colors.blue,
+      indicatorColor: accentColor,
       scaffoldBackgroundColor: Colors.grey[900],
       backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
       canvasColor: const Color.fromRGBO(38, 38, 38, 1.0),

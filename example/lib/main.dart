@@ -17,6 +17,17 @@ enum _DemoPage {
   colors,
 }
 
+enum _ThemeColor {
+  blue,
+  purple,
+  pink,
+  red,
+  orange,
+  yellow,
+  green,
+  gray,
+}
+
 void main() {
   runApp(const StockholmDemoApp());
 }
@@ -34,6 +45,7 @@ class StockholmDemoApp extends StatefulWidget {
 
 class _StockholmDemoAppState extends State<StockholmDemoApp> {
   bool _darkMode = false;
+  _ThemeColor _themeColor = _ThemeColor.blue;
 
   bool get darkMode => _darkMode;
 
@@ -43,11 +55,27 @@ class _StockholmDemoAppState extends State<StockholmDemoApp> {
     });
   }
 
+  _ThemeColor get themeColor => _themeColor;
+
+  set themeColor(_ThemeColor themeColor) {
+    setState(() {
+      _themeColor = themeColor;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stockholm Demo',
-      theme: _darkMode ? StockholmThemeData.dark() : StockholmThemeData.light(),
+      theme: _darkMode
+          ? StockholmThemeData.dark(
+              accentColor:
+                  _themeColorToStockholmColor(_themeColor, Brightness.dark),
+            )
+          : StockholmThemeData.light(
+              accentColor:
+                  _themeColorToStockholmColor(_themeColor, Brightness.light),
+            ),
       home: const StockholmHomePage(),
     );
   }
@@ -90,6 +118,29 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
       case _DemoPage.colors:
         page = const StockholmColorDemoPage();
         break;
+    }
+
+    var colorOptionWidgets = <Widget>[];
+    for (var themeColor in _ThemeColor.values) {
+      colorOptionWidgets.add(
+        StockholmToolbarButton(
+          icon: Ionicons.square,
+          color: _themeColorToStockholmColor(
+            themeColor,
+            appState.darkMode ? Brightness.dark : Brightness.light,
+          ),
+          height: 22.0,
+          minWidth: 0.0,
+          iconSize: 14.0,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          selected: appState.themeColor == themeColor,
+          onPressed: () {
+            setState(() {
+              appState.themeColor = themeColor;
+            });
+          },
+        ),
+      );
     }
 
     return Scaffold(
@@ -164,8 +215,10 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
             footer: Padding(
               padding: EdgeInsets.all(8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   StockholmToolbarButton(
+                    height: 22,
                     icon: appState.darkMode
                         ? Ionicons.moon_outline
                         : Ionicons.sunny_outline,
@@ -175,6 +228,8 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                       });
                     },
                   ),
+                  const Spacer(),
+                  ...colorOptionWidgets,
                 ],
               ),
             ),
@@ -185,5 +240,31 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
         ],
       ),
     );
+  }
+}
+
+StockholmColor _themeColorToStockholmColor(
+  _ThemeColor color,
+  Brightness brightness,
+) {
+  var colors = StockholmColors.fromBrightness(brightness);
+
+  switch (color) {
+    case _ThemeColor.blue:
+      return colors.blue;
+    case _ThemeColor.purple:
+      return colors.purple;
+    case _ThemeColor.pink:
+      return colors.pink;
+    case _ThemeColor.red:
+      return colors.red;
+    case _ThemeColor.orange:
+      return colors.orange;
+    case _ThemeColor.yellow:
+      return colors.yellow;
+    case _ThemeColor.green:
+      return colors.green;
+    case _ThemeColor.gray:
+      return colors.gray;
   }
 }

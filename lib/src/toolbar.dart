@@ -35,20 +35,26 @@ class StockholmToolbar extends StatelessWidget {
 }
 
 class StockholmToolbarButton extends StatelessWidget {
-  final double? width;
+  final double minWidth;
   final String? label;
   final IconData icon;
   final Color? color;
   final VoidCallback onPressed;
   final bool selected;
+  final double iconSize;
+  final EdgeInsets padding;
+  final double height;
 
   StockholmToolbarButton({
     required this.icon,
     required this.onPressed,
     this.label,
-    this.width,
+    this.minWidth = 32.0,
     this.color,
     this.selected = false,
+    this.iconSize = 16.0,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.height = 32.0,
   });
 
   @override
@@ -58,7 +64,7 @@ class StockholmToolbarButton extends StatelessWidget {
     button = Icon(
       icon,
       color: color ?? Theme.of(context).iconTheme.color,
-      size: 16.0,
+      size: iconSize,
     );
 
     if (label != null) {
@@ -77,6 +83,7 @@ class StockholmToolbarButton extends StatelessWidget {
     }
 
     return MaterialButton(
+      height: height,
       elevation: 0,
       disabledElevation: 0,
       focusElevation: 0,
@@ -86,14 +93,14 @@ class StockholmToolbarButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       onPressed: onPressed,
       color: selected ? Theme.of(context).highlightColor : null,
-      minWidth: 32,
+      minWidth: minWidth,
       hoverColor: Theme.of(context).hoverColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(6)),
       ),
       child: Container(
-        height: 24,
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        height: height,
+        padding: padding,
         alignment: Alignment.center,
         child: button,
       ),
