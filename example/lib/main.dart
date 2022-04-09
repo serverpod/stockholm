@@ -1,8 +1,10 @@
 import 'package:example/src/buttons.dart';
 import 'package:example/src/colors.dart';
 import 'package:example/src/dialogs.dart';
+import 'package:example/src/inspector.dart';
 import 'package:example/src/menus.dart';
 import 'package:example/src/tables.dart';
+import 'package:example/src/text_fields.dart';
 import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -15,6 +17,8 @@ enum _DemoPage {
   dialogs,
   toolbar,
   colors,
+  textFields,
+  propertyInspector,
 }
 
 enum _ThemeColor {
@@ -118,6 +122,12 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
       case _DemoPage.colors:
         page = const StockholmColorDemoPage();
         break;
+      case _DemoPage.textFields:
+        page = const StockholmTextFieldDemoPage();
+        break;
+      case _DemoPage.propertyInspector:
+        page = const StockholmPropertyInspectorDemoPage();
+        break;
     }
 
     var colorOptionWidgets = <Widget>[];
@@ -169,6 +179,16 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                   });
                 },
               ),
+              StockholmListTile(
+                leading: const Icon(Ionicons.text),
+                child: const Text('Text fields'),
+                selected: _selectedPage == _DemoPage.textFields,
+                onPressed: () {
+                  setState(() {
+                    _selectedPage = _DemoPage.textFields;
+                  });
+                },
+              ),
               const StockholmListTileHeader(child: Text('Layouts')),
               StockholmListTile(
                 leading: const Icon(Ionicons.browsers_outline),
@@ -197,6 +217,16 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                 onPressed: () {
                   setState(() {
                     _selectedPage = _DemoPage.toolbar;
+                  });
+                },
+              ),
+              StockholmListTile(
+                leading: const Icon(Ionicons.list_outline),
+                child: const Text('Property inspector'),
+                selected: _selectedPage == _DemoPage.propertyInspector,
+                onPressed: () {
+                  setState(() {
+                    _selectedPage = _DemoPage.propertyInspector;
                   });
                 },
               ),

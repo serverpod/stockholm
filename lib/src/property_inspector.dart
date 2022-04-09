@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:stockholm/src/checkbox.dart';
 import 'package:stockholm/src/text_field.dart';
 
-class StockholmPropertyInspector extends StatelessWidget {
+class StockholmPropertyInspector extends StatefulWidget {
   final StockholmPIHeader? header;
   final List<Widget> properties;
   final double descriptionWidth;
@@ -22,22 +22,38 @@ class StockholmPropertyInspector extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _StockholmPropertyInspectorState createState() =>
+      _StockholmPropertyInspectorState();
+
+  static StockholmPropertyInspector? of(BuildContext context) {
+    return context.findAncestorWidgetOfExactType<StockholmPropertyInspector>();
+  }
+}
+
+class _StockholmPropertyInspectorState
+    extends State<StockholmPropertyInspector> {
+  final _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (header != null) header!,
+        if (widget.header != null) widget.header!,
         Expanded(
           child: ListView(
-            children: properties,
+            controller: _controller,
+            children: widget.properties,
           ),
         ),
       ],
     );
-  }
-
-  static StockholmPropertyInspector? of(BuildContext context) {
-    return context.findAncestorWidgetOfExactType<StockholmPropertyInspector>();
   }
 }
 

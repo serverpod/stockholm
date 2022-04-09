@@ -16,5 +16,6 @@ export 'src/radio_button.dart';
 export 'src/shadows.dart';
 export 'src/side_bar.dart';
 export 'src/table.dart';
+export 'src/text_field.dart';
 export 'src/theme.dart';
 export 'src/toolbar.dart';

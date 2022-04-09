@@ -38,7 +38,11 @@ class _ToolbarDemoState extends State<_ToolbarDemo> {
           onPressed: () {},
         ),
         StockholmToolbarButton(
-          icon: Ionicons.bulb_outline,
+          icon: Ionicons.file_tray_stacked_outline,
+          onPressed: () {},
+        ),
+        StockholmToolbarButton(
+          icon: Ionicons.extension_puzzle_outline,
           onPressed: () {},
         ),
         StockholmToolbarDivider(),

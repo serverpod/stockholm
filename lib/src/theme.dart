@@ -64,7 +64,7 @@ class StockholmThemeData {
       canvasColor: const Color.fromRGBO(38, 38, 38, 1.0),
       hoverColor: Colors.white12,
       cardColor: Colors.grey[900],
-      dividerColor: Colors.white12,
+      dividerColor: Colors.white24,
       selectedRowColor: Colors.white12,
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),

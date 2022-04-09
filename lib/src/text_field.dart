@@ -7,12 +7,14 @@ class StockholmTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextAlign? textAlign;
+  final bool autofocus;
 
   const StockholmTextField({
     this.controller,
     this.keyboardType,
     this.inputFormatters,
     this.textAlign,
+    this.autofocus = false,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class StockholmTextField extends StatelessWidget {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       textAlign: textAlign ?? TextAlign.start,
+      autofocus: autofocus,
     );
   }
 }
