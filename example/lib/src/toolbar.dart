@@ -55,17 +55,17 @@ class _ToolbarDemoState extends State<_ToolbarDemo> {
         Spacer(),
         StockholmToolbarButton(
           icon: Ionicons.stop_outline,
-          color: colors.redContrast,
+          color: colors.red.contrast,
           onPressed: () {},
         ),
         StockholmToolbarButton(
           icon: Ionicons.reload,
-          color: colors.yellowContrast,
+          color: colors.yellow.contrast,
           onPressed: () {},
         ),
         StockholmToolbarButton(
           icon: Ionicons.play_outline,
-          color: colors.greenContrast,
+          color: colors.green.contrast,
           onPressed: () {},
         ),
       ],

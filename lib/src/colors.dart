@@ -15,93 +15,162 @@ abstract class StockholmColors {
     return StockholmColors.fromBrightness(Theme.of(context).brightness);
   }
 
-  Color get blue;
-  Color get purple;
-  Color get pink;
-  Color get red;
-  Color get orange;
-  Color get yellow;
-  Color get green;
-  Color get gray;
-
-  Color get blueContrast;
-  Color get purpleContrast;
-  Color get pinkContrast;
-  Color get redContrast;
-  Color get orangeContrast;
-  Color get yellowContrast;
-  Color get greenContrast;
-  Color get grayContrast;
+  StockholmColor get blue;
+  StockholmColor get purple;
+  StockholmColor get pink;
+  StockholmColor get red;
+  StockholmColor get orange;
+  StockholmColor get yellow;
+  StockholmColor get green;
+  StockholmColor get gray;
 }
 
 class StockholmLightColors extends StockholmColors {
   @override
-  final blue = const Color.fromRGBO(53, 120, 246, 1.0);
+  final blue = const StockholmColor(
+    0xff3578f6,
+    Color(0xff6699f8),
+    Color(0xff0b59ed),
+    Brightness.light,
+  );
+
   @override
-  final purple = const Color.fromRGBO(138, 67, 146, 1.0);
+  final purple = const StockholmColor(
+    0xff8a4392,
+    Color(0xffa856b2),
+    Color(0xff69336f),
+    Brightness.light,
+  );
+
   @override
-  final pink = const Color.fromRGBO(228, 92, 156, 1.0);
+  final pink = const StockholmColor(
+    0xffe45c9c,
+    Color(0xffeb88b7),
+    Color(0xffdd3081),
+    Brightness.light,
+  );
+
   @override
-  final red = const Color.fromRGBO(206, 71, 69, 1.0);
+  final red = const StockholmColor(
+    0xffce4745,
+    Color(0xffd96f6d),
+    Color(0xffb1312f),
+    Brightness.light,
+  );
+
   @override
-  final orange = const Color.fromRGBO(231, 136, 57, 1.0);
+  final orange = const StockholmColor(
+    0xffe78839,
+    Color(0xffeda366),
+    Color(0xffd36e1a),
+    Brightness.light,
+  );
+
   @override
-  final yellow = const Color.fromRGBO(246, 201, 77, 1.0);
+  final yellow = const StockholmColor(
+    0xfff6c94d,
+    Color(0xfffbe6ae),
+    Color(0xffd29d0b),
+    Brightness.light,
+  );
+
   @override
-  final green = const Color.fromRGBO(120, 184, 86, 1.0);
+  final green = const StockholmColor(
+    0xff78b856,
+    Color(0xff95c77a),
+    Color(0xff609a41),
+    Brightness.light,
+  );
+
   @override
-  final gray = const Color.fromRGBO(152, 152, 152, 1.0);
-  @override
-  get blueContrast => blue.darken();
-  @override
-  get purpleContrast => purple.darken();
-  @override
-  get pinkContrast => pink.darken();
-  @override
-  get redContrast => red.darken();
-  @override
-  get orangeContrast => orange.darken();
-  @override
-  get yellowContrast => yellow.darken(0.2);
-  @override
-  get greenContrast => green.darken();
-  @override
-  get grayContrast => gray.darken();
+  final gray = const StockholmColor(
+    0xff989898,
+    Color(0xffb2b2b2),
+    Color(0xff7f7f7f),
+    Brightness.light,
+  );
 }
 
 class StockholmDarkColors extends StockholmColors {
   @override
-  final blue = const Color.fromRGBO(53, 120, 246, 1.0);
+  final blue = const StockholmColor(
+    0xff3578f6,
+    Color(0xff6699f8),
+    Color(0xff0b59ed),
+    Brightness.dark,
+  );
+
   @override
-  final purple = const Color.fromRGBO(154, 84, 163, 1.0);
+  final purple = const StockholmColor(
+    0xff9a54a3,
+    Color(0xffaf73b7),
+    Color(0xff7a4381),
+    Brightness.dark,
+  );
+
   @override
-  final pink = const Color.fromRGBO(228, 92, 156, 1.0);
+  final pink = const StockholmColor(
+    0xffe45c9c,
+    Color(0xffeb88b7),
+    Color(0xffdd3081),
+    Brightness.dark,
+  );
+
   @override
-  final red = const Color.fromRGBO(236, 95, 93, 1.0);
+  final red = const StockholmColor(
+    0xffec5f5d,
+    Color(0xfff18c8b),
+    Color(0xffe7322f),
+    Brightness.dark,
+  );
+
   @override
-  final orange = const Color.fromRGBO(232, 136, 57, 1.0);
+  final orange = const StockholmColor(
+    0xffe88839,
+    Color(0xffeda367),
+    Color(0xffd56e19),
+    Brightness.dark,
+  );
+
   @override
-  final yellow = const Color.fromRGBO(246, 200, 67, 1.0);
+  final yellow = const StockholmColor(
+    0xfff6c843,
+    Color(0xfff8d674),
+    Color(0xffc9980a),
+    Brightness.dark,
+  );
+
   @override
-  final green = const Color.fromRGBO(120, 184, 86, 1.0);
+  final green = const StockholmColor(
+    0xff78b856,
+    Color(0xff95c77a),
+    Color(0xff609a41),
+    Brightness.dark,
+  );
+
   @override
-  final gray = const Color.fromRGBO(140, 140, 140, 1.0);
-  @override
-  get blueContrast => blue.lighten();
-  @override
-  get purpleContrast => purple.lighten();
-  @override
-  get pinkContrast => pink.lighten();
-  @override
-  get redContrast => red.lighten();
-  @override
-  get orangeContrast => orange.lighten();
-  @override
-  get yellowContrast => yellow.lighten();
-  @override
-  get greenContrast => green.lighten();
-  @override
-  get grayContrast => gray.lighten();
+  final gray = const StockholmColor(
+    0xff989898,
+    Color(0xffb2b2b2),
+    Color(0xff7f7f7f),
+    Brightness.dark,
+  );
+}
+
+class StockholmColor extends Color {
+  const StockholmColor(
+    int value,
+    this.light,
+    this.dark,
+    this.brightness,
+  ) : super(value);
+
+  final Brightness brightness;
+
+  final Color light;
+  final Color dark;
+
+  Color get contrast => brightness == Brightness.light ? dark : light;
 }
 
 extension ColorExt on Color {

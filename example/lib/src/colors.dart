@@ -10,22 +10,24 @@ class StockholmColorDemoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const StockholmDemoPage(
       children: [
-        _SolidColorDemo(),
+        _BaseColorDemo(),
+        _LightColorDemo(),
+        _DarkColorDemo(),
         _ContrastColorDemo(),
       ],
     );
   }
 }
 
-class _SolidColorDemo extends StatelessWidget {
-  const _SolidColorDemo({Key? key}) : super(key: key);
+class _BaseColorDemo extends StatelessWidget {
+  const _BaseColorDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var colors = StockholmColors.fromContext(context);
 
     return DemoSection(
-      title: 'Colors',
+      title: 'Base colors',
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -37,6 +39,58 @@ class _SolidColorDemo extends StatelessWidget {
           _ColorDisplay(color: colors.yellow, outline: false),
           _ColorDisplay(color: colors.green, outline: false),
           _ColorDisplay(color: colors.gray, outline: false),
+        ],
+      ),
+    );
+  }
+}
+
+class _LightColorDemo extends StatelessWidget {
+  const _LightColorDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var colors = StockholmColors.fromContext(context);
+
+    return DemoSection(
+      title: 'Light colors',
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _ColorDisplay(color: colors.blue.light, outline: false),
+          _ColorDisplay(color: colors.purple.light, outline: false),
+          _ColorDisplay(color: colors.pink.light, outline: false),
+          _ColorDisplay(color: colors.red.light, outline: false),
+          _ColorDisplay(color: colors.orange.light, outline: false),
+          _ColorDisplay(color: colors.yellow.light, outline: false),
+          _ColorDisplay(color: colors.green.light, outline: false),
+          _ColorDisplay(color: colors.gray.light, outline: false),
+        ],
+      ),
+    );
+  }
+}
+
+class _DarkColorDemo extends StatelessWidget {
+  const _DarkColorDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var colors = StockholmColors.fromContext(context);
+
+    return DemoSection(
+      title: 'Dark colors',
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _ColorDisplay(color: colors.blue.dark, outline: false),
+          _ColorDisplay(color: colors.purple.dark, outline: false),
+          _ColorDisplay(color: colors.pink.dark, outline: false),
+          _ColorDisplay(color: colors.red.dark, outline: false),
+          _ColorDisplay(color: colors.orange.dark, outline: false),
+          _ColorDisplay(color: colors.yellow.dark, outline: false),
+          _ColorDisplay(color: colors.green.dark, outline: false),
+          _ColorDisplay(color: colors.gray.dark, outline: false),
         ],
       ),
     );
@@ -55,14 +109,14 @@ class _ContrastColorDemo extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _ColorDisplay(color: colors.blueContrast, outline: true),
-          _ColorDisplay(color: colors.purpleContrast, outline: true),
-          _ColorDisplay(color: colors.pinkContrast, outline: true),
-          _ColorDisplay(color: colors.redContrast, outline: true),
-          _ColorDisplay(color: colors.orangeContrast, outline: true),
-          _ColorDisplay(color: colors.yellowContrast, outline: true),
-          _ColorDisplay(color: colors.greenContrast, outline: true),
-          _ColorDisplay(color: colors.grayContrast, outline: true),
+          _ColorDisplay(color: colors.blue.contrast, outline: true),
+          _ColorDisplay(color: colors.purple.contrast, outline: true),
+          _ColorDisplay(color: colors.pink.contrast, outline: true),
+          _ColorDisplay(color: colors.red.contrast, outline: true),
+          _ColorDisplay(color: colors.orange.contrast, outline: true),
+          _ColorDisplay(color: colors.yellow.contrast, outline: true),
+          _ColorDisplay(color: colors.green.contrast, outline: true),
+          _ColorDisplay(color: colors.gray.contrast, outline: true),
         ],
       ),
     );

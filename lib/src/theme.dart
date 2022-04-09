@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stockholm/src/colors.dart';
 
 class StockholmThemeData {
-  static ThemeData light() {
+  static ThemeData light({StockholmColor? accentColor}) {
     var theme = ThemeData.light();
     var colors = StockholmColors.fromBrightness(Brightness.light);
+    accentColor ??= colors.blue;
 
     theme = _applySharedChanges(theme);
 
@@ -19,7 +20,7 @@ class StockholmThemeData {
       disabledColor: Colors.black26,
       colorScheme: theme.colorScheme.copyWith(
         primary: colors.blue,
-        secondary: colors.blueContrast,
+        secondary: colors.blue.contrast,
       ),
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyText2,
@@ -29,6 +30,7 @@ class StockholmThemeData {
           backgroundColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
+            side: BorderSide(color: Colors.black12, width: 1.0),
           )),
       textTheme: theme.textTheme.copyWith(
         caption: theme.textTheme.caption!.copyWith(color: Colors.black38),
@@ -39,9 +41,10 @@ class StockholmThemeData {
     );
   }
 
-  static ThemeData dark() {
+  static ThemeData dark({StockholmColor? accentColor}) {
     var theme = ThemeData.dark();
     var colors = StockholmColors.fromBrightness(Brightness.dark);
+    accentColor ??= colors.blue;
 
     theme = _applySharedChanges(theme);
 
@@ -53,7 +56,7 @@ class StockholmThemeData {
       ),
       colorScheme: theme.colorScheme.copyWith(
         primary: colors.blue,
-        secondary: colors.blueContrast,
+        secondary: colors.blue.contrast,
       ),
       indicatorColor: colors.blue,
       scaffoldBackgroundColor: Colors.grey[900],
@@ -65,9 +68,9 @@ class StockholmThemeData {
       selectedRowColor: Colors.white12,
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          side: BorderSide(color: Color.fromRGBO(22, 22, 22, 1.0), width: 1.0),
+          side: BorderSide(color: Colors.grey[700]!, width: 1.0),
         ),
       ),
     );
