@@ -1,6 +1,11 @@
+## 0.0.3
+
+* Many improvements and new widgets.
+* Example project.
+
 ## 0.0.2
 
-* Adds LICENSE file
+* Adds LICENSE file.
 
 ## 0.0.1
 
