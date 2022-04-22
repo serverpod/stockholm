@@ -4,6 +4,7 @@ class StockholmSideBar extends StatelessWidget {
   const StockholmSideBar({
     required this.children,
     this.width = 240,
+    this.padding,
     this.backgroundColor,
     this.dividerColor,
     this.footer,
@@ -13,6 +14,7 @@ class StockholmSideBar extends StatelessWidget {
   final double width;
   final Color? backgroundColor;
   final Color? dividerColor;
+  final EdgeInsetsGeometry? padding;
   final List<Widget> children;
   final Widget? footer;
 
@@ -20,6 +22,7 @@ class StockholmSideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
+      padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor ?? Theme.of(context).backgroundColor,
         border: Border(
