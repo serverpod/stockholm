@@ -44,6 +44,7 @@ class StockholmToolbarButton extends StatelessWidget {
   final double iconSize;
   final EdgeInsets padding;
   final double height;
+  final double iconScale;
 
   const StockholmToolbarButton({
     required this.icon,
@@ -52,9 +53,10 @@ class StockholmToolbarButton extends StatelessWidget {
     this.minWidth = 32.0,
     this.color,
     this.selected = false,
-    this.iconSize = 16.0,
+    this.iconSize = 18.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
     this.height = 32.0,
+    this.iconScale = 1.0,
     Key? key,
   }) : super(key: key);
 
@@ -67,6 +69,13 @@ class StockholmToolbarButton extends StatelessWidget {
       color: color ?? Theme.of(context).iconTheme.color,
       size: iconSize,
     );
+
+    if (iconScale != 1.0) {
+      button = Transform.scale(
+        child: button,
+        scale: iconScale,
+      );
+    }
 
     if (label != null) {
       button = Row(
