@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockholm/stockholm.dart';
 
 const _headerHeight = 24.0;
 const _horizontalRowPadding = 8.0;
@@ -266,19 +267,45 @@ class StockholmTableCell extends StatelessWidget {
     required this.child,
     this.alignment = Alignment.centerLeft,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.plainIconTheme,
+    this.selectedIconTheme,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
   final Alignment alignment;
   final EdgeInsets padding;
+  final IconThemeData? plainIconTheme;
+  final IconThemeData? selectedIconTheme;
 
   @override
   Widget build(BuildContext context) {
+    var tableRow = context.findAncestorWidgetOfExactType<_TableRow>();
+    assert(
+      tableRow != null,
+      'Table cell needs to be a child of StockholmTable',
+    );
+
+    IconThemeData iconTheme;
+    if (tableRow!.selected) {
+      iconTheme = selectedIconTheme ??
+          const IconThemeData(
+            color: Colors.white,
+          );
+    } else {
+      iconTheme = plainIconTheme ??
+          IconThemeData(
+            color: StockholmColors.fromContext(context).gray.contrast,
+          );
+    }
+
     return Container(
       alignment: alignment,
       padding: padding,
-      child: child,
+      child: IconTheme(
+        data: iconTheme,
+        child: child,
+      ),
     );
   }
 }
