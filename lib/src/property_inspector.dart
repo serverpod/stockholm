@@ -140,10 +140,12 @@ class StockholmPIOneLineProp extends StatelessWidget {
 class StockholmPILargeProp extends StatelessWidget {
   final String name;
   final Widget value;
+  final Widget? trailing;
 
   const StockholmPILargeProp({
     required this.name,
     required this.value,
+    this.trailing,
     Key? key,
   }) : super(key: key);
 
@@ -161,13 +163,16 @@ class StockholmPILargeProp extends StatelessWidget {
           SizedBox(
             height: StockholmPropertyInspector.defaultPropertyHeight,
             width: StockholmPropertyInspector.defaultDescriptionWidth,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                name,
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+            child: Row(
+              children: [
+                Text(
+                  name,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+                const Spacer(),
+                if (trailing != null) trailing!,
+              ],
             ),
           ),
           Padding(
@@ -202,12 +207,14 @@ class StockholmPITextProp extends StatelessWidget {
 class StockholmPIListProp extends StatelessWidget {
   final String name;
   final String fallbackText;
+  final Widget? trailing;
   final List<Widget>? list;
   final double height;
 
   const StockholmPIListProp({
     required this.name,
     required this.fallbackText,
+    this.trailing,
     this.list,
     this.height = 200.0,
     Key? key,
@@ -236,6 +243,7 @@ class StockholmPIListProp extends StatelessWidget {
 
     return StockholmPILargeProp(
       name: name,
+      trailing: trailing,
       value: Container(
         height: height,
         decoration: BoxDecoration(
