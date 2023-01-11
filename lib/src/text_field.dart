@@ -8,6 +8,11 @@ class StockholmTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextAlign? textAlign;
   final bool autofocus;
+  final void Function(String?)? onChanged;
+  final String? placeholder;
+  final bool enabled;
+  final bool obscureText;
+  final bool expands;
 
   const StockholmTextField({
     this.controller,
@@ -15,6 +20,11 @@ class StockholmTextField extends StatelessWidget {
     this.inputFormatters,
     this.textAlign,
     this.autofocus = false,
+    this.onChanged,
+    this.placeholder,
+    this.enabled = true,
+    this.obscureText = false,
+    this.expands = false,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +37,11 @@ class StockholmTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       textAlign: textAlign ?? TextAlign.start,
       autofocus: autofocus,
+      onChanged: onChanged,
+      placeholder: placeholder,
+      enabled: enabled,
+      obscureText: obscureText,
+      expands: expands,
     );
   }
 }
