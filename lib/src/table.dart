@@ -18,6 +18,8 @@ class StockholmTable extends StatefulWidget {
     this.selectableRows = true,
     this.onSelectedRow,
     this.cellHeight = 24.0,
+    this.shrinkWrap = false,
+    this.physics,
     Key? key,
   }) : super(key: key);
 
@@ -34,6 +36,8 @@ class StockholmTable extends StatefulWidget {
   final bool selectableRows;
   final ValueChanged<int?>? onSelectedRow;
   final double cellHeight;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -87,6 +91,69 @@ class _StockholmTableState extends State<StockholmTable> {
         calcTotalWidth = _totalColumnSpace;
       }
 
+      Widget innerListView;
+
+      if (widget.shrinkWrap) {
+        var children = <Widget>[];
+        for (int i = 0; i < widget.rowCount; i++) {
+          children.add(_TableRow(
+            cells: widget.rowBuilder(context, i, _selectedRow == i),
+            widths: calcWidths,
+            height: widget.cellHeight,
+            selected: _selectedRow == i,
+            backgroundColor: i % 2 == 1 ? altBgColor : null,
+            hasHorizontalOverflow: hasHorizontalOverflow,
+            onPressed: () {
+              if (widget.selectableRows) {
+                setState(() {
+                  _selectedRow = i;
+                });
+                if (widget.onSelectedRow != null) {
+                  widget.onSelectedRow!(i);
+                }
+              }
+            },
+          ));
+        }
+
+        innerListView = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        );
+      } else {
+        innerListView = ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          shrinkWrap: widget.shrinkWrap,
+          physics: widget.physics,
+          itemCount: widget.rowCount,
+          controller: _verticalController,
+          prototypeItem: SizedBox(
+            width: calcTotalWidth + _horizontalRowPadding * 2,
+            height: widget.cellHeight,
+          ),
+          itemBuilder: (context, row) {
+            return _TableRow(
+              cells: widget.rowBuilder(context, row, false),
+              widths: calcWidths,
+              height: widget.cellHeight,
+              selected: _selectedRow == row,
+              backgroundColor: row % 2 == 1 ? altBgColor : null,
+              hasHorizontalOverflow: hasHorizontalOverflow,
+              onPressed: () {
+                if (widget.selectableRows) {
+                  setState(() {
+                    _selectedRow = row;
+                  });
+                  if (widget.onSelectedRow != null) {
+                    widget.onSelectedRow!(row);
+                  }
+                }
+              },
+            );
+          },
+        );
+      }
+
       return Scrollbar(
         controller: _horizontalController,
         scrollbarOrientation: ScrollbarOrientation.bottom,
@@ -102,42 +169,16 @@ class _StockholmTableState extends State<StockholmTable> {
                   decoration: widget.headerDecoration,
                   cells: widget.headerBuilder(context),
                 ),
-                Expanded(
-                  child: ScrollConfiguration(
-                    behavior: ScrollConfiguration.of(context).copyWith(
-                      scrollbars: !hasHorizontalOverflow,
-                    ),
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      itemCount: widget.rowCount,
-                      controller: _verticalController,
-                      prototypeItem: SizedBox(
-                        width: calcTotalWidth + _horizontalRowPadding * 2,
-                        height: widget.cellHeight,
+                if (!widget.shrinkWrap)
+                  Expanded(
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        scrollbars: !hasHorizontalOverflow,
                       ),
-                      itemBuilder: (context, row) {
-                        return _TableRow(
-                          cells: widget.rowBuilder(context, row, false),
-                          widths: calcWidths,
-                          height: widget.cellHeight,
-                          selected: _selectedRow == row,
-                          backgroundColor: row % 2 == 1 ? altBgColor : null,
-                          hasHorizontalOverflow: hasHorizontalOverflow,
-                          onPressed: () {
-                            if (widget.selectableRows) {
-                              setState(() {
-                                _selectedRow = row;
-                              });
-                              if (widget.onSelectedRow != null) {
-                                widget.onSelectedRow!(row);
-                              }
-                            }
-                          },
-                        );
-                      },
+                      child: innerListView,
                     ),
                   ),
-                ),
+                if (widget.shrinkWrap) innerListView,
               ],
             ),
           ),
