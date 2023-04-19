@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:example/src/buttons.dart';
 import 'package:example/src/colors.dart';
 import 'package:example/src/dialogs.dart';
@@ -8,6 +10,7 @@ import 'package:example/src/text_fields.dart';
 import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stockholm/stockholm.dart';
 
 enum _DemoPage {
@@ -32,6 +35,11 @@ enum _ThemeColor {
   gray,
 }
 
+enum _PlatformAppearance {
+  macOS,
+  windows,
+}
+
 void main() {
   runApp(const StockholmDemoApp());
 }
@@ -50,6 +58,7 @@ class StockholmDemoApp extends StatefulWidget {
 class _StockholmDemoAppState extends State<StockholmDemoApp> {
   bool _darkMode = false;
   _ThemeColor _themeColor = _ThemeColor.blue;
+  _PlatformAppearance _platform = _PlatformAppearance.macOS;
 
   bool get darkMode => _darkMode;
 
@@ -67,19 +76,44 @@ class _StockholmDemoAppState extends State<StockholmDemoApp> {
     });
   }
 
+  _PlatformAppearance get platform => _platform;
+
+  set platform(_PlatformAppearance platform) {
+    setState(() {
+      _platform = platform;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isWindows) {
+      _platform = _PlatformAppearance.windows;
+    } else {
+      _platform = _PlatformAppearance.macOS;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var theme = _darkMode
+        ? StockholmThemeData.dark(
+            accentColor:
+                _themeColorToStockholmColor(_themeColor, Brightness.dark),
+          )
+        : StockholmThemeData.light(
+            accentColor:
+                _themeColorToStockholmColor(_themeColor, Brightness.light),
+          );
+    theme.copyWith(
+      platform: _platform == _PlatformAppearance.macOS
+          ? TargetPlatform.macOS
+          : TargetPlatform.windows,
+    );
+
     return MaterialApp(
       title: 'Stockholm Demo',
-      theme: _darkMode
-          ? StockholmThemeData.dark(
-              accentColor:
-                  _themeColorToStockholmColor(_themeColor, Brightness.dark),
-            )
-          : StockholmThemeData.light(
-              accentColor:
-                  _themeColorToStockholmColor(_themeColor, Brightness.light),
-            ),
+      theme: theme,
       home: const StockholmHomePage(),
     );
   }
@@ -157,6 +191,7 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
       body: Row(
         children: [
           StockholmSideBar(
+            width: 280,
             children: [
               const StockholmListTileHeader(child: Text('Controls')),
               StockholmListTile(
@@ -255,6 +290,21 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
                     onPressed: () {
                       setState(() {
                         appState.darkMode = !appState.darkMode;
+                      });
+                    },
+                  ),
+                  StockholmToolbarButton(
+                    height: 22,
+                    icon: appState.platform == _PlatformAppearance.windows
+                        ? Icons.window_sharp
+                        : MdiIcons.appleFinder,
+                    onPressed: () {
+                      setState(() {
+                        var idx = appState.platform.index + 1;
+                        if (idx >= _PlatformAppearance.values.length) {
+                          idx = 0;
+                        }
+                        appState.platform = _PlatformAppearance.values[idx];
                       });
                     },
                   ),

@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   ionicons: ^0.1.2
+  material_design_icons_flutter: 6.0.7096
   stockholm:
     path: ..
 
