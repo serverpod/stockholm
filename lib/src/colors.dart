@@ -3,16 +3,31 @@ import 'package:flutter/material.dart';
 abstract class StockholmColors {
   StockholmColors();
 
-  factory StockholmColors.fromBrightness(Brightness brightness) {
-    if (brightness == Brightness.light) {
-      return StockholmLightColors();
+  factory StockholmColors.fromBrightness(
+    Brightness brightness, [
+    TargetPlatform platform = TargetPlatform.macOS,
+  ]) {
+    if (platform == TargetPlatform.windows) {
+      if (brightness == Brightness.light) {
+        return StockholmLightWindowsColors();
+      } else {
+        return StockholmDarkWindowsColors();
+      }
     } else {
-      return StockholmDarkColors();
+      if (brightness == Brightness.light) {
+        return StockholmLightColors();
+      } else {
+        return StockholmDarkColors();
+      }
     }
   }
 
   factory StockholmColors.fromContext(BuildContext context) {
-    return StockholmColors.fromBrightness(Theme.of(context).brightness);
+    var theme = Theme.of(context);
+    return StockholmColors.fromBrightness(
+      theme.brightness,
+      theme.platform,
+    );
   }
 
   StockholmColor get blue;
@@ -145,6 +160,138 @@ class StockholmDarkColors extends StockholmColors {
     0xff78b856,
     Color(0xff95c77a),
     Color(0xff609a41),
+    Brightness.dark,
+  );
+
+  @override
+  final gray = const StockholmColor(
+    0xff989898,
+    Color(0xffb2b2b2),
+    Color(0xff7f7f7f),
+    Brightness.dark,
+  );
+}
+
+class StockholmLightWindowsColors extends StockholmColors {
+  @override
+  final blue = const StockholmColor(
+    0xff0078d4,
+    Color(0xff60abe4),
+    Color(0xff004a83),
+    Brightness.light,
+  );
+
+  @override
+  final purple = const StockholmColor(
+    0xFF744da9,
+    Color(0xffa890c9),
+    Color(0xff472f68),
+    Brightness.light,
+  );
+
+  @override
+  final pink = const StockholmColor(
+    0xffb4009e,
+    Color(0xffd060c2),
+    Color(0xff6f0061),
+    Brightness.light,
+  );
+
+  @override
+  final red = const StockholmColor(
+    0xffe81123,
+    Color(0xfff06b76),
+    Color(0xff8f0a15),
+    Brightness.light,
+  );
+
+  @override
+  final orange = const StockholmColor(
+    0xfff7630c,
+    Color(0xfffa9e68),
+    Color(0xff993d07),
+    Brightness.light,
+  );
+
+  @override
+  final yellow = const StockholmColor(
+    0xffffeb3b,
+    Color(0xfffff59d),
+    Color(0xfff9a825),
+    Brightness.light,
+  );
+
+  @override
+  final green = const StockholmColor(
+    0xff107c10,
+    Color(0xff6aad6a),
+    Color(0xff094c09),
+    Brightness.light,
+  );
+
+  @override
+  final gray = const StockholmColor(
+    0xff989898,
+    Color(0xffb2b2b2),
+    Color(0xff7f7f7f),
+    Brightness.light,
+  );
+}
+
+class StockholmDarkWindowsColors extends StockholmColors {
+  @override
+  final blue = const StockholmColor(
+    0xff0078d4,
+    Color(0xff60abe4),
+    Color(0xff004a83),
+    Brightness.dark,
+  );
+
+  @override
+  final purple = const StockholmColor(
+    0xFF744da9,
+    Color(0xffa890c9),
+    Color(0xff472f68),
+    Brightness.dark,
+  );
+
+  @override
+  final pink = const StockholmColor(
+    0xffb4009e,
+    Color(0xffd060c2),
+    Color(0xff6f0061),
+    Brightness.dark,
+  );
+
+  @override
+  final red = const StockholmColor(
+    0xffe81123,
+    Color(0xfff06b76),
+    Color(0xff8f0a15),
+    Brightness.dark,
+  );
+
+  @override
+  final orange = const StockholmColor(
+    0xfff7630c,
+    Color(0xfffa9e68),
+    Color(0xff993d07),
+    Brightness.dark,
+  );
+
+  @override
+  final yellow = const StockholmColor(
+    0xffffeb3b,
+    Color(0xfffff59d),
+    Color(0xfff9a825),
+    Brightness.dark,
+  );
+
+  @override
+  final green = const StockholmColor(
+    0xff107c10,
+    Color(0xff6aad6a),
+    Color(0xff094c09),
     Brightness.dark,
   );
 

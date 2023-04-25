@@ -96,19 +96,27 @@ class _StockholmDemoAppState extends State<StockholmDemoApp> {
 
   @override
   Widget build(BuildContext context) {
+    var platform = _platform == _PlatformAppearance.macOS
+        ? TargetPlatform.macOS
+        : TargetPlatform.windows;
+
     var theme = _darkMode
         ? StockholmThemeData.dark(
-            accentColor:
-                _themeColorToStockholmColor(_themeColor, Brightness.dark),
+            accentColor: _themeColorToStockholmColor(
+              _themeColor,
+              Brightness.dark,
+              platform,
+            ),
           )
         : StockholmThemeData.light(
-            accentColor:
-                _themeColorToStockholmColor(_themeColor, Brightness.light),
+            accentColor: _themeColorToStockholmColor(
+              _themeColor,
+              Brightness.light,
+              platform,
+            ),
           );
-    theme.copyWith(
-      platform: _platform == _PlatformAppearance.macOS
-          ? TargetPlatform.macOS
-          : TargetPlatform.windows,
+    theme = theme.copyWith(
+      platform: platform,
     );
 
     return MaterialApp(
@@ -172,6 +180,9 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
           color: _themeColorToStockholmColor(
             themeColor,
             appState.darkMode ? Brightness.dark : Brightness.light,
+            appState.platform == _PlatformAppearance.macOS
+                ? TargetPlatform.macOS
+                : TargetPlatform.windows,
           ),
           height: 22.0,
           minWidth: 0.0,
@@ -326,8 +337,9 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
 StockholmColor _themeColorToStockholmColor(
   _ThemeColor color,
   Brightness brightness,
+  TargetPlatform platform,
 ) {
-  var colors = StockholmColors.fromBrightness(brightness);
+  var colors = StockholmColors.fromBrightness(brightness, platform);
 
   switch (color) {
     case _ThemeColor.blue:
