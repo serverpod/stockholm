@@ -25,6 +25,8 @@ class _StockholmListTileState extends State<StockholmListTile> {
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
     var content = widget.child;
     if (widget.leading != null) {
       content = Row(
@@ -65,7 +67,9 @@ class _StockholmListTileState extends State<StockholmListTile> {
       );
     }
 
-    return MouseRegion(
+    var hoverEffect = _hover && isWindows;
+
+    Widget tile = MouseRegion(
       onEnter: (_) {
         setState(() {
           _hover = true;
@@ -79,11 +83,12 @@ class _StockholmListTileState extends State<StockholmListTile> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onPressed,
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
+          margin: isWindows ? const EdgeInsets.symmetric(vertical: 2) : null,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            decoration: widget.selected
+            decoration: widget.selected || hoverEffect
                 ? BoxDecoration(
                     color: Theme.of(context).highlightColor,
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
@@ -94,6 +99,29 @@ class _StockholmListTileState extends State<StockholmListTile> {
         ),
       ),
     );
+
+    // Add Windows style selection border
+    if (isWindows && widget.selected) {
+      tile = Stack(
+        children: [
+          tile,
+          Positioned(
+            left: 8,
+            top: 6,
+            bottom: 6,
+            width: 2,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.all(Radius.circular(2)),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return tile;
   }
 }
 

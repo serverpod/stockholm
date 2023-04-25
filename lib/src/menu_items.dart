@@ -80,6 +80,7 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
   @override
   Widget build(BuildContext context) {
     bool enabled = widget.onSelected != null;
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
 
     var menu = context.findAncestorWidgetOfExactType<StockholmMenu>();
     var menuWidth = menu?.width;
@@ -88,13 +89,19 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
     TextStyle textStyle;
     if (enabled) {
       textStyle = Theme.of(context).textTheme.bodyText2!.copyWith(
-            color: _hover || (_selected && _flashing) ? Colors.white : null,
+            color: (_hover || (_selected && _flashing)) && !isWindows
+                ? Colors.white
+                : null,
           );
     } else {
       textStyle = Theme.of(context).textTheme.bodyText2!.copyWith(
             color: Theme.of(context).disabledColor,
           );
     }
+
+    var highlightColor = isWindows
+        ? Theme.of(context).highlightColor
+        : Theme.of(context).primaryColor;
 
     return MouseRegion(
       onEnter: (_) {
@@ -122,9 +129,7 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
           height: widget.height,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-            color: _hover || (_selected && _flashing)
-                ? Theme.of(context).primaryColor
-                : null,
+            color: _hover || (_selected && _flashing) ? highlightColor : null,
           ),
           child: DefaultTextStyle(
             maxLines: 1,

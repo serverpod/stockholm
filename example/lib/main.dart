@@ -107,6 +107,7 @@ class _StockholmDemoAppState extends State<StockholmDemoApp> {
               Brightness.dark,
               platform,
             ),
+            platform: platform,
           )
         : StockholmThemeData.light(
             accentColor: _themeColorToStockholmColor(
@@ -114,10 +115,8 @@ class _StockholmDemoAppState extends State<StockholmDemoApp> {
               Brightness.light,
               platform,
             ),
+            platform: platform,
           );
-    theme = theme.copyWith(
-      platform: platform,
-    );
 
     return MaterialApp(
       title: 'Stockholm Demo',
