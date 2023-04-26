@@ -49,7 +49,7 @@ class StockholmDialog extends StatelessWidget {
               height: 28,
               child: Center(
                 child: DefaultTextStyle(
-                  style: theme.textTheme.subtitle1!,
+                  style: theme.textTheme.titleMedium!,
                   child: title,
                 ),
               ),

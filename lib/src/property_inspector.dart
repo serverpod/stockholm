@@ -73,7 +73,7 @@ class StockholmPIHeader extends StatelessWidget {
       padding: padding,
       height: 24, // StockholmPropertyInspector.defaultPropertyHeight,
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).dividerColor,
@@ -82,7 +82,7 @@ class StockholmPIHeader extends StatelessWidget {
         ),
       ),
       child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.subtitle2!,
+        style: Theme.of(context).textTheme.titleSmall!,
         child: Align(
           alignment: Alignment.centerLeft,
           child: child,
@@ -122,7 +122,7 @@ class StockholmPIOneLineProp extends StatelessWidget {
             child: Text(
               name,
               textAlign: nameAlignment,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           Expanded(
@@ -168,7 +168,7 @@ class StockholmPILargeProp extends StatelessWidget {
                 Text(
                   name,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const Spacer(),
                 if (trailing != null) trailing!,
@@ -230,7 +230,7 @@ class StockholmPIListProp extends StatelessWidget {
           fallbackText,
           style: Theme.of(context)
               .textTheme
-              .caption!
+              .bodySmall!
               .copyWith(fontWeight: FontWeight.normal),
         ),
       );

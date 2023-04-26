@@ -52,8 +52,8 @@ class StockholmButton extends StatelessWidget {
         padding: padding,
         child: DefaultTextStyle(
           style: large
-              ? theme.textTheme.button!.copyWith(color: textColor)
-              : theme.textTheme.bodyText2!.copyWith(color: textColor),
+              ? theme.textTheme.labelLarge!.copyWith(color: textColor)
+              : theme.textTheme.bodyMedium!.copyWith(color: textColor),
           child: child,
         ),
       ),
@@ -116,8 +116,8 @@ class StockholmFlatButton extends StatelessWidget {
         padding: padding,
         child: DefaultTextStyle(
           style: large
-              ? theme.textTheme.button!.copyWith(color: textColor)
-              : theme.textTheme.bodyText2!.copyWith(color: textColor),
+              ? theme.textTheme.labelLarge!.copyWith(color: textColor)
+              : theme.textTheme.bodyMedium!.copyWith(color: textColor),
           child: child,
         ),
       ),

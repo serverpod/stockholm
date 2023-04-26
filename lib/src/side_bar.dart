@@ -24,7 +24,7 @@ class StockholmSideBar extends StatelessWidget {
       width: width,
       padding: padding,
       decoration: BoxDecoration(
-        color: backgroundColor ?? Theme.of(context).backgroundColor,
+        color: backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border(
           right: BorderSide(
             color: dividerColor ?? Theme.of(context).dividerColor,

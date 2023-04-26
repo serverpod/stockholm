@@ -135,10 +135,16 @@ class StockholmListTileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
+    var textStyle = isWindows
+        ? Theme.of(context).textTheme.titleMedium!
+        : Theme.of(context).textTheme.bodySmall!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.caption!,
+        style: textStyle,
         child: child,
       ),
     );

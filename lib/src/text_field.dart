@@ -31,7 +31,7 @@ class StockholmTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTextField(
-      style: Theme.of(context).textTheme.bodyText2,
+      style: Theme.of(context).textTheme.bodyMedium,
       controller: controller,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,

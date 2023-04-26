@@ -36,7 +36,7 @@ class DemoSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(
           height: 8,

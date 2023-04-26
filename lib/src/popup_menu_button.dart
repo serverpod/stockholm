@@ -514,7 +514,7 @@ class StockholmPopupMenuItem<T> extends PopupMenuEntry<T> {
   /// The text style of the popup menu item.
   ///
   /// If this property is null, then [PopupMenuThemeData.textStyle] is used.
-  /// If [PopupMenuThemeData.textStyle] is also null, then [TextTheme.subtitle1]
+  /// If [PopupMenuThemeData.textStyle] is also null, then [TextTheme.titleMedium]
   /// of [ThemeData.textTheme] is used.
   final TextStyle? textStyle;
 
@@ -590,7 +590,7 @@ class StockholmPopupMenuItemState<T, W extends StockholmPopupMenuItem<T>>
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
     TextStyle style = widget.textStyle ??
         popupMenuTheme.textStyle ??
-        theme.textTheme.subtitle1!;
+        theme.textTheme.titleMedium!;
 
     if (!widget.enabled) style = style.copyWith(color: theme.disabledColor);
 

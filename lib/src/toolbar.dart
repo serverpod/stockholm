@@ -85,7 +85,7 @@ class StockholmToolbarButton extends StatelessWidget {
             padding: const EdgeInsets.only(left: 6.0),
             child: Text(
               label!,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],

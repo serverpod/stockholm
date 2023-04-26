@@ -9,9 +9,9 @@ class StockholmThemeData {
     var theme = ThemeData.light();
     var colors = StockholmColors.fromBrightness(Brightness.light);
     accentColor ??= colors.blue;
-
-    theme = _applySharedChanges(theme);
     platform ??= theme.platform;
+
+    theme = _applySharedChanges(theme, platform);
 
     var highlightColor = platform == TargetPlatform.windows
         ? Colors.black.withOpacity(0.05)
@@ -19,7 +19,7 @@ class StockholmThemeData {
 
     return theme.copyWith(
       visualDensity: VisualDensity.compact,
-      backgroundColor: Colors.blueGrey[50],
+      // backgroundColor: Colors.blueGrey[50],
       primaryColor: accentColor,
       indicatorColor: accentColor,
       highlightColor: highlightColor,
@@ -27,9 +27,10 @@ class StockholmThemeData {
       colorScheme: theme.colorScheme.copyWith(
         primary: accentColor,
         secondary: accentColor.contrast,
+        background: Colors.blueGrey[50],
       ),
       popupMenuTheme: theme.popupMenuTheme.copyWith(
-        textStyle: theme.textTheme.bodyText2,
+        textStyle: theme.textTheme.bodyMedium,
         color: Colors.grey.shade100,
       ),
       dialogTheme: theme.dialogTheme.copyWith(
@@ -39,7 +40,7 @@ class StockholmThemeData {
             side: BorderSide(color: Colors.black12, width: 1.0),
           )),
       textTheme: theme.textTheme.copyWith(
-        caption: theme.textTheme.caption!.copyWith(color: Colors.black38),
+        bodySmall: theme.textTheme.bodySmall!.copyWith(color: Colors.black38),
       ),
       iconTheme: theme.iconTheme.copyWith(
         color: Colors.grey[700],
@@ -57,7 +58,7 @@ class StockholmThemeData {
     accentColor ??= colors.blue;
     platform ??= theme.platform;
 
-    theme = _applySharedChanges(theme);
+    theme = _applySharedChanges(theme, platform);
 
     var highlightColor = platform == TargetPlatform.windows
         ? Colors.white.withOpacity(0.075)
@@ -66,7 +67,7 @@ class StockholmThemeData {
     return theme.copyWith(
       primaryColor: accentColor,
       popupMenuTheme: theme.popupMenuTheme.copyWith(
-        textStyle: theme.textTheme.bodyText2,
+        textStyle: theme.textTheme.bodyMedium,
         color: Colors.grey.shade900,
       ),
       colorScheme: theme.colorScheme.copyWith(
@@ -76,12 +77,10 @@ class StockholmThemeData {
       indicatorColor: accentColor,
       highlightColor: highlightColor,
       scaffoldBackgroundColor: Colors.grey[900],
-      backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
       canvasColor: const Color.fromRGBO(38, 38, 38, 1.0),
       hoverColor: Colors.white12,
       cardColor: Colors.grey[900],
       dividerColor: Colors.white24,
-      selectedRowColor: Colors.white12,
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
         shape: RoundedRectangleBorder(
@@ -93,21 +92,42 @@ class StockholmThemeData {
     );
   }
 
-  static ThemeData _applySharedChanges(ThemeData theme) {
-    return theme.copyWith(
-      visualDensity: VisualDensity.compact,
-      textTheme: theme.textTheme.copyWith(
-        bodyText1: theme.textTheme.bodyText1!.copyWith(fontSize: 13.0),
-        bodyText2: theme.textTheme.bodyText2!.copyWith(fontSize: 12.0),
-        subtitle1: theme.textTheme.bodyText1!
-            .copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
-        subtitle2: theme.textTheme.bodyText2!
-            .copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
-        caption: theme.textTheme.caption!
-            .copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
-        button: theme.textTheme.button!.copyWith(fontSize: 14.0),
-      ),
-      splashColor: Colors.transparent,
-    );
+  static ThemeData _applySharedChanges(
+    ThemeData theme,
+    TargetPlatform platform,
+  ) {
+    if (platform == TargetPlatform.windows) {
+      return theme.copyWith(
+        visualDensity: VisualDensity.compact,
+        textTheme: theme.textTheme.copyWith(
+          bodyLarge: theme.textTheme.bodyLarge!.copyWith(fontSize: 13.0),
+          bodyMedium: theme.textTheme.bodyMedium!.copyWith(fontSize: 12.0),
+          titleMedium: theme.textTheme.bodyLarge!
+              .copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
+          titleSmall: theme.textTheme.bodyMedium!
+              .copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
+          bodySmall: theme.textTheme.bodySmall!
+              .copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
+          labelLarge: theme.textTheme.labelLarge!.copyWith(fontSize: 14.0),
+        ),
+        splashColor: Colors.transparent,
+      );
+    } else {
+      return theme.copyWith(
+        visualDensity: VisualDensity.compact,
+        textTheme: theme.textTheme.copyWith(
+          bodyLarge: theme.textTheme.bodyLarge!.copyWith(fontSize: 13.0),
+          bodyMedium: theme.textTheme.bodyMedium!.copyWith(fontSize: 12.0),
+          titleMedium: theme.textTheme.bodyLarge!
+              .copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
+          titleSmall: theme.textTheme.bodyMedium!
+              .copyWith(fontSize: 12.0, fontWeight: FontWeight.bold),
+          bodySmall: theme.textTheme.bodySmall!
+              .copyWith(fontSize: 10.5, fontWeight: FontWeight.bold),
+          labelLarge: theme.textTheme.labelLarge!.copyWith(fontSize: 14.0),
+        ),
+        splashColor: Colors.transparent,
+      );
+    }
   }
 }

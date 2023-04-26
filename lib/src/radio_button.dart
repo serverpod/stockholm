@@ -76,10 +76,10 @@ class _StockholmRadioButtonState<T> extends State<StockholmRadioButton<T>> {
     }
 
     if (widget.label != null) {
-      var textStyle = Theme.of(context).textTheme.bodyText2!;
+      var textStyle = Theme.of(context).textTheme.bodyMedium!;
       if (!enabled) {
         textStyle = textStyle.copyWith(
-            color: Theme.of(context).textTheme.caption!.color);
+            color: Theme.of(context).textTheme.bodySmall!.color);
       }
 
       visual = Row(
