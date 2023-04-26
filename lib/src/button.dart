@@ -23,6 +23,7 @@ class StockholmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isWindows = theme.platform == TargetPlatform.windows;
 
     Color textColor;
     if (enabled && onPressed != null) {
@@ -42,7 +43,7 @@ class StockholmButton extends StatelessWidget {
           : theme.buttonTheme.colorScheme!.surface,
       hoverColor: Theme.of(context).hoverColor,
       shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(6)),
+        borderRadius: BorderRadius.all(Radius.circular(isWindows ? 3 : 6)),
         side: BorderSide(color: Theme.of(context).dividerColor, width: 1),
       ),
       onPressed: enabled ? onPressed : null,
