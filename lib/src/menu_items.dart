@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 const _menuItemHeight = 24.0;
 const _menuDividerHeight = 10.0;
-const _menuPadding = 4.0;
+const _menuPadding = EdgeInsets.all(4);
+const _menuPaddingWindows = EdgeInsets.symmetric(vertical: 4);
 
 class StockholmMenu extends StatelessWidget {
   const StockholmMenu({
@@ -17,14 +18,16 @@ class StockholmMenu extends StatelessWidget {
   final double? width;
 
   double get height =>
-      items.fold(_menuPadding * 2, (prev, e) => prev + e.height);
+      items.fold(_menuPadding.vertical * 2, (prev, e) => prev + e.height);
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).popupMenuTheme.color,
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.all(Radius.circular(isWindows ? 3 : 8)),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,
@@ -33,7 +36,7 @@ class StockholmMenu extends StatelessWidget {
             )
           ],
           border: Border.all(color: Theme.of(context).dividerColor)),
-      padding: const EdgeInsets.all(_menuPadding),
+      padding: isWindows ? _menuPaddingWindows : _menuPadding,
       child: IntrinsicWidth(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -81,10 +84,11 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
   Widget build(BuildContext context) {
     bool enabled = widget.onSelected != null;
     var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+    var menuPadding = isWindows ? _menuPaddingWindows : _menuPadding;
 
     var menu = context.findAncestorWidgetOfExactType<StockholmMenu>();
     var menuWidth = menu?.width;
-    if (menuWidth != null) menuWidth += _menuPadding * 2;
+    if (menuWidth != null) menuWidth += menuPadding.horizontal * 2;
 
     TextStyle textStyle;
     if (enabled) {
@@ -124,11 +128,12 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: EdgeInsets.symmetric(horizontal: isWindows ? 12 : 16),
           width: menuWidth,
           height: widget.height,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+            borderRadius:
+                isWindows ? null : const BorderRadius.all(Radius.circular(4.0)),
             color: _hover || (_selected && _flashing) ? highlightColor : null,
           ),
           child: DefaultTextStyle(

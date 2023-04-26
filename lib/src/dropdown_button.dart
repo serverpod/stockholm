@@ -31,6 +31,8 @@ class _StockholmDropdownButtonState<T>
     extends State<StockholmDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
     var items = widget.items
         .map(
           (e) => StockholmMenuItem(
@@ -71,7 +73,7 @@ class _StockholmDropdownButtonState<T>
           showStockholmMenu(
             context: context,
             preferredAnchorPoint: Offset(
-              bounds.left - 9,
+              bounds.left - (isWindows ? 1 : 9),
               bounds.top - offsetY - 3,
             ),
             menu: StockholmMenu(
