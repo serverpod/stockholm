@@ -120,7 +120,7 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           if (enabled && !_selected) {
-            _handleSelection();
+            _handleSelection(isWindows);
           }
         },
         child: Container(
@@ -147,11 +147,12 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
     );
   }
 
-  void _handleSelection() {
+  void _handleSelection(bool isWindows) {
     _selected = true;
 
-    // Close menu after 500 ms.
-    _closeTimer = Timer(const Duration(milliseconds: 240), () {
+    // Close menu after a short delay.
+    var closeDelay = isWindows ? 50 : 240;
+    _closeTimer = Timer(Duration(milliseconds: closeDelay), () {
       Navigator.of(context).pop();
       if (widget.onSelected != null) {
         widget.onSelected!();
@@ -159,7 +160,9 @@ class _StockholmMenuItemState extends State<StockholmMenuItem> {
     });
 
     // Start flashing the item.
-    _toggleFlash();
+    if (!isWindows) {
+      _toggleFlash();
+    }
   }
 
   void _toggleFlash() {
