@@ -196,9 +196,11 @@ class StockholmMenuItemDivider extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
     return Container(
       height: _menuDividerHeight,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: isWindows ? 8 : 16),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(
