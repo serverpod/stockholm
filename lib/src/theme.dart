@@ -10,6 +10,7 @@ class StockholmThemeData {
     var colors = StockholmColors.fromBrightness(Brightness.light);
     accentColor ??= colors.blue;
     platform ??= theme.platform;
+    var isWindows = platform == TargetPlatform.windows;
 
     theme = _applySharedChanges(theme, platform);
 
@@ -35,9 +36,9 @@ class StockholmThemeData {
       ),
       dialogTheme: theme.dialogTheme.copyWith(
           backgroundColor: Colors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            side: BorderSide(color: Colors.black12, width: 1.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(isWindows ? 8 : 12)),
+            side: const BorderSide(color: Colors.black12, width: 1.0),
           )),
       textTheme: theme.textTheme.copyWith(
         bodySmall: theme.textTheme.bodySmall!.copyWith(color: Colors.black38),
@@ -57,6 +58,7 @@ class StockholmThemeData {
     var colors = StockholmColors.fromBrightness(Brightness.dark);
     accentColor ??= colors.blue;
     platform ??= theme.platform;
+    var isWindows = platform == TargetPlatform.windows;
 
     theme = _applySharedChanges(theme, platform);
 
@@ -73,6 +75,7 @@ class StockholmThemeData {
       colorScheme: theme.colorScheme.copyWith(
         primary: accentColor,
         secondary: accentColor.contrast,
+        background: const Color.fromRGBO(44, 44, 44, 1.0),
       ),
       indicatorColor: accentColor,
       highlightColor: highlightColor,
@@ -84,7 +87,9 @@ class StockholmThemeData {
       dialogTheme: theme.dialogTheme.copyWith(
         backgroundColor: const Color.fromRGBO(44, 44, 44, 1.0),
         shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(isWindows ? 8 : 12),
+          ),
           side: BorderSide(color: Colors.grey[700]!, width: 1.0),
         ),
       ),
@@ -102,6 +107,8 @@ class StockholmThemeData {
         textTheme: theme.textTheme.copyWith(
           bodyLarge: theme.textTheme.bodyLarge!.copyWith(fontSize: 13.0),
           bodyMedium: theme.textTheme.bodyMedium!.copyWith(fontSize: 12.0),
+          titleLarge: theme.textTheme.bodyLarge!
+              .copyWith(fontSize: 16.0, fontWeight: FontWeight.bold),
           titleMedium: theme.textTheme.bodyLarge!
               .copyWith(fontSize: 13.0, fontWeight: FontWeight.bold),
           titleSmall: theme.textTheme.bodyMedium!

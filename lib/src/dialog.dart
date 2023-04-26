@@ -18,6 +18,7 @@ class StockholmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var isWindows = theme.platform == TargetPlatform.windows;
 
     var actionButtonWidgets = <Widget>[];
     if (actionButtons != null) {
@@ -43,13 +44,20 @@ class StockholmDialog extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(isWindows ? 8 : 12),
+                ),
               ),
-              height: 28,
-              child: Center(
+              height: isWindows ? 42 : 28,
+              child: Container(
+                alignment: isWindows ? Alignment.centerLeft : Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: isWindows ? 16 : 0,
+                ),
                 child: DefaultTextStyle(
-                  style: theme.textTheme.titleMedium!,
+                  style: isWindows
+                      ? theme.textTheme.titleLarge!
+                      : theme.textTheme.titleMedium!,
                   child: title,
                 ),
               ),
@@ -59,8 +67,21 @@ class StockholmDialog extends StatelessWidget {
               height: 1,
             ),
             contents,
+            if (isWindows)
+              Container(
+                color: theme.dividerColor,
+                height: 1,
+              ),
             if (actionButtons != null)
-              Padding(
+              Container(
+                decoration: isWindows
+                    ? BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(8),
+                        ),
+                      )
+                    : null,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 10,
