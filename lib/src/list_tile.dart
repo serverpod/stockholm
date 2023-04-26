@@ -107,9 +107,9 @@ class _StockholmListTileState extends State<StockholmListTile> {
           tile,
           Positioned(
             left: 8,
-            top: 6,
-            bottom: 6,
-            width: 2,
+            top: 8,
+            bottom: 8,
+            width: 3,
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary,
