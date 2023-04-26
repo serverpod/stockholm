@@ -20,7 +20,6 @@ class StockholmThemeData {
 
     return theme.copyWith(
       visualDensity: VisualDensity.compact,
-      // backgroundColor: Colors.blueGrey[50],
       primaryColor: accentColor,
       indicatorColor: accentColor,
       highlightColor: highlightColor,
@@ -29,6 +28,7 @@ class StockholmThemeData {
         primary: accentColor,
         secondary: accentColor.contrast,
         background: Colors.blueGrey[50],
+        surface: Colors.grey[100],
       ),
       popupMenuTheme: theme.popupMenuTheme.copyWith(
         textStyle: theme.textTheme.bodyMedium,
@@ -76,6 +76,7 @@ class StockholmThemeData {
         primary: accentColor,
         secondary: accentColor.contrast,
         background: const Color.fromRGBO(44, 44, 44, 1.0),
+        surface: Colors.grey[800],
       ),
       indicatorColor: accentColor,
       highlightColor: highlightColor,
