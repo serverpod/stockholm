@@ -23,7 +23,7 @@ class StockholmTable extends StatefulWidget {
     this.cellHeight = 24.0,
     this.shrinkWrap = false,
     this.physics,
-    this.drawGrid = true,
+    this.drawGrid = false,
     this.resizableColumns = true,
     this.onColumnWidthsChanged,
     Key? key,
