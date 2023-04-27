@@ -24,7 +24,7 @@ class StockholmTable extends StatefulWidget {
     this.shrinkWrap = false,
     this.physics,
     this.drawGrid = true,
-    this.resizeColumns = true,
+    this.resizableColumns = true,
     Key? key,
   }) : super(key: key);
 
@@ -48,7 +48,7 @@ class StockholmTable extends StatefulWidget {
   final bool shrinkWrap;
   final ScrollPhysics? physics;
   final bool drawGrid;
-  final bool resizeColumns;
+  final bool resizableColumns;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -197,6 +197,7 @@ class _StockholmTableState extends State<StockholmTable> {
                   decoration: widget.headerDecoration,
                   cells: widget.headerBuilder(context),
                   grid: widget.drawGrid,
+                  resizableColumns: widget.resizableColumns,
                   horizontalRowPadding: horizontalRowPadding,
                   extraSpace: extraSpace,
                   onStartResizeColumn: _onStartResizeColumn,
@@ -232,7 +233,7 @@ class _StockholmTableState extends State<StockholmTable> {
   }
 
   void _onResizedColumn(int column, double delta) {
-    if (!widget.resizeColumns) {
+    if (!widget.resizableColumns) {
       return;
     }
 
@@ -259,6 +260,7 @@ class _TableHeader extends StatelessWidget {
     required this.widths,
     required this.decoration,
     required this.grid,
+    required this.resizableColumns,
     required this.extraSpace,
     required this.onResizedColumn,
     required this.onStartResizeColumn,
@@ -271,6 +273,7 @@ class _TableHeader extends StatelessWidget {
   final List<double> widths;
   final BoxDecoration? decoration;
   final bool grid;
+  final bool resizableColumns;
   final double extraSpace;
   final double horizontalRowPadding;
   final void Function(int column, double delta) onResizedColumn;
@@ -279,6 +282,19 @@ class _TableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
+    _TableColumnResizeHandleStyle handleStyle;
+    if (grid) {
+      handleStyle = _TableColumnResizeHandleStyle.full;
+    } else if (!resizableColumns) {
+      handleStyle = _TableColumnResizeHandleStyle.none;
+    } else if (isWindows) {
+      handleStyle = _TableColumnResizeHandleStyle.full;
+    } else {
+      handleStyle = _TableColumnResizeHandleStyle.partial;
+    }
+
     var cellWidgets = <Widget>[];
     int i = 0;
     for (var cell in cells) {
@@ -301,8 +317,10 @@ class _TableHeader extends StatelessWidget {
           ),
         ),
       );
+
       cellWidgets.add(
         _TableColumnResizeHandle(
+          style: handleStyle,
           last: i == cells.length - 1,
           onDragStart: () {
             onStartResizeColumn(index);
@@ -337,12 +355,19 @@ class _TableHeader extends StatelessWidget {
   }
 }
 
+enum _TableColumnResizeHandleStyle {
+  none,
+  full,
+  partial,
+}
+
 class _TableColumnResizeHandle extends StatefulWidget {
   const _TableColumnResizeHandle({
     required this.onDragUpdate,
     required this.onDragStart,
     required this.onDragEnd,
     required this.last,
+    required this.style,
     Key? key,
   }) : super(key: key);
 
@@ -350,6 +375,7 @@ class _TableColumnResizeHandle extends StatefulWidget {
   final VoidCallback onDragStart;
   final VoidCallback onDragEnd;
   final bool last;
+  final _TableColumnResizeHandleStyle style;
 
   static const _width = 8.0;
 
@@ -363,6 +389,9 @@ class _TableColumnResizeHandleState extends State<_TableColumnResizeHandle> {
 
   @override
   Widget build(BuildContext context) {
+    var verticalGap =
+        widget.style == _TableColumnResizeHandleStyle.partial ? 4.0 : 0.0;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onHorizontalDragStart: (details) {
@@ -381,15 +410,20 @@ class _TableColumnResizeHandleState extends State<_TableColumnResizeHandle> {
             ? _TableColumnResizeHandle._width / 2
             : _TableColumnResizeHandle._width,
         child: Container(
-          margin: const EdgeInsets.only(
-              left: _TableColumnResizeHandle._width / 2 - 1),
+          margin: EdgeInsets.only(
+            left: _TableColumnResizeHandle._width / 2 - 1,
+            top: verticalGap,
+            bottom: verticalGap,
+          ),
           decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: 1.0,
-              ),
-            ),
+            border: widget.style == _TableColumnResizeHandleStyle.none
+                ? null
+                : Border(
+                    left: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1.0,
+                    ),
+                  ),
           ),
         ),
       ),

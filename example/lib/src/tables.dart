@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stockholm/stockholm.dart';
 
 class StockholmTableDemoPage extends StatefulWidget {
@@ -12,6 +10,7 @@ class StockholmTableDemoPage extends StatefulWidget {
 
 class StockholmTableDemoPageState extends State<StockholmTableDemoPage> {
   bool drawGrid = false;
+  bool resizableColumns = true;
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +18,23 @@ class StockholmTableDemoPageState extends State<StockholmTableDemoPage> {
       children: [
         StockholmToolbar(
           children: [
-            StockholmToolbarButton(
-              icon: MdiIcons.tableLarge,
-              selected: drawGrid,
+            const SizedBox(width: 4, height: 32),
+            StockholmCheckbox(
+              value: drawGrid,
               label: 'Draw grid',
-              onPressed: () {
+              onChanged: (value) {
                 setState(() {
-                  drawGrid = !drawGrid;
+                  drawGrid = value;
+                });
+              },
+            ),
+            const SizedBox(width: 16, height: 32),
+            StockholmCheckbox(
+              value: resizableColumns,
+              label: 'Resizable columns',
+              onChanged: (value) {
+                setState(() {
+                  resizableColumns = value;
                 });
               },
             ),
@@ -34,6 +43,7 @@ class StockholmTableDemoPageState extends State<StockholmTableDemoPage> {
         Expanded(
           child: StockholmTable(
             drawGrid: drawGrid,
+            resizableColumns: resizableColumns,
             headerBuilder: (context) {
               return const [
                 StockholmTableHeaderCell(child: Text('0')),
