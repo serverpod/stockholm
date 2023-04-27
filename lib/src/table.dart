@@ -25,6 +25,7 @@ class StockholmTable extends StatefulWidget {
     this.physics,
     this.drawGrid = true,
     this.resizableColumns = true,
+    this.onColumnWidthsChanged,
     Key? key,
   }) : super(key: key);
 
@@ -49,6 +50,7 @@ class StockholmTable extends StatefulWidget {
   final ScrollPhysics? physics;
   final bool drawGrid;
   final bool resizableColumns;
+  final void Function(List<double> widths)? onColumnWidthsChanged;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -229,7 +231,9 @@ class _StockholmTableState extends State<StockholmTable> {
   }
 
   void _onEndResizeColumn(int column) {
-    // TODO: implement
+    if (widget.onColumnWidthsChanged != null) {
+      widget.onColumnWidthsChanged!(_widths);
+    }
   }
 
   void _onResizedColumn(int column, double delta) {
