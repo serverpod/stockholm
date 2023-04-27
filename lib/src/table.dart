@@ -20,6 +20,7 @@ class StockholmTable extends StatefulWidget {
     this.cellHeight = 24.0,
     this.shrinkWrap = false,
     this.physics,
+    this.drawGrid = true,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +39,7 @@ class StockholmTable extends StatefulWidget {
   final double cellHeight;
   final bool shrinkWrap;
   final ScrollPhysics? physics;
+  final bool drawGrid;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -70,6 +72,8 @@ class _StockholmTableState extends State<StockholmTable> {
         ? Colors.black.withOpacity(0.045)
         : Colors.white12;
     var altBgColor = widget.altBackgroundColor ?? themeAltColor;
+
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
 
     return LayoutBuilder(builder: (context, constraints) {
       double _totalColumnSpace =
@@ -105,6 +109,7 @@ class _StockholmTableState extends State<StockholmTable> {
             selected: _selectedRow == i,
             backgroundColor: i % 2 == 1 ? altBgColor : null,
             hasHorizontalOverflow: hasHorizontalOverflow,
+            grid: widget.drawGrid,
             onPressed: () {
               if (widget.selectableRows) {
                 setState(() {
@@ -124,7 +129,9 @@ class _StockholmTableState extends State<StockholmTable> {
         );
       } else {
         innerListView = ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 6),
+          padding: EdgeInsets.symmetric(
+            vertical: isWindows || widget.drawGrid ? 0 : 6,
+          ),
           shrinkWrap: widget.shrinkWrap,
           physics: widget.physics,
           itemCount: widget.rowCount,
@@ -134,13 +141,16 @@ class _StockholmTableState extends State<StockholmTable> {
             height: widget.cellHeight,
           ),
           itemBuilder: (context, row) {
+            var backgroundColor = row % 2 == 1 ? altBgColor : null;
             return _TableRow(
               cells: widget.rowBuilder(context, row, false),
               widths: calcWidths,
               height: widget.cellHeight,
               selected: _selectedRow == row,
-              backgroundColor: row % 2 == 1 ? altBgColor : null,
+              backgroundColor:
+                  isWindows || widget.drawGrid ? null : backgroundColor,
               hasHorizontalOverflow: hasHorizontalOverflow,
+              grid: widget.drawGrid,
               onPressed: () {
                 if (widget.selectableRows) {
                   setState(() {
@@ -170,6 +180,7 @@ class _StockholmTableState extends State<StockholmTable> {
                   widths: calcWidths,
                   decoration: widget.headerDecoration,
                   cells: widget.headerBuilder(context),
+                  grid: widget.drawGrid,
                 ),
                 if (!widget.shrinkWrap)
                   Expanded(
@@ -195,12 +206,14 @@ class _TableHeader extends StatelessWidget {
     required this.cells,
     required this.widths,
     required this.decoration,
+    required this.grid,
     Key? key,
   }) : super(key: key);
 
   final List<Widget> cells;
   final List<double> widths;
   final BoxDecoration? decoration;
+  final bool grid;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +221,17 @@ class _TableHeader extends StatelessWidget {
     int i = 0;
     for (var cell in cells) {
       cellWidgets.add(
-        SizedBox(
+        Container(
+          decoration: grid
+              ? BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1.0,
+                    ),
+                  ),
+                )
+              : null,
           width: widths[i],
           child: DefaultTextStyle(
             maxLines: 1,
@@ -247,6 +270,7 @@ class _TableRow extends StatelessWidget {
     required this.hasHorizontalOverflow,
     required this.widths,
     required this.height,
+    required this.grid,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -258,14 +282,27 @@ class _TableRow extends StatelessWidget {
   final Color? backgroundColor;
   final List<double> widths;
   final double height;
+  final bool grid;
 
   @override
   Widget build(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+
     var cellWidgets = <Widget>[];
     int i = 0;
     for (var cell in cells) {
       cellWidgets.add(
-        SizedBox(
+        Container(
+          decoration: grid
+              ? BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1.0,
+                    ),
+                  ),
+                )
+              : null,
           width: widths[i],
           height: height,
           child: DefaultTextStyle(
@@ -281,10 +318,28 @@ class _TableRow extends StatelessWidget {
       i += 1;
     }
 
-    return GestureDetector(
-      onTap: onPressed,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
+    Widget contents;
+
+    if (isWindows || grid) {
+      contents = Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: _horizontalRowPadding,
+        ),
+        decoration: BoxDecoration(
+          color: selected ? Theme.of(context).primaryColor : backgroundColor,
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Row(
+          children: cellWidgets,
+        ),
+      );
+    } else {
+      contents = Container(
         margin: EdgeInsets.symmetric(
           horizontal: hasHorizontalOverflow ? 0.0 : _horizontalRowPadding,
         ),
@@ -300,7 +355,13 @@ class _TableRow extends StatelessWidget {
         child: Row(
           children: cellWidgets,
         ),
-      ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: contents,
     );
   }
 }
