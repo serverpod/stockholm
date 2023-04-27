@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stockholm/stockholm.dart';
 
 const _headerHeight = 24.0;
-const _horizontalRowPadding = 8.0;
 
 class StockholmTable extends StatefulWidget {
   const StockholmTable({
@@ -25,6 +24,7 @@ class StockholmTable extends StatefulWidget {
     this.shrinkWrap = false,
     this.physics,
     this.drawGrid = true,
+    this.resizeColumns = true,
     Key? key,
   }) : super(key: key);
 
@@ -48,6 +48,7 @@ class StockholmTable extends StatefulWidget {
   final bool shrinkWrap;
   final ScrollPhysics? physics;
   final bool drawGrid;
+  final bool resizeColumns;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -61,6 +62,11 @@ class _StockholmTableState extends State<StockholmTable> {
   double get _totalColumnWidths => _widths.fold(0, (prev, e) => prev + e);
 
   final _widths = <double>[];
+
+  double _horizontalRowPadding(BuildContext context) {
+    var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+    return isWindows || widget.drawGrid ? 0.0 : 8.0;
+  }
 
   @override
   void initState() {
@@ -86,10 +92,11 @@ class _StockholmTableState extends State<StockholmTable> {
     var altBgColor = widget.altBackgroundColor ?? themeAltColor;
 
     var isWindows = Theme.of(context).platform == TargetPlatform.windows;
+    var horizontalRowPadding = _horizontalRowPadding(context);
 
     return LayoutBuilder(builder: (context, constraints) {
       double _totalColumnSpace =
-          constraints.maxWidth - _horizontalRowPadding * 2;
+          constraints.maxWidth - horizontalRowPadding * 2;
       bool hasHorizontalOverflow = _totalColumnWidths > _totalColumnSpace;
 
       double extraSpace = 0;
@@ -109,6 +116,7 @@ class _StockholmTableState extends State<StockholmTable> {
             selected: _selectedRow == i,
             backgroundColor: i % 2 == 1 ? altBgColor : null,
             hasHorizontalOverflow: hasHorizontalOverflow,
+            horizontalRowPadding: horizontalRowPadding,
             grid: widget.drawGrid,
             extraSpace: extraSpace,
             onPressed: () {
@@ -139,7 +147,7 @@ class _StockholmTableState extends State<StockholmTable> {
           controller: _verticalController,
           prototypeItem: SizedBox(
             width: hasHorizontalOverflow
-                ? _totalColumnWidths + _horizontalRowPadding * 2
+                ? _totalColumnWidths + horizontalRowPadding * 2
                 : constraints.maxWidth,
             height: widget.cellHeight,
           ),
@@ -153,6 +161,7 @@ class _StockholmTableState extends State<StockholmTable> {
               backgroundColor:
                   isWindows || widget.drawGrid ? null : backgroundColor,
               hasHorizontalOverflow: hasHorizontalOverflow,
+              horizontalRowPadding: horizontalRowPadding,
               grid: widget.drawGrid,
               extraSpace: extraSpace,
               onPressed: () {
@@ -179,7 +188,7 @@ class _StockholmTableState extends State<StockholmTable> {
           physics: const ClampingScrollPhysics(),
           child: SizedBox(
             width: hasHorizontalOverflow
-                ? _totalColumnWidths + _horizontalRowPadding * 2
+                ? _totalColumnWidths + horizontalRowPadding * 2
                 : constraints.maxWidth,
             child: Column(
               children: [
@@ -188,6 +197,7 @@ class _StockholmTableState extends State<StockholmTable> {
                   decoration: widget.headerDecoration,
                   cells: widget.headerBuilder(context),
                   grid: widget.drawGrid,
+                  horizontalRowPadding: horizontalRowPadding,
                   extraSpace: extraSpace,
                   onStartResizeColumn: _onStartResizeColumn,
                   onEndResizeColumn: _onEndResizeColumn,
@@ -222,6 +232,10 @@ class _StockholmTableState extends State<StockholmTable> {
   }
 
   void _onResizedColumn(int column, double delta) {
+    if (!widget.resizeColumns) {
+      return;
+    }
+
     var minWidth = widget.columnMinWidths?.elementAt(column) ??
         widget.defaultMinColumnWidth;
     var maxWidth = widget.columnMaxWidths?.elementAt(column) ??
@@ -249,6 +263,7 @@ class _TableHeader extends StatelessWidget {
     required this.onResizedColumn,
     required this.onStartResizeColumn,
     required this.onEndResizeColumn,
+    required this.horizontalRowPadding,
     Key? key,
   }) : super(key: key);
 
@@ -257,6 +272,7 @@ class _TableHeader extends StatelessWidget {
   final BoxDecoration? decoration;
   final bool grid;
   final double extraSpace;
+  final double horizontalRowPadding;
   final void Function(int column, double delta) onResizedColumn;
   final void Function(int column) onStartResizeColumn;
   final void Function(int column) onEndResizeColumn;
@@ -313,7 +329,7 @@ class _TableHeader extends StatelessWidget {
             color: Theme.of(context).colorScheme.background,
           ),
       height: _headerHeight,
-      padding: const EdgeInsets.symmetric(horizontal: _horizontalRowPadding),
+      padding: EdgeInsets.symmetric(horizontal: horizontalRowPadding),
       child: Row(
         children: cellWidgets,
       ),
@@ -391,6 +407,7 @@ class _TableRow extends StatelessWidget {
     required this.height,
     required this.grid,
     required this.extraSpace,
+    required this.horizontalRowPadding,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -404,6 +421,7 @@ class _TableRow extends StatelessWidget {
   final double height;
   final bool grid;
   final double extraSpace;
+  final double horizontalRowPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -452,8 +470,8 @@ class _TableRow extends StatelessWidget {
 
     if (isWindows || grid) {
       contents = Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: _horizontalRowPadding,
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalRowPadding,
         ),
         decoration: BoxDecoration(
           color: selected ? Theme.of(context).primaryColor : backgroundColor,
@@ -471,10 +489,10 @@ class _TableRow extends StatelessWidget {
     } else {
       contents = Container(
         margin: EdgeInsets.symmetric(
-          horizontal: hasHorizontalOverflow ? 0.0 : _horizontalRowPadding,
+          horizontal: hasHorizontalOverflow ? 0.0 : horizontalRowPadding,
         ),
         padding: EdgeInsets.symmetric(
-          horizontal: hasHorizontalOverflow ? _horizontalRowPadding : 0.0,
+          horizontal: hasHorizontalOverflow ? horizontalRowPadding : 0.0,
         ),
         decoration: BoxDecoration(
           borderRadius: hasHorizontalOverflow
