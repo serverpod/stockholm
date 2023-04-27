@@ -11,6 +11,10 @@ class StockholmTable extends StatefulWidget {
     required this.rowCount,
     required this.columnCount,
     required this.columnWidths,
+    this.columnMinWidths,
+    this.columnMaxWidths,
+    this.defaultMinColumnWidth = 50,
+    this.defaultMaxColumnWidth = 200,
     this.backgroundColor,
     this.altBackgroundColor,
     this.headerDecoration,
@@ -28,6 +32,10 @@ class StockholmTable extends StatefulWidget {
   final List<Widget> Function(BuildContext context, int row, bool selected)
       rowBuilder;
   final List<double> columnWidths;
+  final List<double>? columnMinWidths;
+  final List<double>? columnMaxWidths;
+  final double defaultMinColumnWidth;
+  final double defaultMaxColumnWidth;
   final int rowCount;
   final int columnCount;
   final Color? backgroundColor;
@@ -50,13 +58,17 @@ class _StockholmTableState extends State<StockholmTable> {
   final ScrollController _verticalController = ScrollController();
 
   int? _selectedRow;
-  late final double _totalColumnWidths;
+  double get _totalColumnWidths => _widths.fold(0, (prev, e) => prev + e);
+
+  final _widths = <double>[];
 
   @override
   void initState() {
     super.initState();
     _selectedRow = widget.selectedRow;
-    _totalColumnWidths = widget.columnWidths.fold(0, (prev, e) => prev + e);
+    for (var width in widget.columnWidths) {
+      _widths.add(width);
+    }
   }
 
   @override
@@ -80,21 +92,9 @@ class _StockholmTableState extends State<StockholmTable> {
           constraints.maxWidth - _horizontalRowPadding * 2;
       bool hasHorizontalOverflow = _totalColumnWidths > _totalColumnSpace;
 
-      List<double> calcWidths;
-      double calcTotalWidth;
-
-      if (hasHorizontalOverflow) {
-        calcWidths = widget.columnWidths;
-        calcTotalWidth = _totalColumnWidths;
-      } else {
-        calcWidths = widget.columnWidths
-            .map(
-              (e) => (e * _totalColumnSpace / _totalColumnWidths)
-                  .floor()
-                  .toDouble(),
-            )
-            .toList();
-        calcTotalWidth = _totalColumnSpace;
+      double extraSpace = 0;
+      if (!hasHorizontalOverflow) {
+        extraSpace = _totalColumnSpace - _totalColumnWidths;
       }
 
       Widget innerListView;
@@ -104,12 +104,13 @@ class _StockholmTableState extends State<StockholmTable> {
         for (int i = 0; i < widget.rowCount; i++) {
           children.add(_TableRow(
             cells: widget.rowBuilder(context, i, _selectedRow == i),
-            widths: calcWidths,
+            widths: _widths,
             height: widget.cellHeight,
             selected: _selectedRow == i,
             backgroundColor: i % 2 == 1 ? altBgColor : null,
             hasHorizontalOverflow: hasHorizontalOverflow,
             grid: widget.drawGrid,
+            extraSpace: extraSpace,
             onPressed: () {
               if (widget.selectableRows) {
                 setState(() {
@@ -137,20 +138,23 @@ class _StockholmTableState extends State<StockholmTable> {
           itemCount: widget.rowCount,
           controller: _verticalController,
           prototypeItem: SizedBox(
-            width: calcTotalWidth + _horizontalRowPadding * 2,
+            width: hasHorizontalOverflow
+                ? _totalColumnWidths + _horizontalRowPadding * 2
+                : constraints.maxWidth,
             height: widget.cellHeight,
           ),
           itemBuilder: (context, row) {
             var backgroundColor = row % 2 == 1 ? altBgColor : null;
             return _TableRow(
               cells: widget.rowBuilder(context, row, false),
-              widths: calcWidths,
+              widths: _widths,
               height: widget.cellHeight,
               selected: _selectedRow == row,
               backgroundColor:
                   isWindows || widget.drawGrid ? null : backgroundColor,
               hasHorizontalOverflow: hasHorizontalOverflow,
               grid: widget.drawGrid,
+              extraSpace: extraSpace,
               onPressed: () {
                 if (widget.selectableRows) {
                   setState(() {
@@ -172,15 +176,22 @@ class _StockholmTableState extends State<StockholmTable> {
         child: SingleChildScrollView(
           controller: _horizontalController,
           scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
           child: SizedBox(
-            width: calcTotalWidth + _horizontalRowPadding * 2,
+            width: hasHorizontalOverflow
+                ? _totalColumnWidths + _horizontalRowPadding * 2
+                : constraints.maxWidth,
             child: Column(
               children: [
                 _TableHeader(
-                  widths: calcWidths,
+                  widths: _widths,
                   decoration: widget.headerDecoration,
                   cells: widget.headerBuilder(context),
                   grid: widget.drawGrid,
+                  extraSpace: extraSpace,
+                  onStartResizeColumn: _onStartResizeColumn,
+                  onEndResizeColumn: _onEndResizeColumn,
+                  onResizedColumn: _onResizedColumn,
                 ),
                 if (!widget.shrinkWrap)
                   Expanded(
@@ -199,6 +210,33 @@ class _StockholmTableState extends State<StockholmTable> {
       );
     });
   }
+
+  double _startColumnWidth = 0;
+
+  void _onStartResizeColumn(int column) {
+    _startColumnWidth = _widths[column];
+  }
+
+  void _onEndResizeColumn(int column) {
+    // TODO: implement
+  }
+
+  void _onResizedColumn(int column, double delta) {
+    var minWidth = widget.columnMinWidths?.elementAt(column) ??
+        widget.defaultMinColumnWidth;
+    var maxWidth = widget.columnMaxWidths?.elementAt(column) ??
+        widget.defaultMaxColumnWidth;
+
+    setState(() {
+      var width = _startColumnWidth + delta;
+      if (width < minWidth) {
+        width = minWidth;
+      } else if (width > maxWidth) {
+        width = maxWidth;
+      }
+      _widths[column] = width;
+    });
+  }
 }
 
 class _TableHeader extends StatelessWidget {
@@ -207,6 +245,10 @@ class _TableHeader extends StatelessWidget {
     required this.widths,
     required this.decoration,
     required this.grid,
+    required this.extraSpace,
+    required this.onResizedColumn,
+    required this.onStartResizeColumn,
+    required this.onEndResizeColumn,
     Key? key,
   }) : super(key: key);
 
@@ -214,25 +256,27 @@ class _TableHeader extends StatelessWidget {
   final List<double> widths;
   final BoxDecoration? decoration;
   final bool grid;
+  final double extraSpace;
+  final void Function(int column, double delta) onResizedColumn;
+  final void Function(int column) onStartResizeColumn;
+  final void Function(int column) onEndResizeColumn;
 
   @override
   Widget build(BuildContext context) {
     var cellWidgets = <Widget>[];
     int i = 0;
     for (var cell in cells) {
+      var index = i;
+      var width = widths[i];
+      if (i == 0) {
+        width -= _TableColumnResizeHandle._width / 2;
+      } else {
+        width -= _TableColumnResizeHandle._width;
+      }
+
       cellWidgets.add(
-        Container(
-          decoration: grid
-              ? BoxDecoration(
-                  border: Border(
-                    right: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: 1.0,
-                    ),
-                  ),
-                )
-              : null,
-          width: widths[i],
+        SizedBox(
+          width: width,
           child: DefaultTextStyle(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -241,6 +285,21 @@ class _TableHeader extends StatelessWidget {
           ),
         ),
       );
+      cellWidgets.add(
+        _TableColumnResizeHandle(
+          last: i == cells.length - 1,
+          onDragStart: () {
+            onStartResizeColumn(index);
+          },
+          onDragEnd: () {
+            onEndResizeColumn(index);
+          },
+          onDragUpdate: (delta) {
+            onResizedColumn(index, delta);
+          },
+        ),
+      );
+
       i += 1;
     }
 
@@ -262,6 +321,66 @@ class _TableHeader extends StatelessWidget {
   }
 }
 
+class _TableColumnResizeHandle extends StatefulWidget {
+  const _TableColumnResizeHandle({
+    required this.onDragUpdate,
+    required this.onDragStart,
+    required this.onDragEnd,
+    required this.last,
+    Key? key,
+  }) : super(key: key);
+
+  final ValueChanged<double> onDragUpdate;
+  final VoidCallback onDragStart;
+  final VoidCallback onDragEnd;
+  final bool last;
+
+  static const _width = 8.0;
+
+  @override
+  _TableColumnResizeHandleState createState() =>
+      _TableColumnResizeHandleState();
+}
+
+class _TableColumnResizeHandleState extends State<_TableColumnResizeHandle> {
+  double _downX = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onHorizontalDragStart: (details) {
+        _downX = details.globalPosition.dx;
+        widget.onDragStart();
+      },
+      onHorizontalDragEnd: (details) {
+        widget.onDragEnd();
+      },
+      onHorizontalDragUpdate: (details) {
+        var globalDelta = details.globalPosition.dx - _downX;
+        widget.onDragUpdate(globalDelta);
+      },
+      child: SizedBox(
+        width: widget.last
+            ? _TableColumnResizeHandle._width / 2
+            : _TableColumnResizeHandle._width,
+        child: Container(
+          margin: const EdgeInsets.only(
+              left: _TableColumnResizeHandle._width / 2 - 1),
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: 1.0,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _TableRow extends StatelessWidget {
   const _TableRow({
     required this.cells,
@@ -271,6 +390,7 @@ class _TableRow extends StatelessWidget {
     required this.widths,
     required this.height,
     required this.grid,
+    required this.extraSpace,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -283,6 +403,7 @@ class _TableRow extends StatelessWidget {
   final List<double> widths;
   final double height;
   final bool grid;
+  final double extraSpace;
 
   @override
   Widget build(BuildContext context) {
@@ -316,6 +437,15 @@ class _TableRow extends StatelessWidget {
         ),
       );
       i += 1;
+    }
+
+    if (extraSpace > 0) {
+      cellWidgets.add(
+        SizedBox(
+          width: extraSpace,
+          height: height,
+        ),
+      );
     }
 
     Widget contents;
