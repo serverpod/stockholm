@@ -103,6 +103,7 @@ class _StockholmListTileState extends State<StockholmListTile> {
     // Add Windows style selection border
     if (isWindows && widget.selected) {
       tile = Stack(
+        fit: StackFit.passthrough,
         children: [
           tile,
           Positioned(
