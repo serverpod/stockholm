@@ -119,6 +119,12 @@ class StockholmThemeData {
           labelLarge: theme.textTheme.labelLarge!.copyWith(fontSize: 14.0),
         ),
         splashColor: Colors.transparent,
+        expansionTileTheme: ExpansionTileThemeData(
+          textColor: theme.colorScheme.onSurface,
+          iconColor: theme.colorScheme.onSurface,
+          shape: const Border(),
+          collapsedShape: const Border(),
+        ),
       );
     } else {
       return theme.copyWith(
@@ -135,6 +141,12 @@ class StockholmThemeData {
           labelLarge: theme.textTheme.labelLarge!.copyWith(fontSize: 14.0),
         ),
         splashColor: Colors.transparent,
+        expansionTileTheme: ExpansionTileThemeData(
+          textColor: theme.colorScheme.onSurface,
+          iconColor: theme.colorScheme.onSurface,
+          shape: const Border(),
+          collapsedShape: const Border(),
+        ),
       );
     }
   }

@@ -6,6 +6,7 @@ export 'src/colors.dart';
 export 'src/context_menu.dart';
 export 'src/dialog.dart';
 export 'src/dropdown_button.dart';
+export 'src/expansion_tile.dart';
 export 'src/list_tile.dart';
 export 'src/menu.dart';
 export 'src/menu_items.dart';
