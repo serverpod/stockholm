@@ -111,12 +111,14 @@ class _StockholmTableState extends State<StockholmTable> {
       if (widget.shrinkWrap) {
         var children = <Widget>[];
         for (int i = 0; i < widget.rowCount; i++) {
+          var backgroundColor = i % 2 == 1 ? altBgColor : null;
           children.add(_TableRow(
             cells: widget.rowBuilder(context, i, _selectedRow == i),
             widths: _widths,
             height: widget.cellHeight,
             selected: _selectedRow == i,
-            backgroundColor: i % 2 == 1 ? altBgColor : null,
+            backgroundColor:
+                isWindows || widget.drawGrid ? null : backgroundColor,
             hasHorizontalOverflow: hasHorizontalOverflow,
             horizontalRowPadding: horizontalRowPadding,
             grid: widget.drawGrid,
