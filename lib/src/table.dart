@@ -26,6 +26,7 @@ class StockholmTable extends StatefulWidget {
     this.drawGrid = false,
     this.resizableColumns = true,
     this.onColumnWidthsChanged,
+    this.drawLastRowsBorder = true,
     Key? key,
   }) : super(key: key);
 
@@ -50,6 +51,7 @@ class StockholmTable extends StatefulWidget {
   final ScrollPhysics? physics;
   final bool drawGrid;
   final bool resizableColumns;
+  final bool drawLastRowsBorder;
   final void Function(List<double> widths)? onColumnWidthsChanged;
 
   @override
@@ -112,6 +114,7 @@ class _StockholmTableState extends State<StockholmTable> {
         var children = <Widget>[];
         for (int i = 0; i < widget.rowCount; i++) {
           var backgroundColor = i % 2 == 1 ? altBgColor : null;
+          var isLastRow = i == widget.rowCount - 1;
           children.add(_TableRow(
             cells: widget.rowBuilder(context, i, _selectedRow == i),
             widths: _widths,
@@ -123,6 +126,7 @@ class _StockholmTableState extends State<StockholmTable> {
             horizontalRowPadding: horizontalRowPadding,
             grid: widget.drawGrid,
             extraSpace: extraSpace,
+            drawBorder: (widget.drawLastRowsBorder && isLastRow) || !isLastRow,
             onPressed: () {
               if (widget.selectableRows) {
                 setState(() {
@@ -157,6 +161,7 @@ class _StockholmTableState extends State<StockholmTable> {
           ),
           itemBuilder: (context, row) {
             var backgroundColor = row % 2 == 1 ? altBgColor : null;
+            var isLastRow = row == widget.rowCount - 1;
             return _TableRow(
               cells: widget.rowBuilder(context, row, false),
               widths: _widths,
@@ -168,6 +173,8 @@ class _StockholmTableState extends State<StockholmTable> {
               horizontalRowPadding: horizontalRowPadding,
               grid: widget.drawGrid,
               extraSpace: extraSpace,
+              drawBorder:
+                  (widget.drawLastRowsBorder && isLastRow) || !isLastRow,
               onPressed: () {
                 if (widget.selectableRows) {
                   setState(() {
@@ -448,6 +455,7 @@ class _TableRow extends StatelessWidget {
     required this.grid,
     required this.extraSpace,
     required this.horizontalRowPadding,
+    required this.drawBorder,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
@@ -462,6 +470,7 @@ class _TableRow extends StatelessWidget {
   final bool grid;
   final double extraSpace;
   final double horizontalRowPadding;
+  final bool drawBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -515,12 +524,14 @@ class _TableRow extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: selected ? Theme.of(context).primaryColor : backgroundColor,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: 1.0,
-            ),
-          ),
+          border: drawBorder
+              ? Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 1.0,
+                  ),
+                )
+              : null,
         ),
         child: Row(
           children: cellWidgets,
