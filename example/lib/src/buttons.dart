@@ -14,6 +14,7 @@ class StockholmButtonDemoPage extends StatelessWidget {
       _CheckboxDisabledDemo(),
       _RadioButtonDemo(),
       _RadioButtonsDisabledDemo(),
+      _SegmentedControlDemo(),
     ]);
   }
 }
@@ -256,6 +257,37 @@ class _RadioButtonsDisabledDemo extends StatelessWidget {
             label: 'Stockholm',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SegmentedControlDemo extends StatefulWidget {
+  const _SegmentedControlDemo({Key? key}) : super(key: key);
+
+  @override
+  _SegmentedControlDemoState createState() => _SegmentedControlDemoState();
+}
+
+class _SegmentedControlDemoState extends State<_SegmentedControlDemo> {
+  int _selected = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Segmented control',
+      child: StockholmSegmentedControl(
+        children: const [
+          Text('Option 1'),
+          Text('Option 2'),
+          Text('Option 3'),
+        ],
+        selected: _selected,
+        onSelected: (selected) {
+          setState(() {
+            _selected = selected;
+          });
+        },
       ),
     );
   }

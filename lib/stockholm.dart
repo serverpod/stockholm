@@ -15,6 +15,7 @@ export 'src/progress.dart';
 export 'src/property_inspector.dart';
 export 'src/radio_button.dart';
 export 'src/shadows.dart';
+export 'src/segmented_control.dart';
 export 'src/side_bar.dart';
 export 'src/table.dart';
 export 'src/text_field.dart';
