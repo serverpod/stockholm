@@ -18,10 +18,10 @@ class _TextFieldDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DemoSection(
+    return const DemoSection(
       title: 'Text fields',
       child: Row(
-        children: const [
+        children: [
           SizedBox(
             width: 200,
             child: StockholmTextField(

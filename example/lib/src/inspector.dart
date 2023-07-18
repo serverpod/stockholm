@@ -6,8 +6,8 @@ class StockholmPropertyInspectorDemoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         Spacer(),
         MyPropertyInspector(),
       ],

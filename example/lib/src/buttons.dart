@@ -141,10 +141,10 @@ class _CheckboxDisabledDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DemoSection(
+    return const DemoSection(
       title: 'Disabled checkboxes',
       child: Row(
-        children: const [
+        children: [
           StockholmCheckbox(
             value: false,
             label: 'Disabled unchecked',
@@ -231,10 +231,10 @@ class _RadioButtonsDisabledDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DemoSection(
+    return const DemoSection(
       title: 'Disabled radio buttons',
       child: Row(
-        children: const [
+        children: [
           StockholmRadioButton<UIStyle>(
             value: UIStyle.cupertino,
             groupValue: UIStyle.stockholm,
