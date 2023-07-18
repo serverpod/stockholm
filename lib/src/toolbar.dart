@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
 
+enum StockholmToolbarPlacement {
+  top,
+  bottom,
+}
+
 class StockholmToolbar extends StatelessWidget {
   const StockholmToolbar({
     required this.children,
     this.backgroundColor,
+    this.placement = StockholmToolbarPlacement.top,
     Key? key,
   }) : super(key: key);
 
   final List<Widget> children;
   final Color? backgroundColor;
+  final StockholmToolbarPlacement placement;
 
   @override
   Widget build(BuildContext context) {
+    var border = placement == StockholmToolbarPlacement.top
+        ? Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 1.0,
+            ),
+          )
+        : Border(
+            top: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 1.0,
+            ),
+          );
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -19,12 +40,7 @@ class StockholmToolbar extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: 1.0,
-          ),
-        ),
+        border: border,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
