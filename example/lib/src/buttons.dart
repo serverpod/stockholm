@@ -15,6 +15,8 @@ class StockholmButtonDemoPage extends StatelessWidget {
       _RadioButtonDemo(),
       _RadioButtonsDisabledDemo(),
       _SegmentedControlDemo(),
+      _NormalPaginationDemo(),
+      _LargePaginationDemo(),
     ]);
   }
 }
@@ -288,6 +290,35 @@ class _SegmentedControlDemoState extends State<_SegmentedControlDemo> {
             _selected = selected;
           });
         },
+      ),
+    );
+  }
+}
+
+class _NormalPaginationDemo extends StatelessWidget {
+  const _NormalPaginationDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Pagination',
+      child: StockholmPagination(
+        onNext: () {},
+      ),
+    );
+  }
+}
+
+class _LargePaginationDemo extends StatelessWidget {
+  const _LargePaginationDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Pagination',
+      child: StockholmPagination(
+        large: true,
+        onNext: () {},
       ),
     );
   }

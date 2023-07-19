@@ -10,6 +10,7 @@ export 'src/expansion_tile.dart';
 export 'src/list_tile.dart';
 export 'src/menu.dart';
 export 'src/menu_items.dart';
+export 'src/pagination.dart';
 export 'src/popup_menu_button.dart';
 export 'src/progress.dart';
 export 'src/property_inspector.dart';
