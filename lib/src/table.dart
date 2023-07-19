@@ -27,6 +27,7 @@ class StockholmTable extends StatefulWidget {
     this.resizableColumns = true,
     this.onColumnWidthsChanged,
     this.drawLastRowsBorder = true,
+    this.onScrollApproachingEnd,
     Key? key,
   }) : super(key: key);
 
@@ -53,6 +54,7 @@ class StockholmTable extends StatefulWidget {
   final bool resizableColumns;
   final bool drawLastRowsBorder;
   final void Function(List<double> widths)? onColumnWidthsChanged;
+  final VoidCallback? onScrollApproachingEnd;
 
   @override
   _StockholmTableState createState() => _StockholmTableState();
@@ -79,6 +81,8 @@ class _StockholmTableState extends State<StockholmTable> {
     for (var width in widget.columnWidths) {
       _widths.add(width);
     }
+
+    _verticalController.addListener(_checkScrollPosition);
   }
 
   @override
@@ -86,6 +90,16 @@ class _StockholmTableState extends State<StockholmTable> {
     super.dispose();
     _horizontalController.dispose();
     _verticalController.dispose();
+  }
+
+  void _checkScrollPosition() {
+    if (widget.onScrollApproachingEnd == null) {
+      return;
+    }
+
+    if (_verticalController.position.extentAfter < 100) {
+      widget.onScrollApproachingEnd!();
+    }
   }
 
   @override
@@ -230,6 +244,14 @@ class _StockholmTableState extends State<StockholmTable> {
           ),
         ),
       );
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant StockholmTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkScrollPosition();
     });
   }
 
