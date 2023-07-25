@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:stockholm/src/button.dart';
 import 'package:stockholm/src/constrained_inputs.dart';
 
 // Value inspected from Xcode 11 & iOS 13.0 Simulator.
@@ -34,6 +35,7 @@ enum StockholmDateTimePickerComponent {
   date,
   time,
   seconds,
+  now,
 }
 
 class StockholmDateTimePicker extends StatefulWidget {
@@ -44,6 +46,7 @@ class StockholmDateTimePicker extends StatefulWidget {
       StockholmDateTimePickerComponent.date,
       StockholmDateTimePickerComponent.time,
       StockholmDateTimePickerComponent.seconds,
+      StockholmDateTimePickerComponent.now,
     },
     this.enabled = true,
     super.key,
@@ -72,12 +75,16 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
   @override
   void initState() {
     super.initState();
-    _year = widget.dateTime.year;
-    _month = widget.dateTime.month;
-    _day = widget.dateTime.day;
-    _hour = widget.dateTime.hour;
-    _minute = widget.dateTime.minute;
-    _second = widget.dateTime.second;
+    _updateValuesFromDateTime(widget.dateTime);
+  }
+
+  void _updateValuesFromDateTime(DateTime dateTime) {
+    _year = dateTime.year;
+    _month = dateTime.month;
+    _day = dateTime.day;
+    _hour = dateTime.hour;
+    _minute = dateTime.minute;
+    _second = dateTime.second;
   }
 
   @override
@@ -321,6 +328,26 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                     ),
                   ),
               ],
+            ),
+          ),
+        if (widget.components.contains(StockholmDateTimePickerComponent.now))
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: StockholmButton(
+              padding: EdgeInsets.zero,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Icon(
+                  CupertinoIcons.clock,
+                  size: 16,
+                ),
+              ),
+              onPressed: widget.enabled
+                  ? () {
+                      _updateValuesFromDateTime(DateTime.now().toUtc());
+                      _updateDateTime(true);
+                    }
+                  : null,
             ),
           ),
       ],
