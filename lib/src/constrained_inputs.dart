@@ -79,15 +79,15 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
       if (newValue != null && newValue != _value) {
         _value = newValue;
         if (widget.onChanged != null) widget.onChanged!(_value);
-      }
 
-      if (_controller.text != _oldText) {
-        if (widget.maxLength != null &&
-            _controller.text.length >= widget.maxLength!) {
-          if (widget.onFilled != null) widget.onFilled!();
+        if (_controller.text != _oldText) {
+          if (widget.maxLength != null &&
+              _controller.text.length >= widget.maxLength!) {
+            if (widget.onFilled != null) widget.onFilled!();
+          }
+
+          _oldText = _controller.text;
         }
-
-        _oldText = _controller.text;
       }
     });
   }

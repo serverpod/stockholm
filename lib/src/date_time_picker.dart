@@ -29,23 +29,23 @@ enum StockholmDateTimePickerComponent {
   date,
   time,
   seconds,
-  milliseconds,
 }
 
 class StockholmDateTimePicker extends StatefulWidget {
   const StockholmDateTimePicker({
     required this.dateTime,
     required this.onChanged,
-    this.components = const [
+    this.components = const {
       StockholmDateTimePickerComponent.date,
       StockholmDateTimePickerComponent.time,
-    ],
+      StockholmDateTimePickerComponent.seconds,
+    },
     super.key,
   });
 
   final DateTime dateTime;
   final void Function(DateTime) onChanged;
-  final List<StockholmDateTimePickerComponent> components;
+  final Set<StockholmDateTimePickerComponent> components;
 
   @override
   State<StockholmDateTimePicker> createState() =>
@@ -77,164 +77,207 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          decoration: _kDefaultRoundedBorderDecoration,
-          padding: const EdgeInsets.symmetric(horizontal: 7),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 42,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 4,
-                  value: widget.dateTime.year,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (year) {
-                    if (year > 9999) {
-                      year = 9999;
-                    } else if (year < 0) {
-                      year = 0;
-                    }
-                    _year = year;
-                  },
-                  onFilled: () {
-                    _nextFocus(context);
-                  },
+        if (widget.components.contains(StockholmDateTimePickerComponent.date))
+          Container(
+            decoration: _kDefaultRoundedBorderDecoration,
+            padding: const EdgeInsets.symmetric(horizontal: 7),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 42,
+                  child: StockholmIntInput(
+                    drawBorder: false,
+                    maxLength: 4,
+                    value: widget.dateTime.year,
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padValue: true,
+                    selectAllOnFocus: true,
+                    onChanged: (year) {
+                      if (year > 9999) {
+                        year = 9999;
+                      } else if (year < 0) {
+                        year = 0;
+                      }
+                      _year = year;
+                    },
+                    onFilled: () {
+                      _nextFocus(context);
+                    },
+                    onFocusChange: (hasFocus) {
+                      if (!hasFocus) {
+                        _updateDateTime(true);
+                      }
+                    },
+                  ),
                 ),
-              ),
-              const Text('-'),
-              SizedBox(
-                width: 20,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 2,
-                  value: widget.dateTime.month,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (month) {
-                    if (month > 12) {
-                      month = 12;
-                    } else if (month < 0) {
-                      month = 0;
-                    }
-                    _month = month;
-                  },
-                  onFilled: () {
-                    _nextFocus(context);
-                  },
+                const Text('-'),
+                SizedBox(
+                  width: 20,
+                  child: StockholmIntInput(
+                    drawBorder: false,
+                    maxLength: 2,
+                    value: widget.dateTime.month,
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padValue: true,
+                    selectAllOnFocus: true,
+                    onChanged: (month) {
+                      if (month > 12) {
+                        month = 12;
+                      } else if (month < 0) {
+                        month = 0;
+                      }
+                      _month = month;
+                    },
+                    onFilled: () {
+                      _nextFocus(context);
+                    },
+                    onFocusChange: (hasFocus) {
+                      if (!hasFocus) {
+                        _updateDateTime(true);
+                      }
+                    },
+                  ),
                 ),
-              ),
-              const Text('-'),
-              SizedBox(
-                width: 20,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 2,
-                  value: widget.dateTime.day,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (day) {
-                    if (day > 31) {
-                      day = 31;
-                    } else if (day < 1) {
-                      day = 1;
-                    }
-                    _day = day;
-                  },
-                  onFilled: () {
-                    _nextFocus(context);
-                  },
+                const Text('-'),
+                SizedBox(
+                  width: 20,
+                  child: StockholmIntInput(
+                    drawBorder: false,
+                    maxLength: 2,
+                    value: widget.dateTime.day,
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padValue: true,
+                    selectAllOnFocus: true,
+                    onChanged: (day) {
+                      if (day > 31) {
+                        day = 31;
+                      } else if (day < 1) {
+                        day = 1;
+                      }
+                      _day = day;
+                    },
+                    onFilled: () {
+                      if (widget.components
+                          .contains(StockholmDateTimePickerComponent.time)) {
+                        _nextFocus(context);
+                      }
+                    },
+                    onFocusChange: (hasFocus) {
+                      if (!hasFocus) {
+                        _updateDateTime(true);
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Container(
-          decoration: _kDefaultRoundedBorderDecoration,
-          padding: const EdgeInsets.symmetric(horizontal: 7),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 20,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 2,
-                  value: widget.dateTime.hour,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (hour) {
-                    if (hour > 23) {
-                      hour = 23;
-                    } else if (hour < 0) {
-                      hour = 0;
-                    }
-                    _hour = hour;
-                  },
-                  onFilled: () {
-                    _nextFocus(context);
-                  },
+        if (widget.components.contains(StockholmDateTimePickerComponent.date))
+          const SizedBox(width: 4),
+        if (widget.components.contains(StockholmDateTimePickerComponent.time))
+          Container(
+            decoration: _kDefaultRoundedBorderDecoration,
+            padding: const EdgeInsets.symmetric(horizontal: 7),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: StockholmIntInput(
+                    drawBorder: false,
+                    maxLength: 2,
+                    value: widget.dateTime.hour,
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padValue: true,
+                    selectAllOnFocus: true,
+                    onChanged: (hour) {
+                      if (hour > 23) {
+                        hour = 23;
+                      } else if (hour < 0) {
+                        hour = 0;
+                      }
+                      _hour = hour;
+                    },
+                    onFilled: () {
+                      _nextFocus(context);
+                    },
+                    onFocusChange: (hasFocus) {
+                      if (!hasFocus) {
+                        _updateDateTime(true);
+                      }
+                    },
+                  ),
                 ),
-              ),
-              const Text(':'),
-              SizedBox(
-                width: 20,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 2,
-                  value: widget.dateTime.minute,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (minute) {
-                    if (minute > 59) {
-                      minute = 59;
-                    } else if (minute < 0) {
-                      minute = 0;
-                    }
-                    _minute = minute;
-                  },
-                  onFilled: () {
-                    _nextFocus(context);
-                  },
+                const Text(':'),
+                SizedBox(
+                  width: 20,
+                  child: StockholmIntInput(
+                    drawBorder: false,
+                    maxLength: 2,
+                    value: widget.dateTime.minute,
+                    textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    padValue: true,
+                    selectAllOnFocus: true,
+                    onChanged: (minute) {
+                      if (minute > 59) {
+                        minute = 59;
+                      } else if (minute < 0) {
+                        minute = 0;
+                      }
+                      _minute = minute;
+                    },
+                    onFilled: () {
+                      if (widget.components
+                          .contains(StockholmDateTimePickerComponent.seconds)) {
+                        _nextFocus(context);
+                      }
+                    },
+                    onFocusChange: (hasFocus) {
+                      if (!hasFocus) {
+                        _updateDateTime(true);
+                      }
+                    },
+                  ),
                 ),
-              ),
-              const Text(':'),
-              SizedBox(
-                width: 20,
-                child: StockholmIntInput(
-                  drawBorder: false,
-                  maxLength: 2,
-                  value: widget.dateTime.second,
-                  textAlign: TextAlign.center,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  padValue: true,
-                  selectAllOnFocus: true,
-                  onChanged: (second) {
-                    if (second > 59) {
-                      second = 59;
-                    } else if (second < 0) {
-                      second = 0;
-                    }
-                    _second = second;
-                  },
-                ),
-              ),
-            ],
+                if (widget.components
+                    .contains(StockholmDateTimePickerComponent.seconds))
+                  const Text(':'),
+                if (widget.components
+                    .contains(StockholmDateTimePickerComponent.seconds))
+                  SizedBox(
+                    width: 20,
+                    child: StockholmIntInput(
+                      drawBorder: false,
+                      maxLength: 2,
+                      value: widget.dateTime.second,
+                      textAlign: TextAlign.center,
+                      padding: const EdgeInsets.symmetric(vertical: 7),
+                      padValue: true,
+                      selectAllOnFocus: true,
+                      onChanged: (second) {
+                        if (second > 59) {
+                          second = 59;
+                        } else if (second < 0) {
+                          second = 0;
+                        }
+                        _second = second;
+                      },
+                      onFocusChange: (hasFocus) {
+                        if (!hasFocus) {
+                          _updateDateTime(true);
+                        }
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
@@ -251,7 +294,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
     _second = widget.dateTime.second;
   }
 
-  void _updateDateTime() {
+  void _updateDateTime(bool notify) {
     var dateTime = DateTime(
       _year,
       _month == 0 ? 1 : _month,
@@ -265,10 +308,6 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
       return;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onChanged(dateTime);
-    });
-
     _year = dateTime.year;
     _month = dateTime.month;
     _day = dateTime.day;
@@ -276,11 +315,18 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
     _minute = dateTime.minute;
     _second = dateTime.second;
 
-    _lastDateTime = dateTime;
+    if (notify) {
+      widget.onChanged(dateTime);
+      _lastDateTime = dateTime;
+      setState(() {});
+    }
   }
 
   void _nextFocus(BuildContext context) {
     FocusScope.of(context).nextFocus();
-    _updateDateTime();
+    _updateDateTime(false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onChanged(_lastDateTime!);
+    });
   }
 }

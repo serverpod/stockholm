@@ -52,6 +52,11 @@ class _DateTimePickerDemoState extends State<_DateTimePickerDemo> {
       child: SizedBox(
         width: 200,
         child: StockholmDateTimePicker(
+          components: const {
+            StockholmDateTimePickerComponent.date,
+            StockholmDateTimePickerComponent.time,
+            StockholmDateTimePickerComponent.seconds
+          },
           dateTime: _dateTime,
           onChanged: (value) {
             setState(() {
