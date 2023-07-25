@@ -44,26 +44,52 @@ class _DateTimePickerDemo extends StatefulWidget {
 
 class _DateTimePickerDemoState extends State<_DateTimePickerDemo> {
   var _dateTime = DateTime.now();
+  var _date = DateTime.now();
+  var _time = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return DemoSection(
-      title: 'Date time picker',
-      child: SizedBox(
-        width: 200,
-        child: StockholmDateTimePicker(
-          components: const {
-            StockholmDateTimePickerComponent.date,
-            StockholmDateTimePickerComponent.time,
-            StockholmDateTimePickerComponent.seconds
-          },
-          dateTime: _dateTime,
-          onChanged: (value) {
-            setState(() {
-              _dateTime = value;
-            });
-          },
-        ),
+      title: 'Date & time pickers',
+      child: Column(
+        children: [
+          StockholmDateTimePicker(
+            dateTime: _dateTime,
+            onChanged: (value) {
+              setState(() {
+                _dateTime = value;
+              });
+            },
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          StockholmDateTimePicker(
+            components: const {
+              StockholmDateTimePickerComponent.date,
+            },
+            dateTime: _date,
+            onChanged: (value) {
+              setState(() {
+                _date = value;
+              });
+            },
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          StockholmDateTimePicker(
+            components: const {
+              StockholmDateTimePickerComponent.time,
+            },
+            dateTime: _time,
+            onChanged: (value) {
+              setState(() {
+                _time = value;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
