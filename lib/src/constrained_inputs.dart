@@ -66,6 +66,8 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
   late int _value;
   late String _oldText;
 
+  bool _hasFocus = false;
+
   @override
   void initState() {
     super.initState();
@@ -75,19 +77,20 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
     _oldText = _controller.text;
 
     _controller.addListener(() {
-      var newValue = int.tryParse(_controller.text);
-      if (newValue != null && newValue != _value) {
+      var newValue = int.tryParse(_controller.text) ?? 0;
+      if (newValue != _value) {
         _value = newValue;
         if (widget.onChanged != null) widget.onChanged!(_value);
+      }
 
-        if (_controller.text != _oldText) {
-          if (widget.maxLength != null &&
-              _controller.text.length >= widget.maxLength!) {
-            if (widget.onFilled != null) widget.onFilled!();
-          }
-
-          _oldText = _controller.text;
+      if (_controller.text != _oldText) {
+        if (widget.maxLength != null &&
+            _controller.text.length >= widget.maxLength! &&
+            _hasFocus) {
+          if (widget.onFilled != null) widget.onFilled!();
         }
+
+        _oldText = _controller.text;
       }
     });
   }
@@ -96,6 +99,8 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
   Widget build(BuildContext context) {
     return StockholmTextField(
       onFocusChange: (hasFocus) {
+        _hasFocus = hasFocus;
+
         if (hasFocus) {
           // Gained focus, select all text.
           if (widget.selectAllOnFocus) {
