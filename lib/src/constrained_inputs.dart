@@ -6,14 +6,17 @@ class StockholmBoolInput extends StatelessWidget {
   const StockholmBoolInput({
     required this.value,
     required this.onChanged,
+    // this.enabled = true,
     super.key,
   });
 
   final bool value;
   final ValueChanged<bool> onChanged;
+  // final bool enabled;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Support enabled
     return StockholmDropdownButton<bool>(
       items: const [
         StockholmDropdownItem(
@@ -43,6 +46,7 @@ class StockholmIntInput extends StatefulWidget {
     this.padding = const EdgeInsets.all(7),
     this.padValue = false,
     this.selectAllOnFocus = false,
+    this.enabled = true,
     super.key,
   });
 
@@ -56,6 +60,7 @@ class StockholmIntInput extends StatefulWidget {
   final EdgeInsets padding;
   final bool padValue;
   final bool selectAllOnFocus;
+  final bool enabled;
 
   @override
   State<StockholmIntInput> createState() => _StockholmIntInputState();
@@ -98,6 +103,7 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
   @override
   Widget build(BuildContext context) {
     return StockholmTextField(
+      enabled: widget.enabled,
       onFocusChange: (hasFocus) {
         _hasFocus = hasFocus;
 

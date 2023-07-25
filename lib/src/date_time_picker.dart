@@ -25,6 +25,11 @@ const BoxDecoration _kDefaultRoundedBorderDecoration = BoxDecoration(
   borderRadius: BorderRadius.all(Radius.circular(5.0)),
 );
 
+const Color _kDisabledBackground = CupertinoDynamicColor.withBrightness(
+  color: Color(0xFFFAFAFA),
+  darkColor: Color(0xFF050505),
+);
+
 enum StockholmDateTimePickerComponent {
   date,
   time,
@@ -40,12 +45,14 @@ class StockholmDateTimePicker extends StatefulWidget {
       StockholmDateTimePickerComponent.time,
       StockholmDateTimePickerComponent.seconds,
     },
+    this.enabled = true,
     super.key,
   });
 
   final DateTime dateTime;
   final void Function(DateTime) onChanged;
   final Set<StockholmDateTimePickerComponent> components;
+  final bool enabled;
 
   @override
   State<StockholmDateTimePicker> createState() =>
@@ -75,11 +82,43 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final Color disabledColor =
+        CupertinoDynamicColor.resolve(_kDisabledBackground, context);
+
+    final Color? decorationColor = CupertinoDynamicColor.maybeResolve(
+        _kDefaultRoundedBorderDecoration.color, context);
+
+    final BoxBorder? border = _kDefaultRoundedBorderDecoration.border;
+    Border? resolvedBorder = border as Border?;
+    if (border is Border) {
+      BorderSide resolveBorderSide(BorderSide side) {
+        return side == BorderSide.none
+            ? side
+            : side.copyWith(
+                color: CupertinoDynamicColor.resolve(side.color, context));
+      }
+
+      resolvedBorder = border.runtimeType != Border
+          ? border
+          : Border(
+              top: resolveBorderSide(border.top),
+              left: resolveBorderSide(border.left),
+              bottom: resolveBorderSide(border.bottom),
+              right: resolveBorderSide(border.right),
+            );
+    }
+
+    final BoxDecoration? effectiveDecoration =
+        _kDefaultRoundedBorderDecoration.copyWith(
+      border: resolvedBorder,
+      color: widget.enabled ? decorationColor : disabledColor,
+    );
+
     return Row(
       children: [
         if (widget.components.contains(StockholmDateTimePickerComponent.date))
           Container(
-            decoration: _kDefaultRoundedBorderDecoration,
+            decoration: effectiveDecoration,
             padding: const EdgeInsets.symmetric(horizontal: 7),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -87,6 +126,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 SizedBox(
                   width: 42,
                   child: StockholmIntInput(
+                    enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 4,
                     value: widget.dateTime.year,
@@ -116,6 +156,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 SizedBox(
                   width: 20,
                   child: StockholmIntInput(
+                    enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.month,
@@ -145,6 +186,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 SizedBox(
                   width: 20,
                   child: StockholmIntInput(
+                    enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.day,
@@ -180,7 +222,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
           const SizedBox(width: 4),
         if (widget.components.contains(StockholmDateTimePickerComponent.time))
           Container(
-            decoration: _kDefaultRoundedBorderDecoration,
+            decoration: effectiveDecoration,
             padding: const EdgeInsets.symmetric(horizontal: 7),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -188,6 +230,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 SizedBox(
                   width: 20,
                   child: StockholmIntInput(
+                    enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.hour,
@@ -217,6 +260,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 SizedBox(
                   width: 20,
                   child: StockholmIntInput(
+                    enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.minute,
@@ -253,6 +297,7 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                   SizedBox(
                     width: 20,
                     child: StockholmIntInput(
+                      enabled: widget.enabled,
                       drawBorder: false,
                       maxLength: 2,
                       value: widget.dateTime.second,
