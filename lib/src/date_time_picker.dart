@@ -35,7 +35,7 @@ enum StockholmDateTimePickerComponent {
   date,
   time,
   seconds,
-  now,
+  nowButton,
 }
 
 class StockholmDateTimePicker extends StatefulWidget {
@@ -46,9 +46,10 @@ class StockholmDateTimePicker extends StatefulWidget {
       StockholmDateTimePickerComponent.date,
       StockholmDateTimePickerComponent.time,
       StockholmDateTimePickerComponent.seconds,
-      StockholmDateTimePickerComponent.now,
+      StockholmDateTimePickerComponent.nowButton,
     },
     this.enabled = true,
+    this.utc = false,
     super.key,
   });
 
@@ -56,6 +57,7 @@ class StockholmDateTimePicker extends StatefulWidget {
   final void Function(DateTime) onChanged;
   final Set<StockholmDateTimePickerComponent> components;
   final bool enabled;
+  final bool utc;
 
   @override
   State<StockholmDateTimePicker> createState() =>
@@ -79,12 +81,14 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
   }
 
   void _updateValuesFromDateTime(DateTime dateTime) {
-    _year = dateTime.year;
-    _month = dateTime.month;
-    _day = dateTime.day;
-    _hour = dateTime.hour;
-    _minute = dateTime.minute;
-    _second = dateTime.second;
+    var timeZonedDateTime = widget.utc ? dateTime.toUtc() : dateTime;
+
+    _year = timeZonedDateTime.year;
+    _month = timeZonedDateTime.month;
+    _day = timeZonedDateTime.day;
+    _hour = timeZonedDateTime.hour;
+    _minute = timeZonedDateTime.minute;
+    _second = timeZonedDateTime.second;
   }
 
   @override
@@ -330,7 +334,8 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
               ],
             ),
           ),
-        if (widget.components.contains(StockholmDateTimePickerComponent.now))
+        if (widget.components
+            .contains(StockholmDateTimePickerComponent.nowButton))
           Padding(
             padding: const EdgeInsets.only(left: 4.0),
             child: StockholmButton(
@@ -344,7 +349,9 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
               ),
               onPressed: widget.enabled
                   ? () {
-                      _updateValuesFromDateTime(DateTime.now().toUtc());
+                      _updateValuesFromDateTime(
+                        widget.utc ? DateTime.now().toUtc() : DateTime.now(),
+                      );
                       _updateDateTime(true);
                     }
                   : null,
@@ -367,14 +374,23 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
   }
 
   void _updateDateTime(bool notify) {
-    var dateTime = DateTime(
-      _year,
-      _month == 0 ? 1 : _month,
-      _day,
-      _hour,
-      _minute,
-      _second,
-    );
+    var dateTime = widget.utc
+        ? DateTime.utc(
+            _year,
+            _month == 0 ? 1 : _month,
+            _day,
+            _hour,
+            _minute,
+            _second,
+          )
+        : DateTime(
+            _year,
+            _month == 0 ? 1 : _month,
+            _day,
+            _hour,
+            _minute,
+            _second,
+          );
 
     if (_lastDateTime == dateTime) {
       return;
