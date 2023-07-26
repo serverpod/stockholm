@@ -9,6 +9,8 @@ class StockholmTextFieldDemoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const StockholmDemoPage(children: [
       _TextFieldDemo(),
+      _IntInputDemo(),
+      _DoubleInputDemo(),
       _DateTimePickerDemo(),
     ]);
   }
@@ -27,6 +29,72 @@ class _TextFieldDemo extends StatelessWidget {
             width: 200,
             child: StockholmTextField(
               autofocus: true,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _IntInputDemo extends StatefulWidget {
+  const _IntInputDemo({Key? key}) : super(key: key);
+
+  @override
+  State<_IntInputDemo> createState() => _IntInputDemoState();
+}
+
+class _IntInputDemoState extends State<_IntInputDemo> {
+  int _value = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Integer input',
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: StockholmIntInput(
+              value: _value,
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                });
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _DoubleInputDemo extends StatefulWidget {
+  const _DoubleInputDemo({Key? key}) : super(key: key);
+
+  @override
+  State<_DoubleInputDemo> createState() => _DoubleInputDemoState();
+}
+
+class _DoubleInputDemoState extends State<_DoubleInputDemo> {
+  double _value = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Double input',
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: StockholmDoubleInput(
+              value: _value,
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                });
+              },
             ),
           )
         ],

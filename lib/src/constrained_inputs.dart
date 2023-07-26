@@ -150,3 +150,94 @@ class _StockholmIntInputState extends State<StockholmIntInput> {
     _controller.text = text;
   }
 }
+
+class StockholmDoubleInput extends StatefulWidget {
+  const StockholmDoubleInput({
+    required this.value,
+    required this.onChanged,
+    this.onFocusChange,
+    this.textAlign = TextAlign.end,
+    this.drawBorder = true,
+    this.padding = const EdgeInsets.all(7),
+    this.selectAllOnFocus = false,
+    this.enabled = true,
+    super.key,
+  });
+
+  final double value;
+  final ValueChanged<double>? onChanged;
+  final ValueChanged<bool>? onFocusChange;
+  final TextAlign textAlign;
+  final bool drawBorder;
+  final EdgeInsets padding;
+  final bool selectAllOnFocus;
+  final bool enabled;
+
+  @override
+  State<StockholmDoubleInput> createState() => _StockholmDoubleInputState();
+}
+
+class _StockholmDoubleInputState extends State<StockholmDoubleInput> {
+  late TextEditingController _controller;
+  late double _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.value;
+    _controller = TextEditingController();
+    _updateText(widget.value);
+
+    _controller.addListener(() {
+      var newValue = double.tryParse(_controller.text) ?? 0;
+      if (newValue != _value) {
+        _value = newValue;
+        if (widget.onChanged != null) widget.onChanged!(_value);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StockholmTextField(
+      enabled: widget.enabled,
+      onFocusChange: (hasFocus) {
+        if (hasFocus) {
+          // Gained focus, select all text.
+          if (widget.selectAllOnFocus) {
+            _controller.selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: _controller.text.length,
+            );
+          }
+        } else {
+          // Lost focus, update text to make sure it's padded.
+          _updateText(_value);
+        }
+        widget.onFocusChange?.call(hasFocus);
+      },
+      controller: _controller,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      drawBorder: widget.drawBorder,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'-?[0-9]*\.?[0-9]*')),
+      ],
+      textAlign: widget.textAlign,
+      padding: widget.padding,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant StockholmDoubleInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != _value) {
+      _value = widget.value;
+      _updateText(_value);
+    }
+  }
+
+  void _updateText(double value) {
+    var text = '$value';
+    _controller.text = text;
+  }
+}
