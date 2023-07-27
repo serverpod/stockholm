@@ -8,6 +8,7 @@ export 'src/context_menu.dart';
 export 'src/date_time_picker.dart';
 export 'src/dialog.dart';
 export 'src/dropdown_button.dart';
+export 'src/duration_picker.dart';
 export 'src/expansion_tile.dart';
 export 'src/list_tile.dart';
 export 'src/menu.dart';

@@ -12,6 +12,7 @@ class StockholmTextFieldDemoPage extends StatelessWidget {
       _IntInputDemo(),
       _DoubleInputDemo(),
       _DateTimePickerDemo(),
+      _DurationPickerDemo(),
     ]);
   }
 }
@@ -154,6 +155,36 @@ class _DateTimePickerDemoState extends State<_DateTimePickerDemo> {
             onChanged: (value) {
               setState(() {
                 _time = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DurationPickerDemo extends StatefulWidget {
+  const _DurationPickerDemo({Key? key}) : super(key: key);
+
+  @override
+  State<_DurationPickerDemo> createState() => _DurationPickerDemoState();
+}
+
+class _DurationPickerDemoState extends State<_DurationPickerDemo> {
+  var _duration = const Duration();
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Duration picker',
+      child: Column(
+        children: [
+          StockholmDurationPicker(
+            value: _duration,
+            onChanged: (value) {
+              setState(() {
+                _duration = value;
               });
             },
           ),
