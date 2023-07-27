@@ -14,13 +14,11 @@ class StockholmDurationPicker extends StatefulWidget {
   const StockholmDurationPicker({
     required this.value,
     required this.onChanged,
-    this.initialMode,
     super.key,
   });
 
   final Duration value;
   final ValueChanged<Duration> onChanged;
-  final StockholmDurationPickerMode? initialMode;
 
   @override
   State<StockholmDurationPicker> createState() =>
@@ -35,7 +33,18 @@ class _StockholmDurationPickerState extends State<StockholmDurationPicker> {
   void initState() {
     super.initState();
     _duration = widget.value;
-    _mode = widget.initialMode ?? _calculateLargestMode(_duration);
+    _mode = _calculateLargestMode(_duration);
+  }
+
+  @override
+  void didUpdateWidget(covariant StockholmDurationPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value == widget.value) return;
+    _duration = widget.value;
+    var newMode = _calculateLargestMode(_duration);
+    if (newMode.index > _mode.index) {
+      _mode = newMode;
+    }
   }
 
   @override
