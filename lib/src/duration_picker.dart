@@ -14,13 +14,13 @@ class StockholmDurationPicker extends StatefulWidget {
   const StockholmDurationPicker({
     required this.value,
     required this.onChanged,
-    this.initialMode = StockholmDurationPickerMode.days,
+    this.initialMode,
     super.key,
   });
 
   final Duration value;
   final ValueChanged<Duration> onChanged;
-  final StockholmDurationPickerMode initialMode;
+  final StockholmDurationPickerMode? initialMode;
 
   @override
   State<StockholmDurationPicker> createState() =>
@@ -35,7 +35,7 @@ class _StockholmDurationPickerState extends State<StockholmDurationPicker> {
   void initState() {
     super.initState();
     _duration = widget.value;
-    _mode = widget.initialMode;
+    _mode = widget.initialMode ?? _calculateLargestMode(_duration);
   }
 
   @override
@@ -89,6 +89,7 @@ class _StockholmDurationPickerState extends State<StockholmDurationPicker> {
               _mode = value;
               var intDuration = _intFromDuration(_duration);
               _duration = _durationFromInt(intDuration);
+              widget.onChanged(_duration);
             });
           },
           value: _mode,
@@ -128,6 +129,28 @@ class _StockholmDurationPickerState extends State<StockholmDurationPicker> {
         return Duration(milliseconds: value);
       case StockholmDurationPickerMode.microseconds:
         return Duration(microseconds: value);
+    }
+  }
+
+  StockholmDurationPickerMode _calculateLargestMode(Duration duration) {
+    if (duration.inMicroseconds == 0) return StockholmDurationPickerMode.days;
+
+    if (duration.inDays != 0 && duration == Duration(days: duration.inDays)) {
+      return StockholmDurationPickerMode.days;
+    } else if (duration.inHours != 0 &&
+        duration == Duration(hours: duration.inHours)) {
+      return StockholmDurationPickerMode.hours;
+    } else if (duration.inMinutes != 0 &&
+        duration == Duration(minutes: duration.inMinutes)) {
+      return StockholmDurationPickerMode.minutes;
+    } else if (duration.inSeconds != 0 &&
+        duration == Duration(seconds: duration.inSeconds)) {
+      return StockholmDurationPickerMode.seconds;
+    } else if (duration.inMilliseconds != 0 &&
+        duration == Duration(milliseconds: duration.inMilliseconds)) {
+      return StockholmDurationPickerMode.milliseconds;
+    } else {
+      return StockholmDurationPickerMode.microseconds;
     }
   }
 }
