@@ -16,7 +16,7 @@ class StockholmThemeData {
 
     var highlightColor = platform == TargetPlatform.windows
         ? Colors.black.withOpacity(0.05)
-        : Colors.black26;
+        : Colors.black12;
 
     return theme.copyWith(
       visualDensity: VisualDensity.compact,
