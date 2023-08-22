@@ -10,6 +10,7 @@ class StockholmDialogDemoPage extends StatelessWidget {
     return const StockholmDemoPage(children: [
       _DialogDemo(),
       _ConfirmationDialogDemo(),
+      _BlockingProgressDialogDemo(),
     ]);
   }
 }
@@ -72,6 +73,57 @@ class _ConfirmationDialogDemo extends StatelessWidget {
               );
             },
             child: const Text('Show Confirmation Dialog'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BlockingProgressDialogDemo extends StatefulWidget {
+  const _BlockingProgressDialogDemo({Key? key}) : super(key: key);
+
+  @override
+  State<_BlockingProgressDialogDemo> createState() =>
+      _BlockingProgressDialogDemoState();
+}
+
+class _BlockingProgressDialogDemoState
+    extends State<_BlockingProgressDialogDemo> {
+  final _controller = StockholmBlockingProgressDialogController(
+    progressMessage: 'Making progress.',
+  );
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DemoSection(
+      title: 'Blocking Progress Dialog',
+      child: Row(
+        children: [
+          StockholmButton(
+            onPressed: () async {
+              showStockholmBlockingProgressDialog(
+                  context: context,
+                  builder: (context) {
+                    return StockholmBlockingProgressDialog(
+                      title: const Text('Blocking Progress Dialog'),
+                      controller: _controller,
+                    );
+                  });
+              await Future.delayed(const Duration(seconds: 1));
+              _controller.progressMessage = 'Still making progress.';
+              await Future.delayed(const Duration(seconds: 1));
+              _controller.progressMessage = 'Just hang tight.';
+              await Future.delayed(const Duration(seconds: 1));
+              _controller.close();
+            },
+            child: const Text('Show Blocking Progress Dialog'),
           ),
         ],
       ),

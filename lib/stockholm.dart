@@ -1,5 +1,6 @@
 library stockholm;
 
+export 'src/blocking_progress_dialog.dart';
 export 'src/button.dart';
 export 'src/checkbox.dart';
 export 'src/colors.dart';
