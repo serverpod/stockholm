@@ -10,7 +10,7 @@ class StockholmDialogDemoPage extends StatelessWidget {
     return const StockholmDemoPage(children: [
       _DialogDemo(),
       _ConfirmationDialogDemo(),
-      _BlockingProgressDialogDemo(),
+      _ProgressDialogDemo(),
     ]);
   }
 }
@@ -80,17 +80,15 @@ class _ConfirmationDialogDemo extends StatelessWidget {
   }
 }
 
-class _BlockingProgressDialogDemo extends StatefulWidget {
-  const _BlockingProgressDialogDemo({Key? key}) : super(key: key);
+class _ProgressDialogDemo extends StatefulWidget {
+  const _ProgressDialogDemo({Key? key}) : super(key: key);
 
   @override
-  State<_BlockingProgressDialogDemo> createState() =>
-      _BlockingProgressDialogDemoState();
+  State<_ProgressDialogDemo> createState() => _ProgressDialogDemoState();
 }
 
-class _BlockingProgressDialogDemoState
-    extends State<_BlockingProgressDialogDemo> {
-  final _controller = StockholmBlockingProgressDialogController(
+class _ProgressDialogDemoState extends State<_ProgressDialogDemo> {
+  final _controller = StockholmProgressDialogController(
     progressMessage: 'Making progress.',
   );
 
@@ -108,10 +106,10 @@ class _BlockingProgressDialogDemoState
         children: [
           StockholmButton(
             onPressed: () async {
-              showStockholmBlockingProgressDialog(
+              showStockholmProgressDialog(
                   context: context,
                   builder: (context) {
-                    return StockholmBlockingProgressDialog(
+                    return StockholmProgressDialog(
                       title: const Text('Blocking Progress Dialog'),
                       controller: _controller,
                     );

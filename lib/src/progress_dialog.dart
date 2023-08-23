@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stockholm/src/dialog.dart';
 
-class StockholmBlockingProgressDialog extends StatefulWidget {
-  const StockholmBlockingProgressDialog({
+class StockholmProgressDialog extends StatefulWidget {
+  const StockholmProgressDialog({
     required this.title,
     required this.controller,
     super.key,
   });
 
-  final StockholmBlockingProgressDialogController controller;
+  final StockholmProgressDialogController controller;
 
   final Widget title;
 
   @override
-  State<StockholmBlockingProgressDialog> createState() =>
-      StockholmBlockingProgressDialogState();
+  State<StockholmProgressDialog> createState() =>
+      StockholmProgressDialogState();
 }
 
-class StockholmBlockingProgressDialogState
-    extends State<StockholmBlockingProgressDialog> {
+class StockholmProgressDialogState extends State<StockholmProgressDialog> {
   @override
   void initState() {
     super.initState();
@@ -57,7 +56,7 @@ class StockholmBlockingProgressDialogState
   }
 }
 
-void showStockholmBlockingProgressDialog({
+void showStockholmProgressDialog({
   required BuildContext context,
   required WidgetBuilder builder,
 }) {
@@ -68,12 +67,12 @@ void showStockholmBlockingProgressDialog({
   );
 }
 
-class StockholmBlockingProgressDialogController {
-  StockholmBlockingProgressDialogController({
+class StockholmProgressDialogController {
+  StockholmProgressDialogController({
     required String progressMessage,
   }) : _progressMessage = progressMessage;
 
-  StockholmBlockingProgressDialogState? _state;
+  StockholmProgressDialogState? _state;
 
   void dispose() {
     _state = null;
