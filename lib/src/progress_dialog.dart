@@ -24,6 +24,12 @@ class StockholmProgressDialogState extends State<StockholmProgressDialog> {
     widget.controller._state = this;
   }
 
+  @override
+  void dispose() {
+    widget.controller._state = null;
+    super.dispose();
+  }
+
   String get progressMessage => widget.controller.progressMessage;
 
   @override
@@ -73,10 +79,6 @@ class StockholmProgressDialogController {
   }) : _progressMessage = progressMessage;
 
   StockholmProgressDialogState? _state;
-
-  void dispose() {
-    _state = null;
-  }
 
   String _progressMessage;
   String get progressMessage => _progressMessage;

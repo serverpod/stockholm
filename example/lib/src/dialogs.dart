@@ -93,12 +93,6 @@ class _ProgressDialogDemoState extends State<_ProgressDialogDemo> {
   );
 
   @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DemoSection(
       title: 'Blocking Progress Dialog',
