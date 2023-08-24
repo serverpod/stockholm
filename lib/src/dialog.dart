@@ -168,3 +168,40 @@ void showStockholmConfirmationDialog({
     },
   );
 }
+
+class StockholmAlertDialog extends StatelessWidget {
+  final Widget title;
+  final Widget buttonTitle;
+  final Widget contents;
+  final VoidCallback? onClosed;
+
+  const StockholmAlertDialog({
+    required this.title,
+    required this.buttonTitle,
+    required this.contents,
+    this.onClosed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StockholmDialog(
+      width: 300,
+      title: title,
+      contents: Padding(
+        padding: const EdgeInsets.all(16),
+        child: contents,
+      ),
+      actionButtons: [
+        StockholmButton(
+          important: true,
+          onPressed: () {
+            Navigator.of(context).pop();
+            onClosed?.call();
+          },
+          child: buttonTitle,
+        ),
+      ],
+    );
+  }
+}
