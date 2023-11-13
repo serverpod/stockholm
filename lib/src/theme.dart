@@ -6,7 +6,7 @@ class StockholmThemeData {
     StockholmColor? accentColor,
     TargetPlatform? platform,
   }) {
-    var theme = ThemeData.light();
+    var theme = ThemeData.light(useMaterial3: false);
     var colors = StockholmColors.fromBrightness(Brightness.light);
     accentColor ??= colors.blue;
     platform ??= theme.platform;
@@ -54,7 +54,7 @@ class StockholmThemeData {
     StockholmColor? accentColor,
     TargetPlatform? platform,
   }) {
-    var theme = ThemeData.dark();
+    var theme = ThemeData.dark(useMaterial3: false);
     var colors = StockholmColors.fromBrightness(Brightness.dark);
     accentColor ??= colors.blue;
     platform ??= theme.platform;
@@ -80,7 +80,7 @@ class StockholmThemeData {
       ),
       indicatorColor: accentColor,
       highlightColor: highlightColor,
-      scaffoldBackgroundColor: Colors.grey[900],
+      scaffoldBackgroundColor: const Color(0xff1b1b1f),
       canvasColor: const Color.fromRGBO(38, 38, 38, 1.0),
       hoverColor: Colors.white12,
       cardColor: Colors.grey[900],
