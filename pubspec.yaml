@@ -10,13 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  ionicons: ^0.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
 
-  ionicons: ^0.2.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
