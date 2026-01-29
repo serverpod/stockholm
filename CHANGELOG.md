@@ -1,3 +1,7 @@
+## 0.1.0
+
+* Minor cleanup.
+
 ## 0.0.3
 
 * Many improvements and new widgets.
