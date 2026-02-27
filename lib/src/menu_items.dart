@@ -24,26 +24,44 @@ class StockholmMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     var isWindows = Theme.of(context).platform == TargetPlatform.windows;
 
-    return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).popupMenuTheme.color,
-          borderRadius: BorderRadius.all(Radius.circular(isWindows ? 3 : 8)),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 16,
-              offset: Offset(0, 4),
-            )
-          ],
-          border: Border.all(color: Theme.of(context).dividerColor)),
-      padding: isWindows ? _menuPaddingWindows : _menuPadding,
-      child: IntrinsicWidth(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: items,
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxHeight = constraints.maxHeight;
+        final contentHeight = height;
+        final needsScroll = contentHeight > maxHeight;
+
+        final menuContent = IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: items,
+          ),
+        );
+
+        return Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).popupMenuTheme.color,
+              borderRadius:
+                  BorderRadius.all(Radius.circular(isWindows ? 3 : 8)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 16,
+                  offset: Offset(0, 4),
+                )
+              ],
+              border: Border.all(color: Theme.of(context).dividerColor)),
+          padding: isWindows ? _menuPaddingWindows : _menuPadding,
+          child: needsScroll
+              ? ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxHeight),
+                  child: SingleChildScrollView(
+                    child: menuContent,
+                  ),
+                )
+              : menuContent,
+        );
+      },
     );
   }
 }
