@@ -138,6 +138,26 @@ class StockholmHomePage extends StatefulWidget {
 class _StockholmHomePageState extends State<StockholmHomePage> {
   _DemoPage _selectedPage = _DemoPage.buttons;
 
+  // Maps each child index in the sidebar to the corresponding page.
+  // Indices without an entry (headers) are non-selectable.
+  static const _pageAtIndex = <int, _DemoPage>{
+    1: _DemoPage.buttons,
+    2: _DemoPage.menus,
+    3: _DemoPage.textFields,
+    5: _DemoPage.tables,
+    6: _DemoPage.dialogs,
+    7: _DemoPage.toolbar,
+    8: _DemoPage.propertyInspector,
+    10: _DemoPage.colors,
+  };
+
+  int? get _selectedSidebarIndex {
+    for (final entry in _pageAtIndex.entries) {
+      if (entry.value == _selectedPage) return entry.key;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget page;
@@ -202,89 +222,58 @@ class _StockholmHomePageState extends State<StockholmHomePage> {
         children: [
           StockholmSideBar(
             width: 280,
+            selectedIndex: _selectedSidebarIndex,
+            onDestinationSelected: (index) {
+              final page = _pageAtIndex[index];
+              if (page != null) {
+                setState(() {
+                  _selectedPage = page;
+                });
+              }
+            },
             children: [
               const StockholmListTileHeader(child: Text('Controls')),
               StockholmListTile(
                 leading: const Icon(Ionicons.toggle_outline),
                 child: const Text('Buttons'),
                 selected: _selectedPage == _DemoPage.buttons,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.buttons;
-                  });
-                },
               ),
               StockholmListTile(
                 leading: const Icon(Ionicons.reader_outline),
                 child: const Text('Menus'),
                 selected: _selectedPage == _DemoPage.menus,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.menus;
-                  });
-                },
               ),
               StockholmListTile(
                 leading: const Icon(Ionicons.text),
                 child: const Text('Text fields'),
                 selected: _selectedPage == _DemoPage.textFields,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.textFields;
-                  });
-                },
               ),
               const StockholmListTileHeader(child: Text('Layouts')),
               StockholmListTile(
                 leading: const Icon(Ionicons.browsers_outline),
                 child: const Text('Tables'),
                 selected: _selectedPage == _DemoPage.tables,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.tables;
-                  });
-                },
               ),
               StockholmListTile(
                 leading: const Icon(Ionicons.chatbubble_outline),
                 child: const Text('Dialogs'),
                 selected: _selectedPage == _DemoPage.dialogs,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.dialogs;
-                  });
-                },
               ),
               StockholmListTile(
                 leading: const Icon(Ionicons.build_outline),
                 child: const Text('Toolbars'),
                 selected: _selectedPage == _DemoPage.toolbar,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.toolbar;
-                  });
-                },
               ),
               StockholmListTile(
                 leading: const Icon(Ionicons.list_outline),
                 child: const Text('Property inspector'),
                 selected: _selectedPage == _DemoPage.propertyInspector,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.propertyInspector;
-                  });
-                },
               ),
               const StockholmListTileHeader(child: Text('Misc')),
               StockholmListTile(
                 leading: const Icon(Ionicons.color_palette_outline),
                 child: const Text('Colors'),
                 selected: _selectedPage == _DemoPage.colors,
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = _DemoPage.colors;
-                  });
-                },
               ),
             ],
             footer: Padding(
