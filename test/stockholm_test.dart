@@ -30,6 +30,38 @@ void main() {
     );
 
     testWidgets(
+      'Given a tile with onPressed inside StockholmSideBar when tapped then the callback is invoked',
+      (tester) async {
+        var firstPressed = false;
+        var secondPressed = false;
+
+        await tester.pumpWidget(_buildTestApp(
+          StockholmSideBar(
+            children: [
+              StockholmListTile(
+                onPressed: () => firstPressed = true,
+                child: const Text('First'),
+              ),
+              StockholmListTile(
+                onPressed: () => secondPressed = true,
+                child: const Text('Second'),
+              ),
+            ],
+          ),
+        ));
+
+        await tester.tap(find.text('First'));
+        expect(firstPressed, isTrue);
+        expect(secondPressed, isFalse);
+
+        firstPressed = false;
+        await tester.tap(find.text('Second'));
+        expect(firstPressed, isFalse);
+        expect(secondPressed, isTrue);
+      },
+    );
+
+    testWidgets(
       'Given a tile without onPressed when tapped then no error occurs',
       (tester) async {
         await tester.pumpWidget(_buildTestApp(
@@ -104,7 +136,7 @@ void main() {
     );
 
     testWidgets(
-      'Given a sidebar with onDestinationSelected and tiles with onPressed when a tile is tapped then both callbacks are invoked',
+      'Given a sidebar with onDestinationSelected and tiles with onPressed when a tile is tapped then the onDestinationSelected callback is not invoked',
       (tester) async {
         int? destinationIndex;
         var tilePressed = false;
@@ -123,8 +155,8 @@ void main() {
 
         await tester.tap(find.text('Item'));
 
-        expect(destinationIndex, 0);
         expect(tilePressed, isTrue);
+        expect(destinationIndex, isNull);
       },
     );
 
