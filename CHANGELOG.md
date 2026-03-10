@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Adds `onDestinationSelected` callback to `StockholmSideBar`.
+* Fixes overflow when there are too many items on a `StockholmMenu`.
+
 ## 0.1.0
 
 * Minor cleanup.
