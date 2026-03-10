@@ -8,6 +8,8 @@ class StockholmSideBar extends StatelessWidget {
     this.backgroundColor,
     this.dividerColor,
     this.footer,
+    this.selectedIndex,
+    this.onDestinationSelected,
     Key? key,
   }) : super(key: key);
 
@@ -18,8 +20,36 @@ class StockholmSideBar extends StatelessWidget {
   final List<Widget> children;
   final Widget? footer;
 
+  /// The index of the currently selected destination, or null if no destination
+  /// is selected.
+  final int? selectedIndex;
+
+  /// Called when one of the destinations is selected.
+  ///
+  /// The stateful widget that creates this widget needs to call [setState] when
+  /// this callback is called in order to rebuild the sidebar with the new
+  /// [selectedIndex].
+  ///
+  /// If a child widget also handles tap events (e.g. via [StockholmListTile]'s
+  /// [onPressed]), both callbacks will fire when the child is tapped.
+  final ValueChanged<int>? onDestinationSelected;
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> resolvedChildren;
+    if (onDestinationSelected != null) {
+      resolvedChildren = [
+        for (var i = 0; i < children.length; i++)
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => onDestinationSelected!(i),
+            child: children[i],
+          ),
+      ];
+    } else {
+      resolvedChildren = children;
+    }
+
     return Container(
       width: width,
       padding: padding,
@@ -37,7 +67,7 @@ class StockholmSideBar extends StatelessWidget {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              children: children,
+              children: resolvedChildren,
             ),
           ),
           if (footer != null) footer!,
