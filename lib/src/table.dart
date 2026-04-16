@@ -250,6 +250,9 @@ class _StockholmTableState extends State<StockholmTable> {
   @override
   void didUpdateWidget(covariant StockholmTable oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.selectedRow != oldWidget.selectedRow) {
+      _selectedRow = widget.selectedRow;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkScrollPosition();
     });
