@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Fixes the highlighted table row not being updated when the selected row changes.
+
 ## 0.2.0
 
 * Adds `onDestinationSelected` callback to `StockholmSideBar`.
