@@ -1,35 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:stockholm/src/button.dart';
 import 'package:stockholm/src/constrained_inputs.dart';
-
-// Value inspected from Xcode 11 & iOS 13.0 Simulator.
-const BorderSide _kDefaultRoundedBorderSide = BorderSide(
-  color: CupertinoDynamicColor.withBrightness(
-    color: Color(0x33000000),
-    darkColor: Color(0x33FFFFFF),
-  ),
-  width: 0.0,
-);
-const Border _kDefaultRoundedBorder = Border(
-  top: _kDefaultRoundedBorderSide,
-  bottom: _kDefaultRoundedBorderSide,
-  left: _kDefaultRoundedBorderSide,
-  right: _kDefaultRoundedBorderSide,
-);
-
-const BoxDecoration _kDefaultRoundedBorderDecoration = BoxDecoration(
-  color: CupertinoDynamicColor.withBrightness(
-    color: CupertinoColors.white,
-    darkColor: CupertinoColors.black,
-  ),
-  border: _kDefaultRoundedBorder,
-  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-);
-
-const Color _kDisabledBackground = CupertinoDynamicColor.withBrightness(
-  color: Color(0xFFFAFAFA),
-  darkColor: Color(0xFF050505),
-);
+import 'package:stockholm/src/date_time_common.dart';
 
 enum StockholmDateTimePickerComponent {
   date,
@@ -80,8 +52,16 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
     _updateValuesFromDateTime(widget.dateTime);
   }
 
+  @override
+  void didUpdateWidget(covariant StockholmDateTimePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.dateTime != widget.dateTime) {
+      _updateValuesFromDateTime(widget.dateTime);
+    }
+  }
+
   void _updateValuesFromDateTime(DateTime dateTime) {
-    var timeZonedDateTime = widget.utc ? dateTime.toUtc() : dateTime;
+    final timeZonedDateTime = widget.utc ? dateTime.toUtc() : dateTime;
 
     _year = timeZonedDateTime.year;
     _month = timeZonedDateTime.month;
@@ -93,55 +73,27 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final Color disabledColor =
-        CupertinoDynamicColor.resolve(_kDisabledBackground, context);
-
-    final Color? decorationColor = CupertinoDynamicColor.maybeResolve(
-        _kDefaultRoundedBorderDecoration.color, context);
-
-    final BoxBorder? border = _kDefaultRoundedBorderDecoration.border;
-    Border? resolvedBorder = border as Border?;
-    if (border is Border) {
-      BorderSide resolveBorderSide(BorderSide side) {
-        return side == BorderSide.none
-            ? side
-            : side.copyWith(
-                color: CupertinoDynamicColor.resolve(side.color, context));
-      }
-
-      resolvedBorder = border.runtimeType != Border
-          ? border
-          : Border(
-              top: resolveBorderSide(border.top),
-              left: resolveBorderSide(border.left),
-              bottom: resolveBorderSide(border.bottom),
-              right: resolveBorderSide(border.right),
-            );
-    }
-
-    final BoxDecoration? effectiveDecoration =
-        _kDefaultRoundedBorderDecoration.copyWith(
-      border: resolvedBorder,
-      color: widget.enabled ? decorationColor : disabledColor,
-    );
+    final effectiveDecoration =
+        stockholmDateTimeSegmentDecoration(context, enabled: widget.enabled);
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.components.contains(StockholmDateTimePickerComponent.date))
           Container(
             decoration: effectiveDecoration,
-            padding: const EdgeInsets.symmetric(horizontal: 7),
+            padding: const EdgeInsets.only(left: 6, right: 4),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  width: 42,
+                  width: 30,
                   child: StockholmIntInput(
                     enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 4,
                     value: widget.dateTime.year,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.end,
                     padding: const EdgeInsets.symmetric(vertical: 7),
                     padValue: true,
                     selectAllOnFocus: true,
@@ -163,9 +115,9 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                     },
                   ),
                 ),
-                const Text('-'),
+                const _DateTimePickerSep('-'),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                   child: StockholmIntInput(
                     enabled: widget.enabled,
                     drawBorder: false,
@@ -193,15 +145,15 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                     },
                   ),
                 ),
-                const Text('-'),
+                const _DateTimePickerSep('-'),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                   child: StockholmIntInput(
                     enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.day,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                     padding: const EdgeInsets.symmetric(vertical: 7),
                     padValue: true,
                     selectAllOnFocus: true,
@@ -230,22 +182,22 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
             ),
           ),
         if (widget.components.contains(StockholmDateTimePickerComponent.date))
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
         if (widget.components.contains(StockholmDateTimePickerComponent.time))
           Container(
             decoration: effectiveDecoration,
-            padding: const EdgeInsets.symmetric(horizontal: 7),
+            padding: const EdgeInsets.only(left: 6, right: 4),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  width: 20,
+                  width: 15,
                   child: StockholmIntInput(
                     enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.hour,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.end,
                     padding: const EdgeInsets.symmetric(vertical: 7),
                     padValue: true,
                     selectAllOnFocus: true,
@@ -267,15 +219,15 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                     },
                   ),
                 ),
-                const Text(':'),
+                const _DateTimePickerSep(':'),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                   child: StockholmIntInput(
                     enabled: widget.enabled,
                     drawBorder: false,
                     maxLength: 2,
                     value: widget.dateTime.minute,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                     padding: const EdgeInsets.symmetric(vertical: 7),
                     padValue: true,
                     selectAllOnFocus: true,
@@ -302,17 +254,17 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
                 ),
                 if (widget.components
                     .contains(StockholmDateTimePickerComponent.seconds))
-                  const Text(':'),
+                  const _DateTimePickerSep(':'),
                 if (widget.components
                     .contains(StockholmDateTimePickerComponent.seconds))
                   SizedBox(
-                    width: 20,
+                    width: 15,
                     child: StockholmIntInput(
                       enabled: widget.enabled,
                       drawBorder: false,
                       maxLength: 2,
                       value: widget.dateTime.second,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.start,
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       padValue: true,
                       selectAllOnFocus: true,
@@ -361,20 +313,8 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
     );
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _year = widget.dateTime.year;
-    _month = widget.dateTime.month;
-    _day = widget.dateTime.day;
-    _hour = widget.dateTime.hour;
-    _minute = widget.dateTime.minute;
-    _second = widget.dateTime.second;
-  }
-
   void _updateDateTime(bool notify) {
-    var dateTime = widget.utc
+    final dateTime = widget.utc
         ? DateTime.utc(
             _year,
             _month == 0 ? 1 : _month,
@@ -416,5 +356,19 @@ class _StockholmDateTimePickerState extends State<StockholmDateTimePicker> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onChanged(_lastDateTime!);
     });
+  }
+}
+
+class _DateTimePickerSep extends StatelessWidget {
+  const _DateTimePickerSep(this.char);
+
+  final String char;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 2),
+      child: Text(char),
+    );
   }
 }
