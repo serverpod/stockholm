@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Tightens spacing in `StockholmDateTimePicker` so date and time read as one continuous line.
+
 ## 0.2.1
 
 * Fixes the highlighted table row not being updated when the selected row changes.
