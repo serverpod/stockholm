@@ -1,6 +1,6 @@
 import 'package:example/src/demo_page.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:ionicons_plus/ionicons_plus.dart';
 import 'package:stockholm/stockholm.dart';
 
 class StockholmColorDemoPage extends StatelessWidget {

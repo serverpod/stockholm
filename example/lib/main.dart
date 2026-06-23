@@ -9,7 +9,7 @@ import 'package:example/src/tables.dart';
 import 'package:example/src/text_fields.dart';
 import 'package:example/src/toolbar.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:ionicons_plus/ionicons_plus.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stockholm/stockholm.dart';
 
