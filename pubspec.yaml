@@ -1,6 +1,6 @@
 name: stockholm
 description: A collection of desktop-first widgets and themes designed to look and feel great on Mac and Windows.
-version: 0.2.2
+version: 0.2.3
 homepage: https://github.com/serverpod/stockholm
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ionicons: ^0.2.2
+  ionicons_plus: ^0.2.5
 
 dev_dependencies:
   flutter_test:

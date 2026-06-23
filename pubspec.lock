@@ -67,14 +67,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  ionicons:
+  ionicons_plus:
     dependency: "direct main"
     description:
-      name: ionicons
-      sha256: "5496bc65a16115ecf05b15b78f494ee4a8869504357668f0a11d689e970523cf"
+      name: ionicons_plus
+      sha256: "9f5a837f1a0df204f3d11fc4a8adbd870c5239e21b25e8df68504e227084e86f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.5"
   leak_tracker:
     dependency: transitive
     description:
@@ -210,4 +210,4 @@ packages:
     version: "15.0.2"
 sdks:
   dart: ">=3.9.0-0 <4.0.0"
-  flutter: ">=3.18.0-18.0.pre.54"
+  flutter: ">=3.22.4"

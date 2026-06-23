@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Replaces `ionicons` with `ionicons_plus` for compatibility with Flutter 3.44+ where `IconData` is final.
+
 ## 0.2.2
 
 * Tightens spacing in `StockholmDateTimePicker` so date and time read as one continuous line.
